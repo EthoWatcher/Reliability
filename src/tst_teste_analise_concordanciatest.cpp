@@ -35,7 +35,7 @@ void Teste_analise_concordanciaTest::testCase12()
 {
 
 
-    Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+//    Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
 
     // essa opção vai crashar
     // fazer um teste somente com essa opção
@@ -63,12 +63,6 @@ void Teste_analise_concordanciaTest::criando_matriz(){
     auto matriz_concordancia = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
 
     qDebug() << calcula_concordancia_acaso(matriz_concordancia);
-
-
-
-
-
-
 
 
 }
