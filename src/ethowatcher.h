@@ -65,6 +65,9 @@ QString abrindo_etografia();
 Etografia lerETOXML(QString nomeArquivo);
 
 
+std::vector<int> extrai_lista_quadro_quadro(Etografia etografia);
+std::vector<int> extrai_catalogo(Etografia etografia);
+
 
 class ethowatcher
 {

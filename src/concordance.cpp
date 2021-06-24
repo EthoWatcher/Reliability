@@ -132,4 +132,19 @@ float calcula_concordancia_acaso(std::vector<std::vector<int> > matriz_concordan
 
 }
 
+float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
+    // Gian implementar o calculo do kappa medio
+
+
+}
+
+//
+
+// matriz de confusão nxn e temos que converter numa matriz de confusão 2x2
+// do comportamento e diferente do comportamento
+// calular o kappa por categoria
+// calcular a prevalencia por categoria
+// calcular o vies por categoria
+// calcular o kappa maximo.
+// the Kappa Statistic in Reliability Studies: Use, Interpretation, and Sample Size Requirements
 
