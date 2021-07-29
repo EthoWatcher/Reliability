@@ -86,7 +86,7 @@ void Teste_analise_concordanciaTest::criando_matriz(){
     float concordancia_acaso = calcula_concordancia_acaso(matriz_concordancia);
     float concordancia_observada = calcula_concordancia_observada(matriz_concordancia);
 
-    float kappa_medio = calcula_kappa_medio(matriz_concordancia);
+//    float kappa_medio = calcula_kappa_medio(matriz_concordancia);
 
 
     qDebug() << calcula_concordancia_acaso(matriz_concordancia);
