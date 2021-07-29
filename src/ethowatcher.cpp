@@ -36,6 +36,7 @@ QString abrindo_etografia()
 
 Etografia lerETOXML(QString nomeArquivo)
 {
+    // le o arquivo xml e constroi a estrutura da Etografia.
     assert_file_exist(nomeArquivo);
 
     QFile OutEtografia;
@@ -161,3 +162,32 @@ ethowatcher::ethowatcher()
 
 
 
+
+
+std::vector<int> extrai_lista_quadro_quadro(Etografia etografia)
+{
+    // Gian
+    // extrutura da etografia e extrair a lista quadro a quadro dos comportamentos
+    //
+    std::vector<int> lista_id_categoria;
+    for(int contador = 0; etografia.registro->frameFinal.size(); contador++){
+      int inicio_marcacao = etografia.registro->frameInicial[contador];
+      int fim_marcacao = etografia.registro->frameFinal[contador];
+      int id_marcado = etografia.registro->id[contador];
+
+      // construir a funcionalidade para
+
+
+    }
+
+
+    return lista_id_categoria;
+}
+
+
+std::vector<int> extrai_catalogo(Etografia etografia)
+{
+    // Gian
+    // extrai o catalogo da etografia.
+    // return catalogo
+}
