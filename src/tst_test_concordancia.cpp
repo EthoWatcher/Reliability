@@ -24,7 +24,7 @@ private slots:
 //    void testCase1();
     void testCase12();
     void criando_matriz();
-    void teste_parser();
+//    void teste_parser();
 
 };
 
@@ -40,7 +40,7 @@ test_concordancia::~test_concordancia()
 
 void test_concordancia::test_case1()
 {
-    QVERIFY2(false, "Failure for some reason");
+//    QVERIFY2(false, "Failure for some reason");
 }
 
 
@@ -62,21 +62,21 @@ void test_concordancia::testCase12()
 
 
 
-void test_concordancia::teste_parser()
-{
-    Etografia etografia1 = lerETOXML("caminho da etografia");
-    std::vector<int> etrografia_1  = extrai_lista_quadro_quadro(etografia1);
-    Etografia etografia2 = lerETOXML("caminho da etografia");
-    std::vector<int> etrografia_2  = extrai_lista_quadro_quadro(etografia2);
+//void test_concordancia::teste_parser()
+//{
+//    Etografia etografia1 = lerETOXML("caminho da etografia");
+//    std::vector<int> etrografia_1  = extrai_lista_quadro_quadro(etografia1);
+//    Etografia etografia2 = lerETOXML("caminho da etografia");
+//    std::vector<int> etrografia_2  = extrai_lista_quadro_quadro(etografia2);
 
-    // checar se as etografias possuem o mesmo catalogo.
+//    // checar se as etografias possuem o mesmo catalogo.
 
-    std::vector<int> catalogo = extrai_catalogo(etografia1);
-    auto matriz_concordancia = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
+//    std::vector<int> catalogo = extrai_catalogo(etografia1);
+//    auto matriz_concordancia = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
 
 
-    qDebug() << calcula_concordancia_acaso(matriz_concordancia);
-}
+//    qDebug() << calcula_concordancia_acaso(matriz_concordancia);
+//}
 
 void test_concordancia::criando_matriz()
 {

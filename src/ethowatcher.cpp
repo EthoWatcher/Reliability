@@ -17,7 +17,7 @@ void assert_file_exist(QString nome_arquivo){
 
     }catch(...){
         qDebug() << "File dosen't exist";
-        Q_ASSERT(false);
+//        Q_ASSERT(false);
 
     }
 
