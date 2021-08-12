@@ -31,8 +31,6 @@ private slots:
     void teste_calculo_por_categoria();
 
 
-
-
 };
 
 test_concordancia::test_concordancia()

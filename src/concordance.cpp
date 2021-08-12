@@ -163,6 +163,7 @@ float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
     float dividendo = fabs(matriz_concordancia_22[0][1] - matriz_concordancia_22[1][0]);
     float vies = (float) dividendo/n;
+    return vies;
 }
 
 
@@ -171,6 +172,7 @@ float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concor
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
     float dividendo = fabs(matriz_concordancia_22[0][0] - matriz_concordancia_22[1][1]);
     float prevalencia = (float) dividendo/n;
+    return prevalencia;
 }
 float calculo_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
 {
