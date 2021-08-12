@@ -16,6 +16,8 @@ float calcula_concordancia_observada(std::vector< std::vector<int> > matriz_conc
 float calcula_concordancia_acaso(std::vector< std::vector<int> > matriz_concordancia);
 float calculo_vies_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
 float calculo_prevalencia_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
+float calculo_kappa_maximo(std::vector<std::vector<int> > matiz_concordancia_22);
+
 
 
 #endif // CONCORDANCE_H

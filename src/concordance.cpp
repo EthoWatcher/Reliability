@@ -142,8 +142,8 @@ float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
 // matriz de confusão nxn e temos que converter numa matriz de confusão 2x2
 // do comportamento e diferente do comportamento
 // calular o kappa por categoria
-// calcular a prevalencia por categoria
-// calcular o vies por categoria
+// calcular a prevalencia por categoria - OK
+// calcular o vies por categoria - OK
 // calcular o kappa maximo.
 // the Kappa Statistic in Reliability Studies: Use, Interpretation, and Sample Size Requirements
 
@@ -160,5 +160,11 @@ float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concor
 {
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
     float dividendo = matriz_concordancia_22[0][0] - matriz_concordancia_22[1][1];
+    float vies = (float) dividendo/n;
+}
+float calculo_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
+{
+    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+    float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
     float vies = (float) dividendo/n;
 }
