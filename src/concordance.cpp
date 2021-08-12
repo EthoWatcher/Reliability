@@ -146,7 +146,17 @@ float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
 // calcular o vies por categoria - OK
 // calcular o kappa maximo. - OK
 // the Kappa Statistic in Reliability Studies: Use, Interpretation, and Sample Size Requirements
+float calculo_por_categoria(std::vector<std::vector<int> > matriz_concordancia_22)// apenas para matrizes 2x2
+{
+    float n_1 = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0];
+    float n_2 = matriz_concordancia_22[1][1] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0];
+    float dividendo_1 = matriz_concordancia_22[0][0];
+    float dividendo_2 = matriz_concordancia_22[1][1];
 
+
+    float agreement_1 = (float) dividendo_1/n_1;
+    float agreement_2 = (float) dividendo_2/n_2;
+}
 
 float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
 {

@@ -28,6 +28,8 @@ private slots:
     void teste_calculo_vies();
     void teste_calculo_prevalencia();
     void teste_calculo_kappa_maximo();
+    void teste_calculo_por_categoria();
+
 
 
 
@@ -99,6 +101,13 @@ void test_concordancia::criando_matriz()
 
 
     qDebug() << calcula_concordancia_acaso(matriz_concordancia);
+
+
+}
+void test_concordancia::teste_calculo_por_categoria(){
+    std::vector<std::vector<int>> vetor_entrada= {{29,21},{23,27}};
+    float concordancia_categoria_1 = calculo_por_categoria(vetor_entrada);
+    qDebug() <<viez_categoria;
 
 
 }
