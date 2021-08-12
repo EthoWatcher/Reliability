@@ -1,6 +1,6 @@
 #include "concordance.h"
 #include <numeric>
-
+#include <math.h>
 concordance::concordance()
 {
 }
@@ -144,14 +144,14 @@ float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
 // calular o kappa por categoria
 // calcular a prevalencia por categoria - OK
 // calcular o vies por categoria - OK
-// calcular o kappa maximo.
+// calcular o kappa maximo. - OK
 // the Kappa Statistic in Reliability Studies: Use, Interpretation, and Sample Size Requirements
 
 
 float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
 {
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
-    float dividendo = matriz_concordancia_22[0][1] - matriz_concordancia_22[1][0];
+    float dividendo = fabs(matriz_concordancia_22[0][1] - matriz_concordancia_22[1][0]);
     float vies = (float) dividendo/n;
 }
 
@@ -159,12 +159,12 @@ float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_
 float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
 {
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
-    float dividendo = matriz_concordancia_22[0][0] - matriz_concordancia_22[1][1];
-    float vies = (float) dividendo/n;
+    float dividendo = fabs(matriz_concordancia_22[0][0] - matriz_concordancia_22[1][1]);
+    float prevalencia = (float) dividendo/n;
 }
 float calculo_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
 {
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
     float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
-    float vies = (float) dividendo/n;
+    float kappa_maximo = (float) dividendo/n;
 }
