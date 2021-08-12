@@ -135,7 +135,6 @@ float calcula_concordancia_acaso(std::vector<std::vector<int> > matriz_concordan
 float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
     // Gian implementar o calculo do kappa medio
 
-
 }
 
 //
@@ -148,3 +147,18 @@ float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
 // calcular o kappa maximo.
 // the Kappa Statistic in Reliability Studies: Use, Interpretation, and Sample Size Requirements
 
+
+float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
+{
+    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+    float dividendo = matriz_concordancia_22[0][1] - matriz_concordancia_22[1][0];
+    float vies = (float) dividendo/n;
+}
+
+
+float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
+{
+    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+    float dividendo = matriz_concordancia_22[0][0] - matriz_concordancia_22[1][1];
+    float vies = (float) dividendo/n;
+}
