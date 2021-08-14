@@ -135,6 +135,15 @@ float calcula_concordancia_acaso(std::vector<std::vector<int> > matriz_concordan
 float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
     // Gian implementar o calculo do kappa medio
 
+
+
+    float acaso = calcula_concordancia_acaso(matriz_concordancia);
+    float concordancia = calcula_concordancia_observada(matriz_concordancia);
+    float kappa = (concordancia - acaso)/(1 - acaso);
+
+    return kappa;
+
+
 }
 
 //
