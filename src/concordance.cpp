@@ -1,13 +1,25 @@
 #include "concordance.h"
 #include <numeric>
 #include <math.h>
-concordance::concordance()
+Concordance_Cohen::Concordance_Cohen()
 {
+}
+
+void Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
+{
+    // Função utilizada para carregar as etografias pelo objeto.
 }
 
 
 
+void Concordance_Cohen::calculo_concordancia()
+{
+    // implementar as funções de calculo de concordancia.
+}
 
+
+
+// Funções auxiliares.
 std::vector< std::vector<int> > constroi_matrix_concordancia_cohen(std::vector<int> etografia_1, std::vector<int> etografia_2 , std::vector<int> catalogo ){
 
       int matrix_size = catalogo.size();
@@ -25,7 +37,6 @@ std::vector< std::vector<int> > constroi_matrix_concordancia_cohen(std::vector<i
 
 
 }
-
 
 float calcula_concordancia_observada(std::vector<std::vector<int> > matriz_concordancia)
 {
@@ -135,8 +146,6 @@ float calcula_concordancia_acaso(std::vector<std::vector<int> > matriz_concordan
 float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
     // Gian implementar o calculo do kappa medio
 
-
-
     float acaso = calcula_concordancia_acaso(matriz_concordancia);
     float concordancia = calcula_concordancia_observada(matriz_concordancia);
     float kappa = (concordancia - acaso)/(1 - acaso);
@@ -165,6 +174,7 @@ float calculo_por_categoria(std::vector<std::vector<int> > matriz_concordancia_2
 
     float agreement_1 = (float) dividendo_1/n_1;
     float agreement_2 = (float) dividendo_2/n_2;
+    //qual dos dois retorna ?
 }
 
 float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
@@ -175,7 +185,6 @@ float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_
     return vies;
 }
 
-
 float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
 {
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
@@ -183,9 +192,617 @@ float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concor
     float prevalencia = (float) dividendo/n;
     return prevalencia;
 }
+
 float calculo_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
 {
     float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
     float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
     float kappa_maximo = (float) dividendo/n;
+    return kappa_maximo;
 }
+
+
+float transforma_matris_nn_22()
+{
+
+}
+
+// Gravar XML da analise
+void Concordance_Cohen::grava_xml_analise(QString caminho_arquivo)
+{
+
+    QString nomeGravarCatalago = QFileDialog::getSaveFileName(nullptr,
+                "C://",
+                "Fless Kappa Files (*.fkf)"
+                );
+
+     QFile Output;
+     Output.setFileName(nomeGravarCatalago);
+
+
+     Output.open(QIODevice::WriteOnly);
+
+ //    QXmlStreamWriter stream(&Output); //passa o endereço
+ //    stream.setAutoFormatting(true);
+ //    stream.writeStartDocument();//começa o documento
+
+ //    stream.writeStartElement("analiseTotalSessao");
+
+ //    stream.writeStartElement("dadosAnalisador");
+ //    stream.writeTextElement("nomeAnalisador","joao antonio Marcolan");
+ //    stream.writeTextElement("laboratorio","iebUFSC");
+ //    stream.writeEndElement(); //fecha dadosAnalisador
+
+
+ //    stream.writeStartElement("dadosAnaliseEtografica");
+
+ //    stream.writeStartElement("dadosVideosUsados");
+ //    stream.writeTextElement("caminhoVideo",videoLido->nome);
+ //    stream.writeTextElement("frameInicial",QString::number( videoLido->frameInicial));
+ //    stream.writeTextElement("frameFinal",QString::number(videoLido->frameFinal));
+ //    stream.writeTextElement("fps",QString::number(videoLido->fps));
+
+
+
+ //    stream.writeEndElement(); //fecha dadosVideoUsados
+
+
+
+ //    stream.writeStartElement("dadosCatalagoUsado");
+ //    stream.writeTextElement("caminhoCatalago",catalagoLido->caminhoArquivo);
+ //    stream.writeStartElement("Categorias");
+ //    int contador=0;
+
+ //    int ia;
+ //    for(ia=0;ia<catalagoLido->quantidadeDeCategorias;ia++){
+
+ //       stream.writeStartElement("categoria");
+ //       stream.writeAttribute("id", QString::number(ia));
+ //       stream.writeAttribute("nome",catalagoLido->nome[ia]);
+ //       stream.writeEndElement();
+
+ //       }
+
+
+ //    stream.writeEndElement(); //fecha categorias
+
+ //    stream.writeEndElement(); //fecha dadosCatalagos
+
+ //    stream.writeStartElement("analises");
+
+ //    for(int qdv=0;qdv<quantidadeDeVideo;qdv++){
+
+ //        stream.writeStartElement("categoria");
+ //        stream.writeAttribute("id", QString::number(qdv));
+ //        stream.writeAttribute("tipo",catalagoKoho[qdv].tipoAnalise);
+ //        stream.writeTextElement("caminhoAnalis"
+ //                                "eEto",caminhoAnalise[qdv]);
+ //        stream.writeEndElement();
+
+ //    }
+
+
+
+
+ //    stream.writeEndElement(); //fecha analises
+
+ //    stream.writeEndElement(); //fecha dadosAnaliseEtografia
+
+ //    stream.writeStartElement("analiseFleissKappa");
+
+
+ //    stream.writeStartElement("tabelaConcordante");
+
+ //    stream.writeStartElement("analise");
+ //    for(int f3=0;f3<(videosKoho[0].frameFinal- videosKoho[0].frameInicial);f3++){
+
+ //        stream.writeStartElement("aFr");
+ //        stream.writeAttribute("num",QString::number(f3));
+
+ //        for(int c5=0; c5<(catalagoKoho[0].quantidadeDeCategorias+1); c5++){
+
+ //            stream.writeStartElement("con");
+ //           // stream.writeAttribute("idt", QString::number(c5));
+ //            stream.writeAttribute("q",QString::number(frameFleisTabela[f3][c5]));
+
+ //            stream.writeEndElement();
+
+
+ //        }
+
+
+
+ //        stream.writeEndElement();//fecha afr
+
+ //    }
+
+
+ //    stream.writeEndElement();
+
+
+ //    stream.writeStartElement("resultadoFinal");
+
+
+
+ //    stream.writeTextElement("Pe",QString::number(pEntrada.Pe) );
+ //    stream.writeTextElement("P",QString::number(pEntrada.P_medio));
+ //    stream.writeTextElement("indiceFleissKappa",QString::number(pEntrada.Kappa));
+
+ //    stream.writeEndElement(); //fecha 0 pi
+
+
+
+ //    stream.writeEndElement(); //fecha a tabelaConcordante
+
+
+
+ //    stream.writeEndElement(); //fecha o analiseFleissKappa
+
+
+
+ //    stream.writeEndElement(); //fecha dadosAnaliseEtografica
+ //    stream.writeEndDocument();
+
+ //    Output.close();
+
+}
+
+// Le XML da analise de concordancia
+void Concordance_Cohen::le_xml_analise(QString caminho_arquivo)
+{
+    QFile OutEtografia;
+    OutEtografia.setFileName(caminho_arquivo);
+    OutEtografia.open(QIODevice::ReadOnly);
+
+    QXmlStreamReader streamReader(&OutEtografia); //passa o endereço
+
+    QString conversor;
+
+    while(!streamReader.atEnd() && !streamReader.hasError()){
+
+        streamReader.readNext();
+
+        if(streamReader.name().toString() == "analise"){
+
+
+        }
+
+    }
+
+
+
+}
+
+// Grava CSV a partir de um documento XML
+
+void Concordance_Cohen::grava_csv_analise(QString caminho_arquivo)
+{
+    QFile outGravador;
+    outGravador.setFileName(caminho_arquivo);
+    outGravador.open(QIODevice::WriteOnly | QIODevice::Text );
+
+    QTextStream csvGravador(&outGravador);
+
+    csvGravador <<"sep=; \n";
+//    csvGravador << "Informacion about the user\n";
+//    csvGravador <<"Researcher ; Laboratory" << "\n";
+//    csvGravador <<experimentador.nome.toLatin1() <<";" << experimentador.lab.toLatin1() << "\n";
+//    csvGravador <<"\n";
+//    csvGravador <<"The information of analysed videos: \n";
+//    csvGravador << "Name; Frames per second (fps); Frame started the analysis; Frame finished the analysis \n";
+//    csvGravador << videoLido->nome<< ";" << videoLido->fps << ";"
+//         << videoLido->frameInicial << ";" << videoLido->frameFinal<< "\n";
+//    csvGravador <<"\n";
+//    csvGravador <<"The information of catalogue: \n";
+//    csvGravador <<"The catalogue used in etography are: " <<";" << catalagoLido->caminhoArquivo << "\n";
+//    csvGravador <<"Categories\n";
+//    for(int i=0; i< catalagoLido->nome.size(); i++ ){
+//       csvGravador << catalagoLido->nome[i]<< "\n";
+
+//    }
+//    csvGravador <<"\n";
+//    csvGravador <<"The etographys used in the Cohen's Kappa analyses are \n";
+//    csvGravador <<"Id; Path; Type \n";
+//    for(int i=0; i< etografiasLidas.size();i++){
+
+//      csvGravador << i << ";" << etografiasLidas[i]->caminho << ";" << etografiasLidas[i]->tipoDeAnalise;
+//    }
+//    csvGravador <<"\n";
+//    csvGravador <<"\n";
+
+
+//    csvGravador <<"The agreement matriz of Cohen's Kappa are\n";
+//    csvGravador << "" <<";";
+
+
+//    for(int grt=0; grt< KohoKappa.cohoKappaMatrix.size(); grt++){
+//       csvGravador << catalagoLido->nome[grt] <<";";
+//    }
+//    csvGravador << "\n";
+
+//    for(int tot=0; tot< KohoKappa.cohoKappaMatrix.size(); tot++){
+
+//      csvGravador << catalagoLido->nome[tot] <<";";
+//      for(int fr=0; fr< KohoKappa.cohoKappaMatrix.size(); fr++){
+
+
+//          csvGravador<< KohoKappa.cohoKappaMatrix[tot][fr] <<";";
+//      }
+
+//        csvGravador << "\n";
+
+//    }
+
+//    csvGravador <<"The agreement porcentage matriz of Cohen's Kappa are: \n";
+//    csvGravador << "" <<";";
+
+
+//    for(int grt=0; grt< KohoKappa.cohoKappaPorMatrix.size(); grt++){
+//       csvGravador << catalagoLido->nome[grt] <<";";
+//    }
+//    csvGravador << "\n";
+
+//    for(int tot=0; tot< KohoKappa.cohoKappaPorMatrix.size(); tot++){
+
+//      csvGravador << catalagoLido->nome[tot] <<";";
+//      for(int fr=0; fr< KohoKappa.cohoKappaPorMatrix.size(); fr++){
+
+
+//          csvGravador<< KohoKappa.cohoKappaPorMatrix[tot][fr] <<";";
+//      }
+
+//        csvGravador << "\n";
+
+//    }
+//     csvGravador << "\n";
+//      csvGravador << "\n";
+//       csvGravador << "The final result are\n";
+
+//    csvGravador <<"The agreement porcentage (k1) are ; " <<  KohoKappa.k1 *100 <<" (%)\n" ; // A porcentagem de concordancia
+//    csvGravador <<"The agreement porcentage by chance (k2) are ; " << KohoKappa.k2 *100 <<"(%)\n" ;//A porcentagem de concordancai por acaso
+//    csvGravador <<"The Cohen's Kappa; " <<KohoKappa.kappa *100 <<"\n" ;
+
+
+//    outGravador.close();
+}
+
+
+
+
+
+// Calculo de concordancia Fleiss
+Concordance_Fleiss::Concordance_Fleiss()
+{
+
+}
+
+void Concordance_Fleiss::calculo_concordancia()
+{
+//    //cria um vetor com alocação dinamica de memoria no qual ele tem o tamanho de quantidadeDeVideo
+//        //quantidade de video é um contador que soma toda vez que adiciona um novo video
+//        etografiaKoho = new analiseEtografica[quantidadeDeVideo];
+//        videosKoho = new dadosVideo[quantidadeDeVideo];
+//        catalagoKoho = new catalago[quantidadeDeVideo];
+//        int quantCate=0; //quantidade de categoria para fazer o vetor de categoria undefinida
+
+//        for(int j=0; j<quantidadeDeVideo;j++){
+
+//            *(etografiaKoho + j) = etografiaDosVideos[j]; //aponta para o seu respectivo vetor
+//            *(videosKoho +j)    =  dadosDosVideos[j];
+//            *(catalagoKoho+j)   = catalagoDosVideos[j];
+
+//        }
+
+//        //setando os nomes
+
+
+//            ui->lblVideo1->setText(caminhoAnalise[0]);
+//            ui->lblVideo2->setText(caminhoAnalise[1]);
+
+
+
+//        //conversão dos ponto
+//        int qDPontos=0;
+//        int pontos=0;
+//        //bool entrou= false;
+//        int v=0;
+//        int lido;
+//    //    std::vector<int> frameInfo;  //é uma linha dinahmica
+
+
+//        for(v=0; v<quantidadeDeVideo; v++){
+//        //m é giaul ao id do catalago 3 pq são 3 no catalgo
+//        for(int m=0; m<catalagoKoho[0].quantidadeDeCategorias; m++){
+
+//    //        std::vector<double> fInicial;
+//    //        std::vector<double> fFinal;
+//            fInicial.clear();
+//            fFinal.clear();
+//            frameInfo.clear();
+//            pontos=0;
+//            //encontra as regioões de determinada categoria do catalago
+//            //encontra de acordo com o valor de m
+//            for(qDPontos=0; qDPontos<etografiaKoho[v].quantidadeDePontos; qDPontos++){
+
+
+//                if(etografiaKoho[v].id[qDPontos] ==m){
+//                    fInicial.push_back(etografiaKoho[v].frameInicial[qDPontos]);
+//                    fFinal.push_back(etografiaKoho[v].frameFinal[qDPontos]);
+//                    pontos++;
+//                }
+
+
+
+//            }
+//            //qDPontos é o numero de pontos postos
+
+//                //gera um for com um valor inicial igual ao frame inicial do video
+//                //gera umf or com um valor final de acordo com o valor final do video
+//               for(int frame= videosKoho[v].frameInicial; frame <
+//                   videosKoho[v].frameFinal; frame++){
+//                //para cada frame do video lido
+//                    //o video lido é de acorodo com valor v
+//               for(int geraVetor=0; geraVetor<pontos; geraVetor++){
+
+//                   // ele testa o frame para cada intervalo de pontos lido
+//                   // se encontrar ele coloca um  ponto com o valor do id da categoria
+//                   if(((frame>=fInicial[geraVetor])&&(frame<=fFinal[geraVetor]))){
+
+//                       frameInfo.push_back(m);
+//                       entrou= true;
+//                   }
+
+//               }
+//               //se o frame nao estiver dentro do intervalo o programa coloca o valor de -1
+//               //-1 porque os id do catalago são sempre valores positivos
+
+//                  if(!entrou){
+//                       frameInfo.push_back(-1); //quer dissser que o usuario nao deixou precionado o botão
+
+//                   }
+//                   entrou= false;
+
+
+//               }
+
+//               //ao fim dos looping  de encontras os valores das categorias
+//               //ele grava o vetor em uma matrix de pontos
+//               frameVideo.push_back(frameInfo);
+//               frameInfo.clear();
+//               fInicial.clear();
+//               fFinal.clear();
+
+//           }
+
+
+//        //e vai para a analise da categoria indefinida
+//        std::vector<int> claUndefinida;
+//        quantCate = catalagoKoho[0].quantidadeDeCategorias;
+
+
+//     bool entra=false;
+
+//     //tal
+//        for(int p=0; p< (videosKoho[0].frameFinal-videosKoho[0].frameInicial);
+//            p++){
+
+//            //testa todas as  possibildiade de videos e de categorias do catalago
+//            for(int z=0; z<quantCate;z++){
+//                //for(int y=0; y<2; y++){
+
+//                    //se alguma delas for diferente de vazio(-1) ele grava como vazio
+//                    //vazio siginifica que não esta dentro da categoria testada
+//                    //valor padrao
+//                lido=frameVideo[z][p];
+//                if((lido!=-1)&&(!entra)){
+
+//                    claUndefinida.push_back(-1);
+//                    entra=true;
+//                   // break;
+
+//                   // igualdade[y+z]=false;
+//                    }
+//                //}
+
+//            }
+
+//            if(!entra){
+//                claUndefinida.push_back(quantCate); //o indefinido é classificado como ultimo
+
+//            }
+//            entra=false;
+
+
+
+//        }
+//        //ao fim ele grava o vetor em uma matriz
+//        frameVideo.push_back(claUndefinida);
+
+
+//        // e ao fim de todas as operações ele grava o valor da matriz em uma
+//        //matriz de 3 dimensões
+//        //um cubo de pontos que possui pra cada
+//        //[a][b][c]
+//          //[a] numero do video
+//          //[b] categoria
+//          //[c] qtd de frame.
+//        //grava o [b] e [c] no [a]
+
+
+//            anaEtoDosVideos.push_back(frameVideo);
+//            frameVideo.clear();
+
+
+//    }
+
+
+//        //    std::vector< std::vector<int> > frameFleisTabela;
+//        //    std::vector<int> frameFleisLinha;
+
+//            std::vector<int> zerador;
+//            for(int zera=0;zera<(catalagoKoho[0].quantidadeDeCategorias+1);zera++){
+//                zerador.push_back(0);
+
+//            }
+
+
+
+
+//            //para cada frame do video
+//           for(int f1=0; (f1<videosKoho[0].frameFinal- videosKoho[0].frameInicial);f1++){
+
+//               frameFleisLinha.clear();
+//               frameFleisLinha= zerador; //zera
+
+
+//            for(int ca2=0; ca2<(catalagoKoho[0].quantidadeDeCategorias+1);ca2++ ){
+
+//                for(int qv=0; qv<quantidadeDeVideo;qv++){
+
+//                    for(int ca1=0; ca1<(catalagoKoho[0].quantidadeDeCategorias+1);ca1++){
+
+//        //            for(int qv=0; qv<quantidadeDeVideo;qv++){
+
+
+
+//                        if(anaEtoDosVideos[qv][ca1][f1]==ca2){
+
+
+//                            frameFleisLinha[ca2]= frameFleisLinha[ca2]+1;
+
+
+//                        }
+
+
+//                    }
+
+//                }
+
+//            }
+
+//            frameFleisTabela.push_back(frameFleisLinha);
+
+
+//           }
+
+//           //frameFleisTabela; essa variavel contem a tabela
+//           //tem que calcular pj
+//           //tem que calcular pi
+
+//           pEntrada.n=quantidadeDeVideo;
+//           pEntrada.N=frameFleisTabela.size();
+//           pEntrada.k=frameFleisTabela[0].size();
+
+//           qDebug() << "a quantidade de TCC" << pEntrada.n <<
+//                       "a quantidade de Quadros" << pEntrada.N <<
+//                       "a quantidade de Categorias" << pEntrada.n;
+
+//           //calculando pi i=quadros
+//           //para cada um dos quadros
+//           for(int cQua=0; cQua<=frameFleisTabela.size(); cQua++ ){
+
+
+//               PIcalculados.push_back(calcularPI(   frameFleisTabela[cQua]));
+
+
+//           }
+//           //calcular pj
+//           //primeiro tem que fazer uma matriz transposta
+
+//           std::vector<int> linha;
+//           //quantidade de categorias
+//           for(int ti=0; ti<frameFleisTabela[0].size(); ti++){
+
+//               //quantidade de quadros
+//               for(int tj=0; tj<frameFleisTabela.size(); tj++){
+
+//                   linha.push_back(frameFleisTabela[tj][ti]);
+//               }
+
+
+//               PJcalculados.push_back(calcularPJ(linha));
+
+//               linha.clear();
+
+//           }
+
+//           //encontrando Pe concordancia por acaso
+
+//           for(int cSom=0; cSom<PJcalculados.size();cSom++){
+
+//               pEntrada.Pe= (PJcalculados[cSom] *PJcalculados[cSom] )+ pEntrada.Pe;
+//           }
+
+//           qDebug()<<"Concordancia por acaso Pe" << pEntrada.Pe;
+
+
+
+//           for(int cSom=0; cSom<PIcalculados.size();cSom++){
+
+//               pEntrada.P_medio= PIcalculados[cSom] +pEntrada.P_medio;
+//           }
+
+//           pEntrada.P_medio = pEntrada.P_medio/pEntrada.N;
+
+//           qDebug()<<"Média de concordancia " << pEntrada.P_medio;
+
+//           pEntrada.Kappa = (pEntrada.P_medio -pEntrada.Pe)/(1- pEntrada.Pe);
+
+//           qDebug()<<"Kapppa médio " << pEntrada.Kappa;
+
+
+
+
+//           ui->leFleKappa->setText(QString::number(pEntrada.Kappa*100));
+
+//           ui->lePe->setText(QString::number(pEntrada.Pe * 100));
+//           ui->leP->setText(QString::number(pEntrada.P_medio *100));
+
+
+
+
+
+
+
+
+//            for(int k=0; k<catalagoKoho[0].quantidadeDeCategorias+1; k++){
+
+//                 if(k<catalagoKoho[0].quantidadeDeCategorias){
+//                     titulos << catalagoKoho[0].nome[k];
+//                 }else{
+
+//                     titulos << "Undefinido" ;//<< "Somatório";
+//                 }
+
+
+
+//            }
+
+
+//            ui->tabFleKapp->setColumnCount(catalagoKoho[0].quantidadeDeCategorias+1);
+
+//            ui->tabFleKapp->setHorizontalHeaderLabels(titulos);
+
+
+//            for(int f2=0;f2<(videosKoho[0].frameFinal- videosKoho[0].frameInicial);f2++){
+//                    ui->tabFleKapp->insertRow(ui->tabFleKapp->rowCount());
+//                    //cria uma nova linha
+//                    //categoria
+
+//                    for(int c5=0; c5<(catalagoKoho[0].quantidadeDeCategorias+1); c5++){
+//                        //no valor zero coloca
+//                      ui->tabFleKapp->setItem(ui->tabFleKapp->rowCount()-1
+//                                               ,c5,new QTableWidgetItem(
+//                                                   QString::number(frameFleisTabela[f2][c5])));
+
+
+//                    }
+//            }
+
+
+
+
+//    ui->swFleissKappa->setCurrentIndex(1);
+}
+
+
