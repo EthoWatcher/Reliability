@@ -29,6 +29,9 @@ private slots:
     void teste_calculo_prevalencia();
     void teste_calculo_kappa_maximo();
     void teste_calculo_por_categoria();
+    void construindo_lista_dados();
+    void test_gera_matrix_22();
+    void test_gera_matrix_22_pela_categoria();
 
 
 };
@@ -65,6 +68,46 @@ void test_concordancia::testCase12()
         QVERIFY2(true, "Failure");
 }
 
+void test_concordancia::construindo_lista_dados(){
+
+    Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+    Etografia eto_lida3 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+
+    std::vector<int> catalogo  =  eto_lida2.catalogo->id;
+
+    // funcao para gerar uma tripa de dados para colocar na matrix de concordancia.
+
+
+//    auto matriz_concordancia = constroi_matrix_concordancia_cohen(eto_lida2, eto_lida3,catalogo);
+    qDebug() << "saida";
+}
+
+
+void test_concordancia::test_gera_matrix_22(){
+    // colocar os dados gerados
+    std::vector<int> etrografia_1  = {0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 3, 4, 4, 4, 2, 4, 0, 3, 0, 2, 0, 0, 0, 1, 1, 1, 0, 0};
+    std::vector<int> etrografia_2  = {0, 0, 0, 2, 2, 2, 0, 0, 3, 0, 2, 2, 3, 5, 4, 4, 2, 4, 0, 3, 0, 2 ,0 , 0, 0, 1, 1, 1, 0, 0};
+    std::vector<int> catalogo  = {0, 1, 2, 3, 4, 5};
+
+    std::vector<std::vector<int> > matrix_concordance_nn = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
+    std::vector<std::vector<int> > matrix_22 = gera_matrix_22(matrix_concordance_nn);
+
+
+    qDebug() << matrix_22;
+
+}
+
+void test_concordancia::test_gera_matrix_22_pela_categoria(){
+    std::vector<int> etrografia_1  = {0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 3, 4, 4, 4, 2, 4, 0, 3, 0, 2, 0, 0, 0, 1, 1, 1, 0, 0};
+    std::vector<int> etrografia_2  = {0, 0, 0, 2, 2, 2, 0, 0, 3, 0, 2, 2, 3, 5, 4, 4, 2, 4, 0, 3, 0, 2 ,0 , 0, 0, 1, 1, 1, 0, 0};
+    std::vector<int> catalogo  = {0, 1, 2, 3, 4, 5};
+
+    std::vector<std::vector<int> > matrix_22_cat2 = gera_matrix_22_pela_categoria(etrografia_1, etrografia_2, catalogo, 2);
+
+
+    qDebug() << matrix_22_cat2;
+
+}
 
 
 //void test_concordancia::teste_parser()
@@ -105,7 +148,7 @@ void test_concordancia::criando_matriz()
 void test_concordancia::teste_calculo_por_categoria(){
     std::vector<std::vector<int>> vetor_entrada= {{29,21},{23,27}};
     float concordancia_categoria_1 = calculo_por_categoria(vetor_entrada);
-    qDebug() <<viez_categoria;
+    //qDebug() <<viez_categoria;
 
 
 }

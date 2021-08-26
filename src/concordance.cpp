@@ -151,8 +151,6 @@ float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
     float kappa = (concordancia - acaso)/(1 - acaso);
 
     return kappa;
-
-
 }
 
 //
@@ -175,6 +173,7 @@ float calculo_por_categoria(std::vector<std::vector<int> > matriz_concordancia_2
     float agreement_1 = (float) dividendo_1/n_1;
     float agreement_2 = (float) dividendo_2/n_2;
     //qual dos dois retorna ?
+
 }
 
 float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
@@ -222,16 +221,16 @@ void Concordance_Cohen::grava_xml_analise(QString caminho_arquivo)
 
      Output.open(QIODevice::WriteOnly);
 
- //    QXmlStreamWriter stream(&Output); //passa o endereço
- //    stream.setAutoFormatting(true);
- //    stream.writeStartDocument();//começa o documento
+     QXmlStreamWriter stream(&Output); //passa o endereço
+     stream.setAutoFormatting(true);
+//     stream.writeStartDocument();//começa o documento
 
- //    stream.writeStartElement("analiseTotalSessao");
+//     stream.writeStartElement("analiseTotalSessao");
 
- //    stream.writeStartElement("dadosAnalisador");
- //    stream.writeTextElement("nomeAnalisador","joao antonio Marcolan");
- //    stream.writeTextElement("laboratorio","iebUFSC");
- //    stream.writeEndElement(); //fecha dadosAnalisador
+//     stream.writeStartElement("dadosAnalisador");
+//     stream.writeTextElement("nomeAnalisador","joao antonio Marcolan");
+//     stream.writeTextElement("laboratorio","iebUFSC");
+//     stream.writeEndElement(); //fecha dadosAnalisador
 
 
  //    stream.writeStartElement("dadosAnaliseEtografica");
@@ -805,4 +804,182 @@ void Concordance_Fleiss::calculo_concordancia()
 //    ui->swFleissKappa->setCurrentIndex(1);
 }
 
+
+
+std::vector<std::vector<int> > gera_matrix_22_pela_categoria(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo, int id_categ)
+{
+    std::vector<std::vector<int> > matrix_nn = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
+//    std::vector<std::vector<int> > matrix_nn;
+
+    auto get_columa_matrix = [](std::vector<std::vector<int> > matrix_nn, int id_coluna){
+        std::vector<int> linha_trocar;
+        for(int i=0; i< matrix_nn.size(); i++){
+            for(int j=0; j< matrix_nn.size(); j++){
+                bool r_linha_gravar = j == id_coluna;
+                if(r_linha_gravar){
+                    linha_trocar.push_back(matrix_nn[i][j]);
+                 }
+            }
+        }
+        return  linha_trocar;
+    };
+    auto get_arruma_linha = [](std::vector<int> primeira_linha, int id_original, int id_coluna){
+        int valor_zero = primeira_linha[id_original];
+        int valor_troca = primeira_linha[id_coluna];
+        primeira_linha[id_original] = valor_troca;
+        primeira_linha[id_coluna] = valor_zero;
+        return primeira_linha;
+    };
+
+
+    auto arruma_matrix = [] (std::vector<std::vector<int> > matrix_nn, std::vector<int> primeira_linha,std::vector<int> linha_trocar , int id_cat)
+    {
+        auto iniciliaza_matriz_00 = [](std::vector<std::vector<int> > matrix){
+            std::vector<std::vector<int> > matrix_0;
+            for(int i=0; i< matrix.size(); i++){
+                std::vector<int> linha;
+                for(int j=0; j< matrix.size(); j++){
+                    linha.push_back(0);
+
+                }
+                matrix_0.push_back(linha);
+            }
+            return matrix_0;
+        };
+
+        std::vector<std::vector<int> >  matrix_nn_arruma = iniciliaza_matriz_00(matrix_nn);
+
+        for(int i=0; i< matrix_nn_arruma.size(); i++){
+         for(int j=0; j< matrix_nn_arruma.size(); j++){
+             bool r_coluna_0 = j==0;
+             bool r_coluna_troca = j ==id_cat;
+             bool r_outros = !r_coluna_troca && !r_coluna_0;
+
+             if(r_coluna_0){
+                matrix_nn_arruma[i][j] = linha_trocar[i];
+             }
+
+             if(r_coluna_troca){
+                 matrix_nn_arruma[i][j] = primeira_linha[i];
+             }
+
+             if(r_outros){
+                 matrix_nn_arruma[i][j] = matrix_nn[i][j];
+             }
+
+         }
+        }
+
+
+        return matrix_nn_arruma;
+
+     };
+
+
+
+
+
+    std::vector<int> primeira_linha = get_arruma_linha(get_columa_matrix(matrix_nn, 0), 0, id_categ);
+    std::vector<int> linha_trocar= get_arruma_linha(get_columa_matrix(matrix_nn, id_categ), id_categ,0);
+
+    std::vector<std::vector<int> > saida = arruma_matrix(matrix_nn, primeira_linha, linha_trocar, id_categ);
+
+
+
+    std::vector<std::vector<int> > matrix_22 = gera_matrix_22(saida);
+
+    return matrix_22;
+
+
+}
+
+
+std::vector<std::vector<int> > gera_matrix_22(std::vector<std::vector<int> > matrix_nn){
+    //incializando o vetor de saida
+    auto gera_matrix_inicial = [](std::vector<std::vector<int> > saida)
+        {
+            saida.push_back({0,0});
+            saida.push_back({0,0});
+            return saida;
+        };
+
+    auto gera_concordancia_a_a = [](std::vector<std::vector<int> > matrix_nn)
+        {
+            int a =0;
+            a = matrix_nn[0][0];
+
+            return a;
+        };
+
+    auto gera_concordancia_a_nota = [](std::vector<std::vector<int> > matrix_nn)
+        {
+        //somando a linha
+            int soma =0;
+            std::vector<int> linha= matrix_nn[0];
+            for(int i=1; i < linha.size(); i++ ){
+                soma = linha[i] + soma;
+
+            }
+            return soma;
+        };
+
+    auto gera_concordancia_nota_a = [](std::vector<std::vector<int> > matrix_nn)
+        {
+
+            std::vector<int> linha;
+            //transversa, pega primeiro elemento da matrix menos da primeira
+            for(int i=1; i < matrix_nn.size(); i++){
+                linha.push_back(matrix_nn[i][0]);
+            }
+
+
+
+            int soma =0;
+            for(int i=0; i < linha.size(); i++ ){
+                soma = linha[i] + soma;
+
+            }
+
+            return soma;
+        };
+
+    auto gera_concordancia_nota_nota = [](std::vector<std::vector<int> > matrix_nn)
+        {
+            std::vector<int> linha;
+            //transversa
+            for(int i=1; i < matrix_nn.size(); i++){
+                for(int j=1; j < matrix_nn.size(); j++){
+                    bool r_centro = i == j;
+                    if (r_centro){
+                        linha.push_back(matrix_nn[i][j]);
+                    }
+
+                }
+            }
+
+            int soma =0;
+            for(int i=0; i < linha.size(); i++ ){
+                soma = linha[i] + soma;
+
+            }
+
+            return soma;
+        };
+
+
+
+
+
+    std::vector<std::vector<int> > saida;
+    saida = gera_matrix_inicial(saida);
+    saida[0][0] = gera_concordancia_a_a(matrix_nn);
+    saida[0][1] = gera_concordancia_a_nota(matrix_nn);
+    saida[1][0] = gera_concordancia_nota_a(matrix_nn);
+    saida[1][1] = gera_concordancia_nota_nota(matrix_nn);
+
+//    saida[0][0] =
+
+
+    return saida;
+}
 

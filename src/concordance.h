@@ -23,6 +23,11 @@ private:
 
 };
 
+std::vector<std::vector<int> > gera_matrix_22_pela_categoria(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo, int id_categ);
+std::vector<std::vector<int> > gera_matrix_22(std::vector<std::vector<int> > matrix_nn);
+
+
+
 
 std::vector< std::vector<int> > constroi_matrix_concordancia_cohen(std::vector<int> etografia_1, std::vector<int> etografia_2, std::vector<int> catalogo);
 float calcula_concordancia_observada(std::vector< std::vector<int> > matriz_concordancia);
@@ -31,6 +36,7 @@ float calculo_vies_categoria(std::vector<std::vector<int> > matiz_concordancia_2
 float calculo_prevalencia_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
 float calculo_kappa_maximo(std::vector<std::vector<int> > matiz_concordancia_22);
 float calculo_por_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
+
 
 
 float transforma_matris_nn_22();
