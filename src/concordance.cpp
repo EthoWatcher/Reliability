@@ -1,6 +1,6 @@
 #include "concordance.h"
 #include <numeric>
-
+#include <math.h>
 concordance::concordance()
 {
 }
@@ -136,6 +136,14 @@ float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
     // Gian implementar o calculo do kappa medio
 
 
+
+    float acaso = calcula_concordancia_acaso(matriz_concordancia);
+    float concordancia = calcula_concordancia_observada(matriz_concordancia);
+    float kappa = (concordancia - acaso)/(1 - acaso);
+
+    return kappa;
+
+
 }
 
 //
@@ -143,8 +151,41 @@ float calcula_kappa_medio(std::vector<std::vector<int> > matriz_concordancia){
 // matriz de confusão nxn e temos que converter numa matriz de confusão 2x2
 // do comportamento e diferente do comportamento
 // calular o kappa por categoria
-// calcular a prevalencia por categoria
-// calcular o vies por categoria
-// calcular o kappa maximo.
+// calcular a prevalencia por categoria - OK
+// calcular o vies por categoria - OK
+// calcular o kappa maximo. - OK
 // the Kappa Statistic in Reliability Studies: Use, Interpretation, and Sample Size Requirements
+float calculo_por_categoria(std::vector<std::vector<int> > matriz_concordancia_22)// apenas para matrizes 2x2
+{
+    float n_1 = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0];
+    float n_2 = matriz_concordancia_22[1][1] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0];
+    float dividendo_1 = matriz_concordancia_22[0][0];
+    float dividendo_2 = matriz_concordancia_22[1][1];
 
+
+    float agreement_1 = (float) dividendo_1/n_1;
+    float agreement_2 = (float) dividendo_2/n_2;
+}
+
+float calculo_vies_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
+{
+    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+    float dividendo = fabs(matriz_concordancia_22[0][1] - matriz_concordancia_22[1][0]);
+    float vies = (float) dividendo/n;
+    return vies;
+}
+
+
+float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concordancia_22)
+{
+    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+    float dividendo = fabs(matriz_concordancia_22[0][0] - matriz_concordancia_22[1][1]);
+    float prevalencia = (float) dividendo/n;
+    return prevalencia;
+}
+float calculo_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
+{
+    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+    float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
+    float kappa_maximo = (float) dividendo/n;
+}
