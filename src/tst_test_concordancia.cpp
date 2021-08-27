@@ -76,12 +76,19 @@ void test_concordancia::construindo_lista_dados(){
     std::vector<int> catalogo  =  eto_lida2.catalogo->id;
 
     // funcao para gerar uma tripa de dados para colocar na matrix de concordancia.
+    // pegar os elementos
+    //frameFinal - anota o ponto final
+    //frameInicial - anota o ponto inicial
+    //id  - lista que tem o id marcado
+    // {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3 ....
+    //{0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 3, 4, 4, 4, 2, 4, 0, 3, 0, 2, 0, 0, 0, 1, 1, 1, 0, 0}
 
 
 //    auto matriz_concordancia = constroi_matrix_concordancia_cohen(eto_lida2, eto_lida3,catalogo);
     qDebug() << "saida";
 }
 
+// uma função para construir a estrutura de dados.
 
 void test_concordancia::test_gera_matrix_22(){
     // colocar os dados gerados
@@ -96,6 +103,7 @@ void test_concordancia::test_gera_matrix_22(){
     qDebug() << matrix_22;
 
 }
+
 
 void test_concordancia::test_gera_matrix_22_pela_categoria(){
     std::vector<int> etrografia_1  = {0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 3, 4, 4, 4, 2, 4, 0, 3, 0, 2, 0, 0, 0, 1, 1, 1, 0, 0};
