@@ -20,3 +20,17 @@ void MainWindow::on_pb_reliability_clicked()
     tela_reliability->show();
 }
 
+
+void MainWindow::on_pb_teste_1_clicked()
+{
+    QString fonteVideoETOXML = QFileDialog::getOpenFileName(
+                this,
+                tr("Open File"),
+                "C://Users//Bio//Desktop//videos//",
+                "Video Files (*.etoxml)"
+                );
+    Etografia eto_lida2 = lerETOXML(fonteVideoETOXML);
+
+    qDebug() << "teste";
+}
+

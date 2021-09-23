@@ -11,12 +11,17 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp\
-    teaconcordancia.cpp
+    teaconcordancia.cpp\
+    ..\src\ethowatcher.cpp\
+    ..\src\concordance.cpp
 
 
 HEADERS += \
     mainwindow.h\
-    teaconcordancia.h
+    teaconcordancia.h\
+    ..\src\ethowatcher.h\
+    ..\src\concordance.h
+
 
 FORMS += \
     mainwindow.ui\

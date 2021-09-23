@@ -2,7 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
 #include "teaconcordancia.h"
+#include "../src/ethowatcher.h"
+#include "../src/concordance.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,6 +21,8 @@ public:
 
 private slots:
     void on_pb_reliability_clicked();
+
+    void on_pb_teste_1_clicked();
 
 private:
     Ui::MainWindow *ui;
