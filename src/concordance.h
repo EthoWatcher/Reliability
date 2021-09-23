@@ -50,9 +50,14 @@ class Concordance_Fleiss{
 
 public:
     Concordance_Fleiss();
+    void add_arquivos_etografia(Etografia* eto_grafia);
 
 private:
     void calculo_concordancia();
+
+
+    //guarda a lista de etografias para a análise.
+    std::vector< Etografia *> list_etografias;
 
 //    void grava_xml_analise(QString caminho_arquivo);
 //    void grava_csv_analise(QString caminho_arquivo);

@@ -33,6 +33,8 @@ private slots:
     void test_gera_matrix_22();
     void test_gera_matrix_22_pela_categoria();
 
+    void test_fless_kappa();
+
 
 };
 
@@ -181,6 +183,20 @@ void test_concordancia::teste_calculo_kappa_maximo(){
     std::vector<std::vector<int>> vetor_entrada= {{29,21},{23,27}};
     float kappa_maximo = calculo_kappa_maximo(vetor_entrada);
     qDebug() <<kappa_maximo;
+
+
+}
+
+void test_concordancia::test_fless_kappa(){
+    Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+    Etografia eto_lida3 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+
+    Concordance_Fleiss calculado_fless;
+
+    calculado_fless.add_arquivos_etografia(&eto_lida2);
+    calculado_fless.add_arquivos_etografia(&eto_lida2);
+    calculado_fless.add_arquivos_etografia(&eto_lida3);
+
 
 
 }

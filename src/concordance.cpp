@@ -475,6 +475,24 @@ Concordance_Fleiss::Concordance_Fleiss()
 
 }
 
+void Concordance_Fleiss::add_arquivos_etografia(Etografia *eto_grafia)
+{
+
+    list_etografias.push_back(eto_grafia);
+
+    qDebug () << "adicionado arquivos";
+
+}
+
+QString Concordance_Fleiss::text_fleiss_concordancia()
+{
+    int quantCate= 0;
+    int quantidadeDeVideo= list_etografias.size();
+
+
+}
+
+
 void Concordance_Fleiss::calculo_concordancia()
 {
 //    //cria um vetor com alocação dinamica de memoria no qual ele tem o tamanho de quantidadeDeVideo
@@ -482,7 +500,7 @@ void Concordance_Fleiss::calculo_concordancia()
 //        etografiaKoho = new analiseEtografica[quantidadeDeVideo];
 //        videosKoho = new dadosVideo[quantidadeDeVideo];
 //        catalagoKoho = new catalago[quantidadeDeVideo];
-//        int quantCate=0; //quantidade de categoria para fazer o vetor de categoria undefinida
+        int quantCate=0; //quantidade de categoria para fazer o vetor de categoria undefinida
 
 //        for(int j=0; j<quantidadeDeVideo;j++){
 
