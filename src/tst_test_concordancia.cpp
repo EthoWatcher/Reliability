@@ -197,6 +197,8 @@ void test_concordancia::test_fless_kappa(){
     calculado_fless.add_arquivos_etografia(&eto_lida2);
     calculado_fless.add_arquivos_etografia(&eto_lida3);
 
+    calculado_fless.text_fleiss_concordancia();
+
 
 
 }

@@ -52,12 +52,25 @@ public:
     Concordance_Fleiss();
     void add_arquivos_etografia(Etografia* eto_grafia);
 
+    QString text_fleiss_concordancia();
+
+
 private:
     void calculo_concordancia();
 
 
     //guarda a lista de etografias para a análise.
+    std::vector< dadosVideo *> dadosDosVideos;
+    std::vector< analiseEtografica *> etografiaDosVideos;
+    std::vector< catalago *> catalagoDosVideos;
     std::vector< Etografia *> list_etografias;
+    int quantidadeDeVideo;
+
+
+    std::vector< analiseEtografica *> etografiaKoho;
+    std::vector< dadosVideo *> videosKoho;
+    std::vector< catalago *> catalagoKoho;
+
 
 //    void grava_xml_analise(QString caminho_arquivo);
 //    void grava_csv_analise(QString caminho_arquivo);

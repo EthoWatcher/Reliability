@@ -472,13 +472,28 @@ void Concordance_Cohen::grava_csv_analise(QString caminho_arquivo)
 // Calculo de concordancia Fleiss
 Concordance_Fleiss::Concordance_Fleiss()
 {
+    quantidadeDeVideo=0;
 
 }
 
 void Concordance_Fleiss::add_arquivos_etografia(Etografia *eto_grafia)
 {
 
-    list_etografias.push_back(eto_grafia);
+//    etografiaLida = new analiseEtografica();
+//    catalagoLido = new catalago();
+//    videoLido = new dadosVideo();
+
+
+    dadosDosVideos.push_back(eto_grafia->video); //forma pratica de fazer um vetor com varios videos lidos
+    etografiaDosVideos.push_back(eto_grafia->registro); // forma pratica de fazer um vetor com varias analises etogrificas
+    catalagoDosVideos.push_back(eto_grafia->catalogo); //forma pratica de fazer um vetor de alguma variavel
+
+    quantidadeDeVideo++;
+
+
+//    list_etografias.push_back(eto_grafia);
+
+
 
     qDebug () << "adicionado arquivos";
 
@@ -486,10 +501,119 @@ void Concordance_Fleiss::add_arquivos_etografia(Etografia *eto_grafia)
 
 QString Concordance_Fleiss::text_fleiss_concordancia()
 {
+
     int quantCate= 0;
-    int quantidadeDeVideo= list_etografias.size();
+
+    //nao serve para nada
+    etografiaKoho = etografiaDosVideos;
+    videosKoho = dadosDosVideos;
+    catalagoKoho = catalagoDosVideos;
+
+//    for(int j=0; j<quantidadeDeVideo;j++){
+
+//        *(etografiaKoho + j) = etografiaDosVideos[j]; //aponta para o seu respectivo vetor
+//        *(videosKoho +j)    =  dadosDosVideos[j];
+//        *(catalagoKoho+j)   = catalagoDosVideos[j];
+
+//    }
 
 
+    //conversão dos ponto
+    int qDPontos=0;
+    int pontos=0;
+    //bool entrou= false;
+    int v=0;
+    int lido;
+
+    std::vector<std::vector<int> > frameVideo; // saiiiiiiiiiiidaaaaaaaaaaaa
+    std::vector<int> frameInfo;  //é uma linha dinahmica
+    std::vector<double> fInicial;
+    std::vector<double> fFinal;
+
+
+    for(v=0; v<quantidadeDeVideo; v++){
+//    //m é giaul ao id do catalago 3 pq são 3 no catalgo
+    for(int m=0; m<catalagoKoho[0]->quantidadeDeCategorias; m++){
+
+////        std::vector<double> fInicial;
+////        std::vector<double> fFinal;
+        fInicial.clear();
+        fFinal.clear();
+        frameInfo.clear();
+        pontos=0;
+        //encontra as regioões de determinada categoria do catalago
+        //encontra de acordo com o valor de m
+        for(qDPontos=0; qDPontos<etografiaKoho[v]->quantidadeDePontos; qDPontos++){
+
+
+            if(etografiaKoho[v]->id[qDPontos] ==m){
+                fInicial.push_back(etografiaKoho[v]->frameInicial[qDPontos]);
+                fFinal.push_back(etografiaKoho[v]->frameFinal[qDPontos]);
+                pontos++;
+            }
+
+
+
+        }
+
+
+        //----------------------------------------------
+
+        //qDPontos é o numero de pontos postos
+    bool entrou= false;
+//            //gera um for com um valor inicial igual ao frame inicial do video
+//            //gera umf or com um valor final de acordo com o valor final do video
+           for(int frame= videosKoho[v]->frameInicial; frame < videosKoho[v]->frameFinal; frame++){
+//            //para cada frame do video lido
+//                //o video lido é de acorodo com valor v
+           for(int geraVetor=0; geraVetor<pontos; geraVetor++){
+
+               // ele testa o frame para cada intervalo de pontos lido
+               // se encontrar ele coloca um  ponto com o valor do id da categoria
+               if(((frame>=fInicial[geraVetor])&&(frame<=fFinal[geraVetor]))){
+
+                   frameInfo.push_back(m);
+                   entrou= true;
+               }
+
+           }
+//           //se o frame nao estiver dentro do intervalo o programa coloca o valor de -1
+//           //-1 porque os id do catalago são sempre valores positivos
+
+              if(!entrou){
+                   frameInfo.push_back(-1); //quer dissser que o usuario nao deixou precionado o botão
+
+               }
+               entrou= false;
+
+
+           }
+
+           //ao fim dos looping  de encontras os valores das categorias
+           //ele grava o vetor em uma matrix de pontos
+           frameVideo.push_back(frameInfo);
+           frameInfo.clear();
+           fInicial.clear();
+           fFinal.clear();
+
+       }
+
+
+    }
+
+
+//    //e vai para a analise da categoria indefinida
+//    std::vector<int> claUndefinida;
+//    quantCate = catalagoKoho[0].quantidadeDeCategorias;
+
+
+// bool entra=false;
+
+
+
+
+
+    return "";
 }
 
 
