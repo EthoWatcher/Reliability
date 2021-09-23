@@ -16,6 +16,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pb_reliability_clicked()
 {
-
+    tela_reliability = new teaConcordancia();
+    tela_reliability->show();
 }
 
