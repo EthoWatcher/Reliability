@@ -598,16 +598,162 @@ QString Concordance_Fleiss::text_fleiss_concordancia()
 
        }
 
+    // começa o calcula para a categoria não definida, para quadros que nao foram marcardos
+        std::vector<int> claUndefinida;
+        quantCate = catalagoKoho[0]->quantidadeDeCategorias;
+
+        bool entra=false;
+
+        //tal
+           for(int p=0; p< (videosKoho[0]->frameFinal-videosKoho[0]->frameInicial);
+               p++){
+
+               //testa todas as  possibildiade de videos e de categorias do catalago
+               for(int z=0; z<quantCate;z++){
+                   //for(int y=0; y<2; y++){
+
+                       //se alguma delas for diferente de vazio(-1) ele grava como vazio
+                       //vazio siginifica que não esta dentro da categoria testada
+                       //valor padrao
+                   lido=frameVideo[z][p];
+                   if((lido!=-1)&&(!entra)){
+
+                       claUndefinida.push_back(-1);
+                       entra=true;
+                      // break;
+
+                      // igualdade[y+z]=false;
+                       }
+                   //}
+
+               }
+
+               if(!entra){
+                   claUndefinida.push_back(quantCate); //o indefinido é classificado como ultimo
+
+               }
+               entra=false;
+
+
+
+           }
+           //ao fim ele grava o vetor em uma matriz
+           frameVideo.push_back(claUndefinida);
+
+           //ISTO É A SAIDA ?
+           anaEtoDosVideos.push_back(frameVideo);
+           frameVideo.clear();
 
     }
 
 
-//    //e vai para a analise da categoria indefinida
-//    std::vector<int> claUndefinida;
-//    quantCate = catalagoKoho[0].quantidadeDeCategorias;
+    // calcula o fleiss
+
+    //    std::vector< std::vector<int> > frameFleisTabela;
+    //    std::vector<int> frameFleisLinha;
+
+        std::vector<int> zerador;
+        for(int zera=0;zera<(catalagoKoho[0]->quantidadeDeCategorias+1);zera++){
+            zerador.push_back(0);
+
+        }
 
 
-// bool entra=false;
+
+
+        //para cada frame do video
+       for(int f1=0; (f1<videosKoho[0]->frameFinal - videosKoho[0]->frameInicial);f1++){
+
+           frameFleisLinha.clear();
+           frameFleisLinha= zerador; //zera
+
+
+        for(int ca2=0; ca2<(catalagoKoho[0]->quantidadeDeCategorias+1);ca2++ ){
+
+            for(int qv=0; qv<quantidadeDeVideo;qv++){
+
+                for(int ca1=0; ca1<(catalagoKoho[0]->quantidadeDeCategorias+1);ca1++){
+
+    //            for(int qv=0; qv<quantidadeDeVideo;qv++){
+
+
+
+                    if(anaEtoDosVideos[qv][ca1][f1]==ca2){
+
+
+                        frameFleisLinha[ca2]= frameFleisLinha[ca2]+1;
+
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+        //TABELA DO FLEISS
+        frameFleisTabela.push_back(frameFleisLinha);
+
+
+       }
+
+       for(int cQua=0; cQua<= frameFleisTabela.size(); cQua++ ){
+
+
+           PIcalculados.push_back(calcularPI(   frameFleisTabela[cQua], quantidadeDeVideo));
+
+
+       }
+
+
+       std::vector<int> linha;
+       //quantidade de categorias
+       for(int ti=0; ti<frameFleisTabela[0].size(); ti++){
+
+           //quantidade de quadros
+           for(int tj=0; tj<frameFleisTabela.size(); tj++){
+
+               linha.push_back(frameFleisTabela[tj][ti]);
+           }
+
+
+           PJcalculados.push_back(calcularPJ(linha, quantidadeDeVideo, frameFleisTabela.size() ));
+
+           linha.clear();
+
+       }
+
+       Pe=0;
+       for(int cSom=0; cSom<PJcalculados.size();cSom++){
+
+           Pe= (PJcalculados[cSom] *PJcalculados[cSom] )+ Pe;
+       }
+
+       qDebug()<<"Concordancia por acaso Pe" << Pe;
+
+
+       P_medio =0;
+       for(int cSom=0; cSom<PIcalculados.size();cSom++){
+
+           P_medio = PIcalculados[cSom] + P_medio;
+       }
+
+//       pEntrada.n=quantidadeDeVideo;
+//       pEntrada.N=frameFleisTabela.size();
+//       pEntrada.k=frameFleisTabela[0].size();
+
+//       qDebug() << "a quantidade de TCC" << pEntrada.n <<
+//                   "a quantidade de Quadros" << pEntrada.N <<
+//                   "a quantidade de Categorias" << pEntrada.n;
+
+
+
+       P_medio = P_medio/frameFleisTabela.size();
+       qDebug()<<"Média de concordancia " << P_medio;
+       Kappa = (P_medio - Pe)/(1- Pe);
+       qDebug()<<"Kapppa médio " << Kappa;
 
 
 
@@ -616,6 +762,47 @@ QString Concordance_Fleiss::text_fleiss_concordancia()
     return "";
 }
 
+double Concordance_Fleiss::calcularPJ(std::vector<int> entrada, double qntd_videos, double qnt_quadros)
+{
+
+    double mult = 1/(qntd_videos*qnt_quadros);
+    double quadroSoma =0;
+
+    //para cada quadro analisado
+    for(int qCquadro=0;qCquadro < entrada.size(); qCquadro++){
+
+        quadroSoma = entrada[qCquadro] + quadroSoma;
+
+    }
+
+
+    qDebug()<< "mult " << mult << "soma " << quadroSoma;
+
+
+    return quadroSoma * mult;
+
+}
+
+double Concordance_Fleiss::calcularPI(std::vector<int> entrada, double qnt_de_TCC)
+{
+
+    double mult = 1/(qnt_de_TCC *(qnt_de_TCC -1));
+    double quadroSoma =0;
+
+    //para cada categoria analisada no quadro
+    for(int qCat=0;qCat < entrada.size(); qCat++){
+
+        quadroSoma= (entrada[qCat]*(entrada[qCat]-1)) +quadroSoma;
+    }
+
+    qDebug()<< "mult " << mult << "soma " << quadroSoma;
+
+    return quadroSoma*mult;
+
+
+
+
+}
 
 void Concordance_Fleiss::calculo_concordancia()
 {

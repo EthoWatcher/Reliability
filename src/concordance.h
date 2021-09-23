@@ -57,7 +57,8 @@ public:
 
 private:
     void calculo_concordancia();
-
+    double calcularPI(std::vector<int> entrada, double qnt_de_TCC);
+    double calcularPJ(std::vector<int> entrada, double qntd_videos, double qnt_quadros);
 
     //guarda a lista de etografias para a análise.
     std::vector< dadosVideo *> dadosDosVideos;
@@ -70,6 +71,18 @@ private:
     std::vector< analiseEtografica *> etografiaKoho;
     std::vector< dadosVideo *> videosKoho;
     std::vector< catalago *> catalagoKoho;
+
+
+    std::vector<std::vector< std::vector<int> > > anaEtoDosVideos;
+    std::vector<int> frameFleisLinha;
+
+    //SAIDA ?
+    std::vector< std::vector<int> > frameFleisTabela;
+    std::vector<double> PIcalculados;
+    std::vector<double> PJcalculados;
+    double Pe;
+    double P_medio;
+    double Kappa;
 
 
 //    void grava_xml_analise(QString caminho_arquivo);
