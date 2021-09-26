@@ -194,9 +194,9 @@ void test_concordancia::test_fless_kappa(){
 
     Concordance_Fleiss calculado_fless;
 
-    calculado_fless.add_arquivos_etografia(&eto_lida2);
-    calculado_fless.add_arquivos_etografia(&eto_lida2);
-    calculado_fless.add_arquivos_etografia(&eto_lida3);
+    calculado_fless.add_arquivos_etografia(eto_lida2);
+    calculado_fless.add_arquivos_etografia(eto_lida2);
+    calculado_fless.add_arquivos_etografia(eto_lida3);
 
     QString texto = calculado_fless.text_fleiss_concordancia();
     calculado_fless.gravar_csv(PATH_TESTE+"teste_fleiss.csv", texto);

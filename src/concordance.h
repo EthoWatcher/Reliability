@@ -51,7 +51,7 @@ class Concordance_Fleiss{
 public:
     Concordance_Fleiss();
 
-    void add_arquivos_etografia(Etografia* eto_grafia);
+    void add_arquivos_etografia(Etografia eto_grafia);
     QString text_fleiss_concordancia();
     void gravar_csv(QString path_eto, QString t_saida);
 

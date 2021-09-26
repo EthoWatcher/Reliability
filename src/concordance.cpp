@@ -476,7 +476,7 @@ Concordance_Fleiss::Concordance_Fleiss()
 
 }
 
-void Concordance_Fleiss::add_arquivos_etografia(Etografia *eto_grafia)
+void Concordance_Fleiss::add_arquivos_etografia(Etografia eto_grafia)
 {
 
 //    etografiaLida = new analiseEtografica();
@@ -484,9 +484,9 @@ void Concordance_Fleiss::add_arquivos_etografia(Etografia *eto_grafia)
 //    videoLido = new dadosVideo();
 
 
-    dadosDosVideos.push_back(eto_grafia->video); //forma pratica de fazer um vetor com varios videos lidos
-    etografiaDosVideos.push_back(eto_grafia->registro); // forma pratica de fazer um vetor com varias analises etogrificas
-    catalagoDosVideos.push_back(eto_grafia->catalogo); //forma pratica de fazer um vetor de alguma variavel
+    dadosDosVideos.push_back(eto_grafia.video); //forma pratica de fazer um vetor com varios videos lidos
+    etografiaDosVideos.push_back(eto_grafia.registro); // forma pratica de fazer um vetor com varias analises etogrificas
+    catalagoDosVideos.push_back(eto_grafia.catalogo); //forma pratica de fazer um vetor de alguma variavel
 
     quantidadeDeVideo++;
 
@@ -605,7 +605,7 @@ QString Concordance_Fleiss::text_fleiss_concordancia()
         bool entra=false;
 
         //tal
-           for(int p=0; p< (videosKoho[0]->frameFinal-videosKoho[0]->frameInicial);
+           for(int p=0; p< (videosKoho[0]->frameFinal - videosKoho[0]->frameProce);
                p++){
 
                //testa todas as  possibildiade de videos e de categorias do catalago
@@ -662,7 +662,7 @@ QString Concordance_Fleiss::text_fleiss_concordancia()
 
 
         //para cada frame do video
-       for(int f1=0; (f1<videosKoho[0]->frameFinal - videosKoho[0]->frameInicial);f1++){
+       for(int f1=0; (f1<videosKoho[0]->frameFinal - videosKoho[0]->frameProce);f1++){
 
            frameFleisLinha.clear();
            frameFleisLinha= zerador; //zera
@@ -774,7 +774,7 @@ QString Concordance_Fleiss::text_fleiss_concordancia()
                 saida = saida + "Name;"+ " Frames per second (fps);" + "Frame started the analysis;" + "Frame finished the analysis \n";
                 saida = saida + videosKoho[0]->nome +";"
                 + QString::number(videosKoho[0]->fps) + ";"
-                + QString::number(videosKoho[0]->frameInicial) +";"
+                + QString::number(videosKoho[0]->frameProce) +";"
                 + QString::number(videosKoho[0]->frameFinal) + "\n";
                 //TODO: CONFERIR O PROCESO DE LEITURA DO XML, o frame inicial é usado para outra coisa
                 return saida;
@@ -801,7 +801,7 @@ QString Concordance_Fleiss::text_fleiss_concordancia()
                 QString saida = "The ethographys analised:\n";
                 saida = saida + "Id;"+ "Path;" + " Type;\n";
                 for(int i=0; i< etografiaDosVideos.size(); i++){
-                    saida = saida + QString::number(i) +";"+ "Path;" + " Type;\n";
+                    saida = saida + QString::number(i) +";"+ etografiaDosVideos[i]->caminho_etografia + ";" + etografiaDosVideos[i]->tipoDeAnalise + "\n";
 
                 }
 
