@@ -9,6 +9,7 @@
 
 // add necessary includes here
 QString PATH_DATA = "C:/Doutorado_softwares/Reliability/data/"; //variavel global.
+QString PATH_TESTE = "C:/Doutorado_softwares/saida_teste/";
 
 
 class test_concordancia : public QObject
@@ -197,8 +198,8 @@ void test_concordancia::test_fless_kappa(){
     calculado_fless.add_arquivos_etografia(&eto_lida2);
     calculado_fless.add_arquivos_etografia(&eto_lida3);
 
-    calculado_fless.text_fleiss_concordancia();
-
+    QString texto = calculado_fless.text_fleiss_concordancia();
+    calculado_fless.gravar_csv(PATH_TESTE+"teste_fleiss.csv", texto);
 
 
 }

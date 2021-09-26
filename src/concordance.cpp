@@ -756,10 +756,119 @@ QString Concordance_Fleiss::text_fleiss_concordancia()
        qDebug()<<"Kapppa médio " << Kappa;
 
 
+       auto gera_csv = [&](){
+            QString texto_saida ="";
+            QString gera_cabecalho  = [&](){
+                QString saida = "sep=;\n";
+                saida = saida + "The user information\n";
+                saida = saida + "Researcher;"+ "Laboratory;\n";
+                saida = saida + "Placeholder;"+ "Placeholder;\n";
+                return saida;
+            }();
 
 
 
-    return "";
+
+            QString gera_info_video  = [&](){
+                QString saida = "Information about the analysed video:\n";
+                saida = saida + "Name;"+ " Frames per second (fps);" + "Frame started the analysis;" + "Frame finished the analysis \n";
+                saida = saida + videosKoho[0]->nome +";"
+                + QString::number(videosKoho[0]->fps) + ";"
+                + QString::number(videosKoho[0]->frameInicial) +";"
+                + QString::number(videosKoho[0]->frameFinal) + "\n";
+                //TODO: CONFERIR O PROCESO DE LEITURA DO XML, o frame inicial é usado para outra coisa
+                return saida;
+            }();
+
+            QString gera_info_catalogo  = [&](){
+                catalago * catalogo_usado = catalagoKoho[0];
+
+                QString saida = "Information of the catalog:\n";
+                saida = saida + "Path of the used catalog are in: ;" + catalogo_usado->caminhoArquivo + "\n";
+
+                saida = saida + "Categorie name;\n";
+
+                for(int i=0; i <  catalogo_usado->nome.size(); i++){
+                    saida = saida +  catalogo_usado->nome[i] + "\n";
+                }
+
+
+                return saida;
+            }();
+
+
+            QString gera_info_eto  = [&](){
+                QString saida = "The ethographys analised:\n";
+                saida = saida + "Id;"+ "Path;" + " Type;\n";
+                for(int i=0; i< etografiaDosVideos.size(); i++){
+                    saida = saida + QString::number(i) +";"+ "Path;" + " Type;\n";
+
+                }
+
+
+
+
+                return saida;
+            }();
+
+
+            QString gera_resumo_analise  = [&](){
+                QString saida = "The final result are\n";
+                saida = saida + "The agreement porcentage by change (p) are:;" + QString::number(P_medio) + ";\n";
+                saida = saida + "The mean agreement pocentage (pe) are:;" + QString::number(Pe) + ";\n";
+                saida = saida + "The Fleiss Kappa:;" + QString::number(Kappa)+ ";\n";
+
+
+                return saida;
+
+            }();
+
+
+            QString gera_matrix = [&](){
+                QString saida = "The total of the Fleiss Kappa analysis\n";
+                catalago *catalogo_lido =  catalagoKoho[0];
+                saida = saida + "Frame;";
+                for(int i=0; i< catalogo_lido->nome.size(); i++){
+                    saida = saida + catalogo_lido->nome[i]+";";
+                }
+                saida = saida + "Undefined (frames that are not marked)\n";
+
+                for(int i=0; i< frameFleisTabela.size(); i++){
+                    std::vector<int> linha = frameFleisTabela[i];
+                    saida = saida + QString::number(i) + ";";
+                    for(int j=0; j< linha.size(); j++){
+                        saida = saida + QString::number(linha[j]) +";";
+                    }
+                    saida = saida + "\n";
+                }
+
+
+                return saida;
+
+            }();
+
+
+            texto_saida = gera_cabecalho + gera_info_video + gera_info_catalogo + gera_info_eto + gera_resumo_analise + gera_matrix;
+
+            return texto_saida;
+       };
+
+
+    return gera_csv();
+}
+
+
+void Concordance_Fleiss::gravar_csv(QString path_eto, QString t_saida){
+    QFile outGravador_csv;
+//    QStringList list1 = path_eto.split(".etoxml"); // nomeGravarEtografia
+//    QString csv_path = list1[0] + "_csv.csv";
+    outGravador_csv.setFileName(path_eto);
+    outGravador_csv.open(QIODevice::WriteOnly | QIODevice::Text );
+    QTextStream csvGravador(&outGravador_csv);
+
+
+    csvGravador << t_saida;
+    outGravador_csv.close();
 }
 
 double Concordance_Fleiss::calcularPJ(std::vector<int> entrada, double qntd_videos, double qnt_quadros)
