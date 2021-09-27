@@ -181,9 +181,9 @@ void test_concordancia::teste_calculo_prevalencia(){
 }
 
 void test_concordancia::teste_calculo_kappa_maximo(){
-    std::vector<std::vector<int>> vetor_entrada= {{29,21},{23,27}};
-    float kappa_maximo = calculo_kappa_maximo(vetor_entrada);
-    qDebug() <<kappa_maximo;
+    std::vector<std::vector<int>> vetor_entrada= {{2,1},{7,50}};
+    std::vector<std::vector<int>> kappa_maximo_matrix = arruma_matrix_kappa_maximo(vetor_entrada);
+//    qDebug() <<10;
 
 
 }

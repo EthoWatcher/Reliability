@@ -7,6 +7,7 @@
 using namespace  std;
 #include <QXmlStreamWriter>
 #include <QFileDialog>
+#include <algorithm>
 
 class Concordance_Cohen
 {
@@ -21,6 +22,9 @@ private:
     void calculo_concordancia();
     void le_xml_analise(QString caminho_arquivo);
 
+    Etografia eto1;
+    Etografia eto2;
+
 };
 
 std::vector<std::vector<int> > gera_matrix_22_pela_categoria(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo, int id_categ);
@@ -34,7 +38,7 @@ float calcula_concordancia_observada(std::vector< std::vector<int> > matriz_conc
 float calcula_concordancia_acaso(std::vector< std::vector<int> > matriz_concordancia);
 float calculo_vies_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
 float calculo_prevalencia_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
-float calculo_kappa_maximo(std::vector<std::vector<int> > matiz_concordancia_22);
+std::vector<std::vector<int> > arruma_matrix_kappa_maximo(std::vector<std::vector<int> > matiz_concordancia_22);
 float calculo_por_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
 
 

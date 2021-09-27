@@ -7,6 +7,8 @@ Concordance_Cohen::Concordance_Cohen()
 
 void Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
 {
+    this->eto1 = eto1;
+    this->eto1 = eto2;
     // Função utilizada para carregar as etografias pelo objeto.
 }
 
@@ -192,12 +194,49 @@ float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concor
     return prevalencia;
 }
 
-float calculo_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
+
+
+std::vector< std::vector<int> > arruma_matrix_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
 {
-    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
-    float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
-    float kappa_maximo = (float) dividendo/n;
-    return kappa_maximo;
+    std::vector< std::vector<int> > matriz_concordancia_22_saida = {{0,0}, {0,0}};
+    std::vector<int> soma_linha_coluna_1 = {0,0};
+    soma_linha_coluna_1[0] = matriz_concordancia_22[0][0]+ matriz_concordancia_22[0][1];
+    soma_linha_coluna_1[1] = matriz_concordancia_22[0][0]+ matriz_concordancia_22[1][0];
+
+    std::vector<int> soma_linha_coluna_2 = {0,0};
+    soma_linha_coluna_2[0] = matriz_concordancia_22[1][1]+ matriz_concordancia_22[1][0];
+    soma_linha_coluna_2[1] = matriz_concordancia_22[1][1]+ matriz_concordancia_22[0][1];
+
+    auto encontra_menor_valor = [](std::vector<int> entrada){
+
+        sort(entrada.begin(), entrada.end());
+        return entrada;
+
+//        int min = entrada[0];
+//        for(int i = 0; i < entrada.size(); i++){
+//                if(entrada[i] < min){
+//                    min = entrada[i];
+//                }
+//            }
+//        return min;
+    };
+    std::vector<int> ord_linha_1 = encontra_menor_valor(soma_linha_coluna_1);
+    std::vector<int> ord_linha_2 = encontra_menor_valor(soma_linha_coluna_2);
+
+
+    matriz_concordancia_22_saida[0][0] = ord_linha_1[0];
+    matriz_concordancia_22_saida[1][1] = ord_linha_2[0];
+
+   matriz_concordancia_22_saida[0][1] = soma_linha_coluna_1[1] - matriz_concordancia_22_saida[0][0];
+   matriz_concordancia_22_saida[1][0] = soma_linha_coluna_2[1] - matriz_concordancia_22_saida[1][1];
+
+
+   return matriz_concordancia_22_saida;
+
+//    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+//    float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
+//    float kappa_maximo = (float) dividendo/n;
+//    return kappa_maximo;
 }
 
 
