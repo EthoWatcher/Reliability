@@ -109,7 +109,8 @@ Etografia lerETOXML(QString nomeArquivo)
         }
 
         if(streamReader.name().toString() == "tipoAnalise"){
-            catalagoLido->tipoAnalise= streamReader.readElementText();
+            etografiaLida->tipoDeAnalise = streamReader.readElementText();
+//            etografiaLida->tipoDeAnalise = catalagoLido->tipoAnalise;
 
 
         }
@@ -122,9 +123,16 @@ Etografia lerETOXML(QString nomeArquivo)
 
             }
 
+            if(streamReader.name().toString() == "frameInicial"){
+
+                videoLido->frameInicial = streamReader.readElementText().toInt();
+
+            }
+
+
             if(streamReader.name().toString() == "frameProces"){
 
-                videoLido->frameInicial= streamReader.readElementText().toInt();
+                videoLido->frameProce = streamReader.readElementText().toInt();
 
             }
 
@@ -148,6 +156,8 @@ Etografia lerETOXML(QString nomeArquivo)
     etografia_lida.registro = etografiaLida;
     etografia_lida.catalogo = catalagoLido;
     etografia_lida.video = videoLido;
+
+    etografia_lida.registro->caminho_etografia = nomeArquivo;
 
 
 
