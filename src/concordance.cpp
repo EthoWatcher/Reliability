@@ -5,16 +5,58 @@ Concordance_Cohen::Concordance_Cohen()
 {
 }
 
-void Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
+QString Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
 {
     // Função utilizada para carregar as etografias pelo objeto.
+    this->eto1 = eto1;
+    this->eto1 = eto2;
+
+
+    this->lista_eto1 = _constroi_lista_quadros(eto1);
+    this->lista_eto2 = _constroi_lista_quadros(eto2);
+    this->catalogo_id = eto1.catalogo->id;
+    this->catalogo_categorias_nomes = eto1.catalogo->nome;
+
+    this->calculo_concordancia();
+    return this->text_csv_concordancia();
+
 }
 
 
 
 void Concordance_Cohen::calculo_concordancia()
 {
+    std::vector<std::vector<int> > matrix_concordance_nn = constroi_matrix_concordancia_cohen(this->lista_eto1, this->lista_eto2, this->catalogo_id);
     // implementar as funções de calculo de concordancia.
+    this->concordancia_acaso = calcula_concordancia_acaso(matrix_concordance_nn);
+    this->concordancia_observada = calcula_concordancia_observada(matrix_concordance_nn);
+    this->kappa_medio = calcula_kappa_medio(matrix_concordance_nn);
+
+
+    for(int i=0; i< this->catalogo_id.size(); i++){
+        confiabilidade_categoria conf_cate;
+        conf_cate.nome = this->catalogo_categorias_nomes[i];
+        //TODO: verificar se ambas as etografias tem o mesmo catalogo;
+
+        conf_cate.matrix = gera_matrix_22_pela_categoria(this->lista_eto1, this->lista_eto2, this->catalogo_id, i);
+        conf_cate.concordancia_observada = calcula_concordancia_observada(conf_cate.matrix);
+        conf_cate.concordancia_acaso = calcula_concordancia_acaso(conf_cate.matrix);
+        conf_cate.viez = calculo_vies_categoria(conf_cate.matrix);
+        conf_cate.prevalencia = calculo_prevalencia_categoria(conf_cate.matrix);
+        conf_cate.kappa = calcula_kappa_medio(conf_cate.matrix);
+
+
+        conf_cate.matrix_max  = arruma_matrix_kappa_maximo(conf_cate.matrix);
+        conf_cate.concordancia_observada_max = calcula_concordancia_observada(conf_cate.matrix_max);
+        conf_cate.concordancia_acaso_max = calcula_concordancia_acaso(conf_cate.matrix_max);
+        conf_cate.viez_max = calculo_vies_categoria(conf_cate.matrix_max);
+        conf_cate.prevalencia_max = calculo_prevalencia_categoria(conf_cate.matrix_max);
+        conf_cate.kappa_max = calcula_kappa_medio(conf_cate.matrix_max);
+
+     list_confiabilidade.push_back(conf_cate);
+    }
+
+    qDebug() << ";";
 }
 
 
@@ -192,12 +234,49 @@ float calculo_prevalencia_categoria(std::vector<std::vector<int> > matriz_concor
     return prevalencia;
 }
 
-float calculo_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
+
+
+std::vector< std::vector<int> > arruma_matrix_kappa_maximo(std::vector<std::vector<int> > matriz_concordancia_22)
 {
-    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
-    float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
-    float kappa_maximo = (float) dividendo/n;
-    return kappa_maximo;
+    std::vector< std::vector<int> > matriz_concordancia_22_saida = {{0,0}, {0,0}};
+    std::vector<int> soma_linha_coluna_1 = {0,0};
+    soma_linha_coluna_1[0] = matriz_concordancia_22[0][0]+ matriz_concordancia_22[0][1];
+    soma_linha_coluna_1[1] = matriz_concordancia_22[0][0]+ matriz_concordancia_22[1][0];
+
+    std::vector<int> soma_linha_coluna_2 = {0,0};
+    soma_linha_coluna_2[0] = matriz_concordancia_22[1][1]+ matriz_concordancia_22[1][0];
+    soma_linha_coluna_2[1] = matriz_concordancia_22[1][1]+ matriz_concordancia_22[0][1];
+
+    auto encontra_menor_valor = [](std::vector<int> entrada){
+
+        sort(entrada.begin(), entrada.end());
+        return entrada;
+
+//        int min = entrada[0];
+//        for(int i = 0; i < entrada.size(); i++){
+//                if(entrada[i] < min){
+//                    min = entrada[i];
+//                }
+//            }
+//        return min;
+    };
+    std::vector<int> ord_linha_1 = encontra_menor_valor(soma_linha_coluna_1);
+    std::vector<int> ord_linha_2 = encontra_menor_valor(soma_linha_coluna_2);
+
+
+    matriz_concordancia_22_saida[0][0] = ord_linha_1[0];
+    matriz_concordancia_22_saida[1][1] = ord_linha_2[0];
+
+   matriz_concordancia_22_saida[0][1] = soma_linha_coluna_1[1] - matriz_concordancia_22_saida[0][0];
+   matriz_concordancia_22_saida[1][0] = soma_linha_coluna_2[1] - matriz_concordancia_22_saida[1][1];
+
+
+   return matriz_concordancia_22_saida;
+
+//    float n = matriz_concordancia_22[0][0] + matriz_concordancia_22[0][1] + matriz_concordancia_22[1][0] + matriz_concordancia_22[1][1];
+//    float dividendo = matriz_concordancia_22[0][0] + matriz_concordancia_22[1][1];
+//    float kappa_maximo = (float) dividendo/n;
+//    return kappa_maximo;
 }
 
 
@@ -374,95 +453,122 @@ void Concordance_Cohen::le_xml_analise(QString caminho_arquivo)
 
 // Grava CSV a partir de um documento XML
 
-void Concordance_Cohen::grava_csv_analise(QString caminho_arquivo)
+void Concordance_Cohen::gravar_csv(QString path_eto, QString t_saida)
 {
-    QFile outGravador;
-    outGravador.setFileName(caminho_arquivo);
-    outGravador.open(QIODevice::WriteOnly | QIODevice::Text );
-
-    QTextStream csvGravador(&outGravador);
-
-    csvGravador <<"sep=; \n";
-//    csvGravador << "Informacion about the user\n";
-//    csvGravador <<"Researcher ; Laboratory" << "\n";
-//    csvGravador <<experimentador.nome.toLatin1() <<";" << experimentador.lab.toLatin1() << "\n";
-//    csvGravador <<"\n";
-//    csvGravador <<"The information of analysed videos: \n";
-//    csvGravador << "Name; Frames per second (fps); Frame started the analysis; Frame finished the analysis \n";
-//    csvGravador << videoLido->nome<< ";" << videoLido->fps << ";"
-//         << videoLido->frameInicial << ";" << videoLido->frameFinal<< "\n";
-//    csvGravador <<"\n";
-//    csvGravador <<"The information of catalogue: \n";
-//    csvGravador <<"The catalogue used in etography are: " <<";" << catalagoLido->caminhoArquivo << "\n";
-//    csvGravador <<"Categories\n";
-//    for(int i=0; i< catalagoLido->nome.size(); i++ ){
-//       csvGravador << catalagoLido->nome[i]<< "\n";
-
-//    }
-//    csvGravador <<"\n";
-//    csvGravador <<"The etographys used in the Cohen's Kappa analyses are \n";
-//    csvGravador <<"Id; Path; Type \n";
-//    for(int i=0; i< etografiasLidas.size();i++){
-
-//      csvGravador << i << ";" << etografiasLidas[i]->caminho << ";" << etografiasLidas[i]->tipoDeAnalise;
-//    }
-//    csvGravador <<"\n";
-//    csvGravador <<"\n";
+    QFile outGravador_csv;
+    outGravador_csv.setFileName(path_eto);
+    outGravador_csv.open(QIODevice::WriteOnly | QIODevice::Text );
+    QTextStream csvGravador(&outGravador_csv);
 
 
-//    csvGravador <<"The agreement matriz of Cohen's Kappa are\n";
-//    csvGravador << "" <<";";
+    csvGravador << t_saida;
+    outGravador_csv.close();
+}
+
+QString Concordance_Cohen::text_csv_concordancia()
+{
+    QString texto_saida = "sep=;\n";
+
+    auto gera_user_info = [&](){
+        QString saida = "The user information\n";
+        saida = saida + "Researcher;"+ "Laboratory;\n";
+        saida = saida + "Placeholder;"+ "Placeholder;\n";
+
+        return saida;
+    }();
 
 
-//    for(int grt=0; grt< KohoKappa.cohoKappaMatrix.size(); grt++){
-//       csvGravador << catalagoLido->nome[grt] <<";";
-//    }
-//    csvGravador << "\n";
+    QString gera_info_video  = [&](){
+        QString saida = "Information about the analysed video:\n";
+        saida = saida + "Name;"+ " Frames per second (fps);" + "Frame started the analysis;" + "Frame finished the analysis \n";
+        saida = saida + this->eto1.video->nome +";"
+        + QString::number(this->eto1.video->fps) + ";"
+        + QString::number(this->eto1.video->frameProce) +";"
+        + QString::number(this->eto1.video->frameFinal) + "\n";
+        //TODO: CONFERIR O PROCESO DE LEITURA DO XML, o frame inicial é usado para outra coisa
+        return saida;
+    }();
 
-//    for(int tot=0; tot< KohoKappa.cohoKappaMatrix.size(); tot++){
+    QString gera_info_catalogo  = [&](){
+        catalago * catalogo_usado = this->eto1.catalogo;
 
-//      csvGravador << catalagoLido->nome[tot] <<";";
-//      for(int fr=0; fr< KohoKappa.cohoKappaMatrix.size(); fr++){
+        QString saida = "Information of the catalog:\n";
+        saida = saida + "Path of the used catalog are in: ;" + catalogo_usado->caminhoArquivo + "\n";
 
+        saida = saida + "Categorie name;\n";
 
-//          csvGravador<< KohoKappa.cohoKappaMatrix[tot][fr] <<";";
-//      }
-
-//        csvGravador << "\n";
-
-//    }
-
-//    csvGravador <<"The agreement porcentage matriz of Cohen's Kappa are: \n";
-//    csvGravador << "" <<";";
-
-
-//    for(int grt=0; grt< KohoKappa.cohoKappaPorMatrix.size(); grt++){
-//       csvGravador << catalagoLido->nome[grt] <<";";
-//    }
-//    csvGravador << "\n";
-
-//    for(int tot=0; tot< KohoKappa.cohoKappaPorMatrix.size(); tot++){
-
-//      csvGravador << catalagoLido->nome[tot] <<";";
-//      for(int fr=0; fr< KohoKappa.cohoKappaPorMatrix.size(); fr++){
+        for(int i=0; i <  catalogo_usado->nome.size(); i++){
+            saida = saida +  catalogo_usado->nome[i] + "\n";
+        }
 
 
-//          csvGravador<< KohoKappa.cohoKappaPorMatrix[tot][fr] <<";";
-//      }
+        return saida;
+    }();
 
-//        csvGravador << "\n";
+    QString gera_resumo_analise  = [&](){
+        QString saida = "The final result are\n";
+        saida = saida + "The agreement porcentage by change (p) are:;" + QString::number(this->concordancia_acaso) + ";\n";
+        saida = saida + "The mean agreement pocentage (pe) are:;" + QString::number(this->concordancia_observada) + ";\n";
+        saida = saida + "The Cohen Kappa:;" + QString::number(this->kappa_medio)+ ";\n";
+        return saida;
 
-//    }
-//     csvGravador << "\n";
-//      csvGravador << "\n";
-//       csvGravador << "The final result are\n";
+    }();
 
-//    csvGravador <<"The agreement porcentage (k1) are ; " <<  KohoKappa.k1 *100 <<" (%)\n" ; // A porcentagem de concordancia
-//    csvGravador <<"The agreement porcentage by chance (k2) are ; " << KohoKappa.k2 *100 <<"(%)\n" ;//A porcentagem de concordancai por acaso
-//    csvGravador <<"The Cohen's Kappa; " <<KohoKappa.kappa *100 <<"\n" ;
+    QString gera_valores_por_categoria = [&](){
+        QString texto_categ = "";
+        auto gera_resumo_categoria_text = [&](confiabilidade_categoria conf_cat){
+            QString saida ="";
+            saida = saida + "The agreement porcentage by change (p) are:;" + "The mean agreement pocentage (pe) are:;"
+            + "The viez are:;" + "The prevalencia are:;" + "The Cohen Kappa da categoria are:;" + "The max agreement porcentage by change (p) are:;"
+            + "The max mean agreement pocentage (pe) are:;" + "The max viez are:;" + "The max prevalencia are:;"+ "The max Cohen Kappa da categoria are:;\n";
+
+            saida = saida +  QString::number(conf_cat.concordancia_acaso) + ";";
+            saida = saida  + QString::number(conf_cat.concordancia_observada) + ";";
+            saida = saida + QString::number(conf_cat.viez) + ";";
+            saida = saida  + QString::number(conf_cat.prevalencia) + ";";
+            saida = saida  + QString::number(conf_cat.kappa)+ ";";
+
+            saida = saida  + QString::number(conf_cat.concordancia_acaso_max) + ";";
+            saida = saida  + QString::number(conf_cat.concordancia_observada_max) + ";";
+            saida = saida  + QString::number(conf_cat.viez_max) + ";";
+            saida = saida  + QString::number(conf_cat.prevalencia_max) + ";";
+            saida = saida  + QString::number(conf_cat.kappa_max)+ ";\n";
+            return saida;
+        };
+        auto gera_matrix_categoria_text = [&](confiabilidade_categoria conf_cat){
+            QString saida = "";
+            saida = saida + conf_cat.nome + ";not " + conf_cat.nome +";;;";
+            saida = saida + "max " + conf_cat.nome + ";max not " + conf_cat.nome + "\n";
+
+            for(int i =0; i< conf_cat.matrix.size(); i++){
+//                for(j=0; j< conf_cat.matrix.size(); j++){
+                saida = saida  + QString::number(conf_cat.matrix[i][0]) +";" +QString::number(conf_cat.matrix[i][1]) +";;;";
+                saida = saida  + QString::number(conf_cat.matrix_max[i][0]) +";" +QString::number(conf_cat.matrix_max[i][1]) +"\n";
+//            }
+            };
+
+            return saida;
+        };
 
 
-//    outGravador.close();
+        for(int i=0; i< catalogo_id.size();i++){
+            texto_categ = texto_categ + "\n\nO resumo da categoria:" + list_confiabilidade[i].nome +" are\n";
+            texto_categ = texto_categ + gera_matrix_categoria_text(list_confiabilidade[i]);
+            texto_categ = texto_categ + gera_resumo_categoria_text(list_confiabilidade[i]);
+        }
+
+        return texto_categ;
+    }();
+
+    texto_saida = texto_saida + gera_user_info
+            +"\n\n" + gera_info_video
+            +"\n\n" + gera_info_catalogo
+            +"\n\n" + gera_resumo_analise
+            +"\n\n" + gera_valores_por_categoria;
+
+
+    return  texto_saida;
+
 }
 
 
@@ -472,6 +578,444 @@ void Concordance_Cohen::grava_csv_analise(QString caminho_arquivo)
 // Calculo de concordancia Fleiss
 Concordance_Fleiss::Concordance_Fleiss()
 {
+    quantidadeDeVideo=0;
+
+}
+
+void Concordance_Fleiss::add_arquivos_etografia(Etografia eto_grafia)
+{
+
+//    etografiaLida = new analiseEtografica();
+//    catalagoLido = new catalago();
+//    videoLido = new dadosVideo();
+
+
+    dadosDosVideos.push_back(eto_grafia.video); //forma pratica de fazer um vetor com varios videos lidos
+    etografiaDosVideos.push_back(eto_grafia.registro); // forma pratica de fazer um vetor com varias analises etogrificas
+    catalagoDosVideos.push_back(eto_grafia.catalogo); //forma pratica de fazer um vetor de alguma variavel
+
+    quantidadeDeVideo++;
+
+
+//    list_etografias.push_back(eto_grafia);
+
+
+
+    qDebug () << "adicionado arquivos";
+
+}
+
+QString Concordance_Fleiss::text_fleiss_concordancia()
+{
+
+    int quantCate= 0;
+
+    //nao serve para nada
+    etografiaKoho = etografiaDosVideos;
+    videosKoho = dadosDosVideos;
+    catalagoKoho = catalagoDosVideos;
+
+//    for(int j=0; j<quantidadeDeVideo;j++){
+
+//        *(etografiaKoho + j) = etografiaDosVideos[j]; //aponta para o seu respectivo vetor
+//        *(videosKoho +j)    =  dadosDosVideos[j];
+//        *(catalagoKoho+j)   = catalagoDosVideos[j];
+
+//    }
+
+
+    //conversão dos ponto
+    int qDPontos=0;
+    int pontos=0;
+    //bool entrou= false;
+    int v=0;
+    int lido;
+
+    std::vector<std::vector<int> > frameVideo; // saiiiiiiiiiiidaaaaaaaaaaaa
+    std::vector<int> frameInfo;  //é uma linha dinahmica
+    std::vector<double> fInicial;
+    std::vector<double> fFinal;
+
+
+    for(v=0; v<quantidadeDeVideo; v++){
+//    //m é giaul ao id do catalago 3 pq são 3 no catalgo
+    for(int m=0; m<catalagoKoho[0]->quantidadeDeCategorias; m++){
+
+////        std::vector<double> fInicial;
+////        std::vector<double> fFinal;
+        fInicial.clear();
+        fFinal.clear();
+        frameInfo.clear();
+        pontos=0;
+        //encontra as regioões de determinada categoria do catalago
+        //encontra de acordo com o valor de m
+        for(qDPontos=0; qDPontos<etografiaKoho[v]->quantidadeDePontos; qDPontos++){
+
+
+            if(etografiaKoho[v]->id[qDPontos] ==m){
+                fInicial.push_back(etografiaKoho[v]->frameInicial[qDPontos]);
+                fFinal.push_back(etografiaKoho[v]->frameFinal[qDPontos]);
+                pontos++;
+            }
+
+
+
+        }
+
+
+        //----------------------------------------------
+
+        //qDPontos é o numero de pontos postos
+    bool entrou= false;
+//            //gera um for com um valor inicial igual ao frame inicial do video
+//            //gera umf or com um valor final de acordo com o valor final do video
+           for(int frame= videosKoho[v]->frameInicial; frame < videosKoho[v]->frameFinal; frame++){
+//            //para cada frame do video lido
+//                //o video lido é de acorodo com valor v
+           for(int geraVetor=0; geraVetor<pontos; geraVetor++){
+
+               // ele testa o frame para cada intervalo de pontos lido
+               // se encontrar ele coloca um  ponto com o valor do id da categoria
+               if(((frame>=fInicial[geraVetor])&&(frame<=fFinal[geraVetor]))){
+
+                   frameInfo.push_back(m);
+                   entrou= true;
+               }
+
+           }
+//           //se o frame nao estiver dentro do intervalo o programa coloca o valor de -1
+//           //-1 porque os id do catalago são sempre valores positivos
+
+              if(!entrou){
+                   frameInfo.push_back(-1); //quer dissser que o usuario nao deixou precionado o botão
+
+               }
+               entrou= false;
+
+
+           }
+
+           //ao fim dos looping  de encontras os valores das categorias
+           //ele grava o vetor em uma matrix de pontos
+           frameVideo.push_back(frameInfo);
+           frameInfo.clear();
+           fInicial.clear();
+           fFinal.clear();
+
+       }
+
+    // começa o calcula para a categoria não definida, para quadros que nao foram marcardos
+        std::vector<int> claUndefinida;
+        quantCate = catalagoKoho[0]->quantidadeDeCategorias;
+
+        bool entra=false;
+
+        //tal
+           for(int p=0; p< (videosKoho[0]->frameFinal - videosKoho[0]->frameProce);
+               p++){
+
+               //testa todas as  possibildiade de videos e de categorias do catalago
+               for(int z=0; z<quantCate;z++){
+                   //for(int y=0; y<2; y++){
+
+                       //se alguma delas for diferente de vazio(-1) ele grava como vazio
+                       //vazio siginifica que não esta dentro da categoria testada
+                       //valor padrao
+                   lido=frameVideo[z][p];
+                   if((lido!=-1)&&(!entra)){
+
+                       claUndefinida.push_back(-1);
+                       entra=true;
+                      // break;
+
+                      // igualdade[y+z]=false;
+                       }
+                   //}
+
+               }
+
+               if(!entra){
+                   claUndefinida.push_back(quantCate); //o indefinido é classificado como ultimo
+
+               }
+               entra=false;
+
+
+
+           }
+           //ao fim ele grava o vetor em uma matriz
+           frameVideo.push_back(claUndefinida);
+
+           //ISTO É A SAIDA ?
+           anaEtoDosVideos.push_back(frameVideo);
+           frameVideo.clear();
+
+    }
+
+
+    // calcula o fleiss
+
+    //    std::vector< std::vector<int> > frameFleisTabela;
+    //    std::vector<int> frameFleisLinha;
+
+        std::vector<int> zerador;
+        for(int zera=0;zera<(catalagoKoho[0]->quantidadeDeCategorias+1);zera++){
+            zerador.push_back(0);
+
+        }
+
+
+
+
+        //para cada frame do video
+       for(int f1=0; (f1<videosKoho[0]->frameFinal - videosKoho[0]->frameProce);f1++){
+
+           frameFleisLinha.clear();
+           frameFleisLinha= zerador; //zera
+
+
+        for(int ca2=0; ca2<(catalagoKoho[0]->quantidadeDeCategorias+1);ca2++ ){
+
+            for(int qv=0; qv<quantidadeDeVideo;qv++){
+
+                for(int ca1=0; ca1<(catalagoKoho[0]->quantidadeDeCategorias+1);ca1++){
+
+    //            for(int qv=0; qv<quantidadeDeVideo;qv++){
+
+
+
+                    if(anaEtoDosVideos[qv][ca1][f1]==ca2){
+
+
+                        frameFleisLinha[ca2]= frameFleisLinha[ca2]+1;
+
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+        //TABELA DO FLEISS
+        frameFleisTabela.push_back(frameFleisLinha);
+
+
+       }
+
+       for(int cQua=0; cQua<= frameFleisTabela.size(); cQua++ ){
+
+
+           PIcalculados.push_back(calcularPI(   frameFleisTabela[cQua], quantidadeDeVideo));
+
+
+       }
+
+
+       std::vector<int> linha;
+       //quantidade de categorias
+       for(int ti=0; ti<frameFleisTabela[0].size(); ti++){
+
+           //quantidade de quadros
+           for(int tj=0; tj<frameFleisTabela.size(); tj++){
+
+               linha.push_back(frameFleisTabela[tj][ti]);
+           }
+
+
+           PJcalculados.push_back(calcularPJ(linha, quantidadeDeVideo, frameFleisTabela.size() ));
+
+           linha.clear();
+
+       }
+
+       Pe=0;
+       for(int cSom=0; cSom<PJcalculados.size();cSom++){
+
+           Pe= (PJcalculados[cSom] *PJcalculados[cSom] )+ Pe;
+       }
+
+       qDebug()<<"Concordancia por acaso Pe" << Pe;
+
+
+       P_medio =0;
+       for(int cSom=0; cSom<PIcalculados.size();cSom++){
+
+           P_medio = PIcalculados[cSom] + P_medio;
+       }
+
+//       pEntrada.n=quantidadeDeVideo;
+//       pEntrada.N=frameFleisTabela.size();
+//       pEntrada.k=frameFleisTabela[0].size();
+
+//       qDebug() << "a quantidade de TCC" << pEntrada.n <<
+//                   "a quantidade de Quadros" << pEntrada.N <<
+//                   "a quantidade de Categorias" << pEntrada.n;
+
+
+
+       P_medio = P_medio/frameFleisTabela.size();
+       qDebug()<<"Média de concordancia " << P_medio;
+       Kappa = (P_medio - Pe)/(1- Pe);
+       qDebug()<<"Kapppa médio " << Kappa;
+
+
+       auto gera_csv = [&](){
+            QString texto_saida ="";
+            QString gera_cabecalho  = [&](){
+                QString saida = "sep=;\n";
+                saida = saida + "The user information\n";
+                saida = saida + "Researcher;"+ "Laboratory;\n";
+                saida = saida + "Placeholder;"+ "Placeholder;\n";
+                return saida;
+            }();
+
+
+
+
+            QString gera_info_video  = [&](){
+                QString saida = "Information about the analysed video:\n";
+                saida = saida + "Name;"+ " Frames per second (fps);" + "Frame started the analysis;" + "Frame finished the analysis \n";
+                saida = saida + videosKoho[0]->nome +";"
+                + QString::number(videosKoho[0]->fps) + ";"
+                + QString::number(videosKoho[0]->frameProce) +";"
+                + QString::number(videosKoho[0]->frameFinal) + "\n";
+                //TODO: CONFERIR O PROCESO DE LEITURA DO XML, o frame inicial é usado para outra coisa
+                return saida;
+            }();
+
+            QString gera_info_catalogo  = [&](){
+                catalago * catalogo_usado = catalagoKoho[0];
+
+                QString saida = "Information of the catalog:\n";
+                saida = saida + "Path of the used catalog are in: ;" + catalogo_usado->caminhoArquivo + "\n";
+
+                saida = saida + "Categorie name;\n";
+
+                for(int i=0; i <  catalogo_usado->nome.size(); i++){
+                    saida = saida +  catalogo_usado->nome[i] + "\n";
+                }
+
+
+                return saida;
+            }();
+
+
+            QString gera_info_eto  = [&](){
+                QString saida = "The ethographys analised:\n";
+                saida = saida + "Id;"+ "Path;" + " Type;\n";
+                for(int i=0; i< etografiaDosVideos.size(); i++){
+                    saida = saida + QString::number(i) +";"+ etografiaDosVideos[i]->caminho_etografia + ";" + etografiaDosVideos[i]->tipoDeAnalise + "\n";
+
+                }
+
+
+
+
+                return saida;
+            }();
+
+
+            QString gera_resumo_analise  = [&](){
+                QString saida = "The final result are\n";
+                saida = saida + "The agreement porcentage by change (p) are:;" + QString::number(P_medio) + ";\n";
+                saida = saida + "The mean agreement pocentage (pe) are:;" + QString::number(Pe) + ";\n";
+                saida = saida + "The Fleiss Kappa:;" + QString::number(Kappa)+ ";\n";
+
+
+                return saida;
+
+            }();
+
+
+            QString gera_matrix = [&](){
+                QString saida = "The total of the Fleiss Kappa analysis\n";
+                catalago *catalogo_lido =  catalagoKoho[0];
+                saida = saida + "Frame;";
+                for(int i=0; i< catalogo_lido->nome.size(); i++){
+                    saida = saida + catalogo_lido->nome[i]+";";
+                }
+                saida = saida + "Undefined (frames that are not marked)\n";
+
+                for(int i=0; i< frameFleisTabela.size(); i++){
+                    std::vector<int> linha = frameFleisTabela[i];
+                    saida = saida + QString::number(i) + ";";
+                    for(int j=0; j< linha.size(); j++){
+                        saida = saida + QString::number(linha[j]) +";";
+                    }
+                    saida = saida + "\n";
+                }
+
+
+                return saida;
+
+            }();
+
+
+            texto_saida = gera_cabecalho + gera_info_video + gera_info_catalogo + gera_info_eto + gera_resumo_analise + gera_matrix;
+
+            return texto_saida;
+       };
+
+
+    return gera_csv();
+}
+
+
+void Concordance_Fleiss::gravar_csv(QString path_eto, QString t_saida){
+    QFile outGravador_csv;
+//    QStringList list1 = path_eto.split(".etoxml"); // nomeGravarEtografia
+//    QString csv_path = list1[0] + "_csv.csv";
+    outGravador_csv.setFileName(path_eto);
+    outGravador_csv.open(QIODevice::WriteOnly | QIODevice::Text );
+    QTextStream csvGravador(&outGravador_csv);
+
+
+    csvGravador << t_saida;
+    outGravador_csv.close();
+}
+
+double Concordance_Fleiss::calcularPJ(std::vector<int> entrada, double qntd_videos, double qnt_quadros)
+{
+
+    double mult = 1/(qntd_videos*qnt_quadros);
+    double quadroSoma =0;
+
+    //para cada quadro analisado
+    for(int qCquadro=0;qCquadro < entrada.size(); qCquadro++){
+
+        quadroSoma = entrada[qCquadro] + quadroSoma;
+
+    }
+
+
+    qDebug()<< "mult " << mult << "soma " << quadroSoma;
+
+
+    return quadroSoma * mult;
+
+}
+
+double Concordance_Fleiss::calcularPI(std::vector<int> entrada, double qnt_de_TCC)
+{
+
+    double mult = 1/(qnt_de_TCC *(qnt_de_TCC -1));
+    double quadroSoma =0;
+
+    //para cada categoria analisada no quadro
+    for(int qCat=0;qCat < entrada.size(); qCat++){
+
+        quadroSoma= (entrada[qCat]*(entrada[qCat]-1)) +quadroSoma;
+    }
+
+    qDebug()<< "mult " << mult << "soma " << quadroSoma;
+
+    return quadroSoma*mult;
+
+
+
 
 }
 
@@ -482,7 +1026,7 @@ void Concordance_Fleiss::calculo_concordancia()
 //        etografiaKoho = new analiseEtografica[quantidadeDeVideo];
 //        videosKoho = new dadosVideo[quantidadeDeVideo];
 //        catalagoKoho = new catalago[quantidadeDeVideo];
-//        int quantCate=0; //quantidade de categoria para fazer o vetor de categoria undefinida
+        int quantCate=0; //quantidade de categoria para fazer o vetor de categoria undefinida
 
 //        for(int j=0; j<quantidadeDeVideo;j++){
 
@@ -983,3 +1527,17 @@ std::vector<std::vector<int> > gera_matrix_22(std::vector<std::vector<int> > mat
     return saida;
 }
 
+
+std::vector<int> _constroi_lista_quadros(Etografia eto)
+{
+   std::vector<int> saida;
+   for(int i=0; i< eto.registro->frameInicial.size(); i++){
+       int q_inicial = eto.registro->frameInicial[i];
+       int q_final = eto.registro->frameFinal[i];
+       for(int j=0; j< q_final - q_inicial; j++ ){
+           saida.push_back(eto.registro->id[i]);
+       }
+
+   }
+   return saida;
+}
