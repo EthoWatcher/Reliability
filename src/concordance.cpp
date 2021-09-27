@@ -1460,3 +1460,17 @@ std::vector<std::vector<int> > gera_matrix_22(std::vector<std::vector<int> > mat
     return saida;
 }
 
+
+std::vector<int> _constroi_lista_quadros(Etografia eto)
+{
+   std::vector<int> saida;
+   for(int i=0; i< eto.registro->frameInicial.size(); i++){
+       int q_inicial = eto.registro->frameInicial[i];
+       int q_final = eto.registro->frameFinal[i];
+       for(int j=0; j< q_final - q_inicial; j++ ){
+           saida.push_back(eto.registro->id[i]);
+       }
+
+   }
+   return saida;
+}

@@ -34,6 +34,7 @@ private slots:
     void test_gera_matrix_22();
     void test_gera_matrix_22_pela_categoria();
 
+    void test_gera_lista_quador();
     void test_fless_kappa();
 
 
@@ -120,6 +121,13 @@ void test_concordancia::test_gera_matrix_22_pela_categoria(){
 
 }
 
+void test_concordancia::test_gera_lista_quador()
+{
+    Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+    std::vector<int> si = _constroi_lista_quadros(eto_lida2);
+
+}
+
 
 //void test_concordancia::teste_parser()
 //{
@@ -184,7 +192,6 @@ void test_concordancia::teste_calculo_kappa_maximo(){
     std::vector<std::vector<int>> vetor_entrada= {{2,1},{7,50}};
     std::vector<std::vector<int>> kappa_maximo_matrix = arruma_matrix_kappa_maximo(vetor_entrada);
 //    qDebug() <<10;
-
 
 }
 

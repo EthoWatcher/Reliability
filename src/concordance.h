@@ -31,8 +31,7 @@ std::vector<std::vector<int> > gera_matrix_22_pela_categoria(std::vector<int> et
 std::vector<std::vector<int> > gera_matrix_22(std::vector<std::vector<int> > matrix_nn);
 
 
-
-
+std::vector<int> _constroi_lista_quadros(Etografia eto);
 std::vector< std::vector<int> > constroi_matrix_concordancia_cohen(std::vector<int> etografia_1, std::vector<int> etografia_2, std::vector<int> catalogo);
 float calcula_concordancia_observada(std::vector< std::vector<int> > matriz_concordancia);
 float calcula_concordancia_acaso(std::vector< std::vector<int> > matriz_concordancia);
