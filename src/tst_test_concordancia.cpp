@@ -218,8 +218,9 @@ void test_concordancia::test_integracao_cohen()
   Etografia eto_lida1 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
   Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
 
-  cohen.carrega_etografia(eto_lida1, eto_lida2 );
+  QString saida = cohen.carrega_etografia(eto_lida1, eto_lida2 );
 
+  cohen.gravar_csv(PATH_TESTE+"teste_cohen.csv", saida);
 }
 
 QTEST_MAIN(test_concordancia)

@@ -14,10 +14,10 @@ class Concordance_Cohen
 public:
     Concordance_Cohen();
 
-    void carrega_etografia(Etografia eto1, Etografia eto2);
+    QString carrega_etografia(Etografia eto1, Etografia eto2);
     void grava_xml_analise(QString caminho_arquivo);
 
-    void grava_csv_analise(QString caminho_arquivo);
+    void gravar_csv(QString path_eto, QString t_saida);
 
 private:
     struct confiabilidade_categoria {

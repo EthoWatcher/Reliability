@@ -5,7 +5,7 @@ Concordance_Cohen::Concordance_Cohen()
 {
 }
 
-void Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
+QString Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
 {
     // Função utilizada para carregar as etografias pelo objeto.
     this->eto1 = eto1;
@@ -18,7 +18,7 @@ void Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
     this->catalogo_categorias_nomes = eto1.catalogo->nome;
 
     this->calculo_concordancia();
-    this->text_csv_concordancia();
+    return this->text_csv_concordancia();
 
 }
 
@@ -453,105 +453,114 @@ void Concordance_Cohen::le_xml_analise(QString caminho_arquivo)
 
 // Grava CSV a partir de um documento XML
 
-void Concordance_Cohen::grava_csv_analise(QString caminho_arquivo)
+void Concordance_Cohen::gravar_csv(QString path_eto, QString t_saida)
 {
-    QFile outGravador;
-    outGravador.setFileName(caminho_arquivo);
-    outGravador.open(QIODevice::WriteOnly | QIODevice::Text );
-
-    QTextStream csvGravador(&outGravador);
-
-    csvGravador <<"sep=; \n";
-//    csvGravador << "Informacion about the user\n";
-//    csvGravador <<"Researcher ; Laboratory" << "\n";
-//    csvGravador <<experimentador.nome.toLatin1() <<";" << experimentador.lab.toLatin1() << "\n";
-//    csvGravador <<"\n";
-//    csvGravador <<"The information of analysed videos: \n";
-//    csvGravador << "Name; Frames per second (fps); Frame started the analysis; Frame finished the analysis \n";
-//    csvGravador << videoLido->nome<< ";" << videoLido->fps << ";"
-//         << videoLido->frameInicial << ";" << videoLido->frameFinal<< "\n";
-//    csvGravador <<"\n";
-//    csvGravador <<"The information of catalogue: \n";
-//    csvGravador <<"The catalogue used in etography are: " <<";" << catalagoLido->caminhoArquivo << "\n";
-//    csvGravador <<"Categories\n";
-//    for(int i=0; i< catalagoLido->nome.size(); i++ ){
-//       csvGravador << catalagoLido->nome[i]<< "\n";
-
-//    }
-//    csvGravador <<"\n";
-//    csvGravador <<"The etographys used in the Cohen's Kappa analyses are \n";
-//    csvGravador <<"Id; Path; Type \n";
-//    for(int i=0; i< etografiasLidas.size();i++){
-
-//      csvGravador << i << ";" << etografiasLidas[i]->caminho << ";" << etografiasLidas[i]->tipoDeAnalise;
-//    }
-//    csvGravador <<"\n";
-//    csvGravador <<"\n";
+    QFile outGravador_csv;
+    outGravador_csv.setFileName(path_eto);
+    outGravador_csv.open(QIODevice::WriteOnly | QIODevice::Text );
+    QTextStream csvGravador(&outGravador_csv);
 
 
-//    csvGravador <<"The agreement matriz of Cohen's Kappa are\n";
-//    csvGravador << "" <<";";
-
-
-//    for(int grt=0; grt< KohoKappa.cohoKappaMatrix.size(); grt++){
-//       csvGravador << catalagoLido->nome[grt] <<";";
-//    }
-//    csvGravador << "\n";
-
-//    for(int tot=0; tot< KohoKappa.cohoKappaMatrix.size(); tot++){
-
-//      csvGravador << catalagoLido->nome[tot] <<";";
-//      for(int fr=0; fr< KohoKappa.cohoKappaMatrix.size(); fr++){
-
-
-//          csvGravador<< KohoKappa.cohoKappaMatrix[tot][fr] <<";";
-//      }
-
-//        csvGravador << "\n";
-
-//    }
-
-//    csvGravador <<"The agreement porcentage matriz of Cohen's Kappa are: \n";
-//    csvGravador << "" <<";";
-
-
-//    for(int grt=0; grt< KohoKappa.cohoKappaPorMatrix.size(); grt++){
-//       csvGravador << catalagoLido->nome[grt] <<";";
-//    }
-//    csvGravador << "\n";
-
-//    for(int tot=0; tot< KohoKappa.cohoKappaPorMatrix.size(); tot++){
-
-//      csvGravador << catalagoLido->nome[tot] <<";";
-//      for(int fr=0; fr< KohoKappa.cohoKappaPorMatrix.size(); fr++){
-
-
-//          csvGravador<< KohoKappa.cohoKappaPorMatrix[tot][fr] <<";";
-//      }
-
-//        csvGravador << "\n";
-
-//    }
-//     csvGravador << "\n";
-//      csvGravador << "\n";
-//       csvGravador << "The final result are\n";
-
-//    csvGravador <<"The agreement porcentage (k1) are ; " <<  KohoKappa.k1 *100 <<" (%)\n" ; // A porcentagem de concordancia
-//    csvGravador <<"The agreement porcentage by chance (k2) are ; " << KohoKappa.k2 *100 <<"(%)\n" ;//A porcentagem de concordancai por acaso
-//    csvGravador <<"The Cohen's Kappa; " <<KohoKappa.kappa *100 <<"\n" ;
-
-
-    //    outGravador.close();
+    csvGravador << t_saida;
+    outGravador_csv.close();
 }
 
 QString Concordance_Cohen::text_csv_concordancia()
 {
-    QString texto_saida = "sep=;";
+    QString texto_saida = "sep=;\n";
 
     auto gera_user_info = [&](){
         QString saida = "The user information\n";
+        saida = saida + "Researcher;"+ "Laboratory;\n";
+        saida = saida + "Placeholder;"+ "Placeholder;\n";
+
         return saida;
-    };
+    }();
+
+
+    QString gera_info_video  = [&](){
+        QString saida = "Information about the analysed video:\n";
+        saida = saida + "Name;"+ " Frames per second (fps);" + "Frame started the analysis;" + "Frame finished the analysis \n";
+        saida = saida + this->eto1.video->nome +";"
+        + QString::number(this->eto1.video->fps) + ";"
+        + QString::number(this->eto1.video->frameProce) +";"
+        + QString::number(this->eto1.video->frameFinal) + "\n";
+        //TODO: CONFERIR O PROCESO DE LEITURA DO XML, o frame inicial é usado para outra coisa
+        return saida;
+    }();
+
+    QString gera_info_catalogo  = [&](){
+        catalago * catalogo_usado = this->eto1.catalogo;
+
+        QString saida = "Information of the catalog:\n";
+        saida = saida + "Path of the used catalog are in: ;" + catalogo_usado->caminhoArquivo + "\n";
+
+        saida = saida + "Categorie name;\n";
+
+        for(int i=0; i <  catalogo_usado->nome.size(); i++){
+            saida = saida +  catalogo_usado->nome[i] + "\n";
+        }
+
+
+        return saida;
+    }();
+
+    QString gera_resumo_analise  = [&](){
+        QString saida = "The final result are\n";
+        saida = saida + "The agreement porcentage by change (p) are:;" + QString::number(this->concordancia_acaso) + ";\n";
+        saida = saida + "The mean agreement pocentage (pe) are:;" + QString::number(this->concordancia_observada) + ";\n";
+        saida = saida + "The Cohen Kappa:;" + QString::number(this->kappa_medio)+ ";\n";
+        return saida;
+
+    }();
+
+    QString gera_valores_por_categoria = [&](){
+        QString texto_categ = "";
+        auto gera_resumo_categoria_text = [&](confiabilidade_categoria conf_cat){
+            QString saida ="";
+            saida = saida + "The agreement porcentage by change (p) are:;" + QString::number(conf_cat.concordancia_acaso) + ";\n";
+            saida = saida + "The mean agreement pocentage (pe) are:;" + QString::number(conf_cat.concordancia_observada) + ";\n";
+            saida = saida + "The viez are:;" + QString::number(conf_cat.viez) + ";\n";
+            saida = saida + "The prevalencia are:;" + QString::number(conf_cat.prevalencia) + ";\n";
+            saida = saida + "The Cohen Kappa da categoria are:;" + QString::number(conf_cat.kappa)+ ";\n";
+
+            saida = saida + "The max agreement porcentage by change (p) are:;" + QString::number(conf_cat.concordancia_acaso_max) + ";\n";
+            saida = saida + "The max mean agreement pocentage (pe) are:;" + QString::number(conf_cat.concordancia_observada_max) + ";\n";
+            saida = saida + "The max viez are:;" + QString::number(conf_cat.viez_max) + ";\n";
+            saida = saida + "The max prevalencia are:;" + QString::number(conf_cat.prevalencia_max) + ";\n";
+            saida = saida + "The max Cohen Kappa da categoria are:;" + QString::number(conf_cat.kappa_max)+ ";\n";
+            return saida;
+        };
+        auto gera_matrix_categoria_text = [&](confiabilidade_categoria conf_cat){
+            QString saida = "";
+            saida = saida + conf_cat.nome + ";not " + conf_cat.nome +";;;;";
+            saida = saida + "max " + conf_cat.nome + ";max not " + conf_cat.nome + "\n";
+
+            for(int i =0; i< conf_cat.matrix.size(); i++){
+//                for(j=0; j< conf_cat.matrix.size(); j++){
+                saida = saida  + QString::number(conf_cat.matrix[i][0]) +";" +QString::number(conf_cat.matrix[i][1]) +";;;;";
+                saida = saida  + QString::number(conf_cat.matrix_max[i][0]) +";" +QString::number(conf_cat.matrix_max[i][1]) +"\n";
+//            }
+            };
+
+            return saida;
+        };
+
+
+        for(int i=0; i< catalogo_id.size();i++){
+            texto_categ = texto_categ + "O resumo da categoria:" + list_confiabilidade[i].nome +"are\n";
+            texto_categ = texto_categ + gera_matrix_categoria_text(list_confiabilidade[i]);
+            texto_categ = texto_categ + gera_resumo_categoria_text(list_confiabilidade[i]);
+        }
+
+        return texto_categ;
+    }();
+
+    texto_saida = texto_saida + gera_user_info + gera_info_video + gera_info_catalogo + gera_resumo_analise + gera_valores_por_categoria;
+
+
+    return  texto_saida;
+
 }
 
 
