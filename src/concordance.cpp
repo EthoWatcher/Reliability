@@ -11,11 +11,15 @@ QString Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
     this->eto1 = eto1;
     this->eto1 = eto2;
 
+    this->catalogo_id = eto1.catalogo->id;
+    this->catalogo_id.push_back( (int) catalogo_id.size());
+
 
     this->lista_eto1 = _constroi_lista_quadros(eto1);
     this->lista_eto2 = _constroi_lista_quadros(eto2);
-    this->catalogo_id = eto1.catalogo->id;
+
     this->catalogo_categorias_nomes = eto1.catalogo->nome;
+    this->catalogo_categorias_nomes.push_back("Undefined (frames that are not marked)");
 
     this->calculo_concordancia();
     return this->text_csv_concordancia();
@@ -70,6 +74,16 @@ std::vector< std::vector<int> > constroi_matrix_concordancia_cohen(std::vector<i
     for(int quadro_da_analise = 0; quadro_da_analise < etografia_1.size(); quadro_da_analise++){
         int  marcacao_1 = etografia_1[quadro_da_analise];
         int  marcacao_2 = etografia_2[quadro_da_analise];
+
+        bool r_marcacao_1 = marcacao_1 == -1;
+        bool r_marcacao_2 = marcacao_2 == -1;
+
+        if(r_marcacao_1){
+            marcacao_1 = matrix_size -1;
+        }
+        if(r_marcacao_2){
+            marcacao_2 = matrix_size -1;
+        }
 
         matriz_concordancia[marcacao_2][marcacao_1] = matriz_concordancia[marcacao_2][marcacao_1] +1;
 
