@@ -20,6 +20,7 @@ public:
     void gravar_csv(QString path_eto, QString t_saida);
     Etografia eto1;
     Etografia eto2;
+    std::vector<std::vector<int> > matrix_concordance_nn ;
 
 private:
     struct confiabilidade_categoria {

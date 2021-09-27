@@ -30,7 +30,7 @@ QString Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
 
 void Concordance_Cohen::calculo_concordancia()
 {
-    std::vector<std::vector<int> > matrix_concordance_nn = constroi_matrix_concordancia_cohen(this->lista_eto1, this->lista_eto2, this->catalogo_id);
+    matrix_concordance_nn = constroi_matrix_concordancia_cohen(this->lista_eto1, this->lista_eto2, this->catalogo_id);
     // implementar as funções de calculo de concordancia.
     this->concordancia_acaso = calcula_concordancia_acaso(matrix_concordance_nn);
     this->concordancia_observada = calcula_concordancia_observada(matrix_concordance_nn);
@@ -519,6 +519,33 @@ QString Concordance_Cohen::text_csv_concordancia()
         return saida;
     }();
 
+    auto gera_matriz_concordancia_all = [&](){
+        QString saida = "";
+
+        QString titulos = ";";
+
+        for(int i=0; i< (int) this->catalogo_categorias_nomes.size(); i++){
+            titulos = titulos + this->catalogo_categorias_nomes[i]+ ";";
+
+        }
+        saida = saida + titulos + "\n";
+
+        for(int i=0; i< (int) matrix_concordance_nn.size(); i++){
+            std::vector<int> linha = matrix_concordance_nn[i];
+            saida = saida + this->catalogo_categorias_nomes[i] +";";
+            for(int j=0; j< (int) linha.size(); j++){
+              saida = saida + QString::number(linha[j])+";";
+            }
+
+            saida = saida + "\n";
+        }
+
+
+
+        return saida;
+
+    }();
+
     QString gera_resumo_analise  = [&](){
         QString saida = "The final result are\n";
         saida = saida + "The agreement porcentage by change (p) are:;" + QString::number(this->concordancia_acaso) + ";\n";
@@ -578,6 +605,7 @@ QString Concordance_Cohen::text_csv_concordancia()
             +"\n\n" + gera_info_video
             +"\n\n" + gera_info_catalogo
             +"\n\n" + gera_resumo_analise
+            +"\n\n" + gera_matriz_concordancia_all
             +"\n\n" + gera_valores_por_categoria;
 
 
