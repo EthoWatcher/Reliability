@@ -518,27 +518,31 @@ QString Concordance_Cohen::text_csv_concordancia()
         QString texto_categ = "";
         auto gera_resumo_categoria_text = [&](confiabilidade_categoria conf_cat){
             QString saida ="";
-            saida = saida + "The agreement porcentage by change (p) are:;" + QString::number(conf_cat.concordancia_acaso) + ";\n";
-            saida = saida + "The mean agreement pocentage (pe) are:;" + QString::number(conf_cat.concordancia_observada) + ";\n";
-            saida = saida + "The viez are:;" + QString::number(conf_cat.viez) + ";\n";
-            saida = saida + "The prevalencia are:;" + QString::number(conf_cat.prevalencia) + ";\n";
-            saida = saida + "The Cohen Kappa da categoria are:;" + QString::number(conf_cat.kappa)+ ";\n";
+            saida = saida + "The agreement porcentage by change (p) are:;" + "The mean agreement pocentage (pe) are:;"
+            + "The viez are:;" + "The prevalencia are:;" + "The Cohen Kappa da categoria are:;" + "The max agreement porcentage by change (p) are:;"
+            + "The max mean agreement pocentage (pe) are:;" + "The max viez are:;" + "The max prevalencia are:;"+ "The max Cohen Kappa da categoria are:;\n";
 
-            saida = saida + "The max agreement porcentage by change (p) are:;" + QString::number(conf_cat.concordancia_acaso_max) + ";\n";
-            saida = saida + "The max mean agreement pocentage (pe) are:;" + QString::number(conf_cat.concordancia_observada_max) + ";\n";
-            saida = saida + "The max viez are:;" + QString::number(conf_cat.viez_max) + ";\n";
-            saida = saida + "The max prevalencia are:;" + QString::number(conf_cat.prevalencia_max) + ";\n";
-            saida = saida + "The max Cohen Kappa da categoria are:;" + QString::number(conf_cat.kappa_max)+ ";\n";
+            saida = saida +  QString::number(conf_cat.concordancia_acaso) + ";";
+            saida = saida  + QString::number(conf_cat.concordancia_observada) + ";";
+            saida = saida + QString::number(conf_cat.viez) + ";";
+            saida = saida  + QString::number(conf_cat.prevalencia) + ";";
+            saida = saida  + QString::number(conf_cat.kappa)+ ";";
+
+            saida = saida  + QString::number(conf_cat.concordancia_acaso_max) + ";";
+            saida = saida  + QString::number(conf_cat.concordancia_observada_max) + ";";
+            saida = saida  + QString::number(conf_cat.viez_max) + ";";
+            saida = saida  + QString::number(conf_cat.prevalencia_max) + ";";
+            saida = saida  + QString::number(conf_cat.kappa_max)+ ";\n";
             return saida;
         };
         auto gera_matrix_categoria_text = [&](confiabilidade_categoria conf_cat){
             QString saida = "";
-            saida = saida + conf_cat.nome + ";not " + conf_cat.nome +";;;;";
+            saida = saida + conf_cat.nome + ";not " + conf_cat.nome +";;;";
             saida = saida + "max " + conf_cat.nome + ";max not " + conf_cat.nome + "\n";
 
             for(int i =0; i< conf_cat.matrix.size(); i++){
 //                for(j=0; j< conf_cat.matrix.size(); j++){
-                saida = saida  + QString::number(conf_cat.matrix[i][0]) +";" +QString::number(conf_cat.matrix[i][1]) +";;;;";
+                saida = saida  + QString::number(conf_cat.matrix[i][0]) +";" +QString::number(conf_cat.matrix[i][1]) +";;;";
                 saida = saida  + QString::number(conf_cat.matrix_max[i][0]) +";" +QString::number(conf_cat.matrix_max[i][1]) +"\n";
 //            }
             };
@@ -548,7 +552,7 @@ QString Concordance_Cohen::text_csv_concordancia()
 
 
         for(int i=0; i< catalogo_id.size();i++){
-            texto_categ = texto_categ + "O resumo da categoria:" + list_confiabilidade[i].nome +"are\n";
+            texto_categ = texto_categ + "\n\nO resumo da categoria:" + list_confiabilidade[i].nome +" are\n";
             texto_categ = texto_categ + gera_matrix_categoria_text(list_confiabilidade[i]);
             texto_categ = texto_categ + gera_resumo_categoria_text(list_confiabilidade[i]);
         }
@@ -556,7 +560,11 @@ QString Concordance_Cohen::text_csv_concordancia()
         return texto_categ;
     }();
 
-    texto_saida = texto_saida + gera_user_info + gera_info_video + gera_info_catalogo + gera_resumo_analise + gera_valores_por_categoria;
+    texto_saida = texto_saida + gera_user_info
+            +"\n\n" + gera_info_video
+            +"\n\n" + gera_info_catalogo
+            +"\n\n" + gera_resumo_analise
+            +"\n\n" + gera_valores_por_categoria;
 
 
     return  texto_saida;
