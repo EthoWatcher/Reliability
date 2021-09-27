@@ -9,6 +9,7 @@
 
 // add necessary includes here
 QString PATH_DATA = "C:/Doutorado_softwares/Reliability/data/"; //variavel global.
+QString PATH_TESTE = "C:/Doutorado_softwares/saida_teste/";
 
 
 class test_concordancia : public QObject
@@ -32,6 +33,10 @@ private slots:
     void construindo_lista_dados();
     void test_gera_matrix_22();
     void test_gera_matrix_22_pela_categoria();
+
+    void test_gera_lista_quador();
+    void test_fless_kappa();
+    void test_integracao_cohen();
 
 
 };
@@ -117,6 +122,13 @@ void test_concordancia::test_gera_matrix_22_pela_categoria(){
 
 }
 
+void test_concordancia::test_gera_lista_quador()
+{
+    Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+    std::vector<int> si = _constroi_lista_quadros(eto_lida2);
+
+}
+
 
 //void test_concordancia::teste_parser()
 //{
@@ -178,11 +190,37 @@ void test_concordancia::teste_calculo_prevalencia(){
 }
 
 void test_concordancia::teste_calculo_kappa_maximo(){
-    std::vector<std::vector<int>> vetor_entrada= {{29,21},{23,27}};
-    float kappa_maximo = calculo_kappa_maximo(vetor_entrada);
-    qDebug() <<kappa_maximo;
+    std::vector<std::vector<int>> vetor_entrada= {{2,1},{7,50}};
+    std::vector<std::vector<int>> kappa_maximo_matrix = arruma_matrix_kappa_maximo(vetor_entrada);
+//    qDebug() <<10;
+
+}
+
+void test_concordancia::test_fless_kappa(){
+    Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+    Etografia eto_lida3 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+
+    Concordance_Fleiss calculado_fless;
+
+    calculado_fless.add_arquivos_etografia(eto_lida2);
+    calculado_fless.add_arquivos_etografia(eto_lida2);
+    calculado_fless.add_arquivos_etografia(eto_lida3);
+
+    QString texto = calculado_fless.text_fleiss_concordancia();
+    calculado_fless.gravar_csv(PATH_TESTE+"teste_fleiss.csv", texto);
 
 
+}
+
+void test_concordancia::test_integracao_cohen()
+{
+  Concordance_Cohen cohen;
+  Etografia eto_lida1 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+  Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+
+  QString saida = cohen.carrega_etografia(eto_lida1, eto_lida2 );
+
+  cohen.gravar_csv(PATH_TESTE+"teste_cohen.csv", saida);
 }
 
 QTEST_MAIN(test_concordancia)

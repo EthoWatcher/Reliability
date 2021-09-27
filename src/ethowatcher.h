@@ -27,7 +27,7 @@ struct catalago{
 
 
 struct analiseEtografica{
-
+   QString caminho_etografia;
    int quantidadeDePontos; //=0;
    QString tipoDeAnalise;
    std::vector<int> ponto;
@@ -40,6 +40,7 @@ struct analiseEtografica{
 
 
 struct Etografia{
+
     catalago *catalogo;
     analiseEtografica *registro;
     dadosVideo *video;
