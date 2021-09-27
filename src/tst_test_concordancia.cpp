@@ -36,6 +36,7 @@ private slots:
 
     void test_gera_lista_quador();
     void test_fless_kappa();
+    void test_integracao_cohen();
 
 
 };
@@ -208,6 +209,16 @@ void test_concordancia::test_fless_kappa(){
     QString texto = calculado_fless.text_fleiss_concordancia();
     calculado_fless.gravar_csv(PATH_TESTE+"teste_fleiss.csv", texto);
 
+
+}
+
+void test_concordancia::test_integracao_cohen()
+{
+  Concordance_Cohen cohen;
+  Etografia eto_lida1 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+  Etografia eto_lida2 = lerETOXML(PATH_DATA + "1e3z1h4.etoxml");
+
+  cohen.carrega_etografia(eto_lida1, eto_lida2 );
 
 }
 

@@ -7,16 +7,56 @@ Concordance_Cohen::Concordance_Cohen()
 
 void Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
 {
+    // Função utilizada para carregar as etografias pelo objeto.
     this->eto1 = eto1;
     this->eto1 = eto2;
-    // Função utilizada para carregar as etografias pelo objeto.
+
+
+    this->lista_eto1 = _constroi_lista_quadros(eto1);
+    this->lista_eto2 = _constroi_lista_quadros(eto2);
+    this->catalogo_id = eto1.catalogo->id;
+    this->catalogo_categorias_nomes = eto1.catalogo->nome;
+
+    this->calculo_concordancia();
+    this->text_csv_concordancia();
+
 }
 
 
 
 void Concordance_Cohen::calculo_concordancia()
 {
+    std::vector<std::vector<int> > matrix_concordance_nn = constroi_matrix_concordancia_cohen(this->lista_eto1, this->lista_eto2, this->catalogo_id);
     // implementar as funções de calculo de concordancia.
+    this->concordancia_acaso = calcula_concordancia_acaso(matrix_concordance_nn);
+    this->concordancia_observada = calcula_concordancia_observada(matrix_concordance_nn);
+    this->kappa_medio = calcula_kappa_medio(matrix_concordance_nn);
+
+
+    for(int i=0; i< this->catalogo_id.size(); i++){
+        confiabilidade_categoria conf_cate;
+        conf_cate.nome = this->catalogo_categorias_nomes[i];
+        //TODO: verificar se ambas as etografias tem o mesmo catalogo;
+
+        conf_cate.matrix = gera_matrix_22_pela_categoria(this->lista_eto1, this->lista_eto2, this->catalogo_id, i);
+        conf_cate.concordancia_observada = calcula_concordancia_observada(conf_cate.matrix);
+        conf_cate.concordancia_acaso = calcula_concordancia_acaso(conf_cate.matrix);
+        conf_cate.viez = calculo_vies_categoria(conf_cate.matrix);
+        conf_cate.prevalencia = calculo_prevalencia_categoria(conf_cate.matrix);
+        conf_cate.kappa = calcula_kappa_medio(conf_cate.matrix);
+
+
+        conf_cate.matrix_max  = arruma_matrix_kappa_maximo(conf_cate.matrix);
+        conf_cate.concordancia_observada_max = calcula_concordancia_observada(conf_cate.matrix_max);
+        conf_cate.concordancia_acaso_max = calcula_concordancia_acaso(conf_cate.matrix_max);
+        conf_cate.viez_max = calculo_vies_categoria(conf_cate.matrix_max);
+        conf_cate.prevalencia_max = calculo_prevalencia_categoria(conf_cate.matrix_max);
+        conf_cate.kappa_max = calcula_kappa_medio(conf_cate.matrix_max);
+
+     list_confiabilidade.push_back(conf_cate);
+    }
+
+    qDebug() << ";";
 }
 
 
@@ -501,7 +541,17 @@ void Concordance_Cohen::grava_csv_analise(QString caminho_arquivo)
 //    csvGravador <<"The Cohen's Kappa; " <<KohoKappa.kappa *100 <<"\n" ;
 
 
-//    outGravador.close();
+    //    outGravador.close();
+}
+
+QString Concordance_Cohen::text_csv_concordancia()
+{
+    QString texto_saida = "sep=;";
+
+    auto gera_user_info = [&](){
+        QString saida = "The user information\n";
+        return saida;
+    };
 }
 
 
