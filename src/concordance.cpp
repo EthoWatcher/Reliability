@@ -1530,14 +1530,103 @@ std::vector<std::vector<int> > gera_matrix_22(std::vector<std::vector<int> > mat
 
 std::vector<int> _constroi_lista_quadros(Etografia eto)
 {
-   std::vector<int> saida;
-   for(int i=0; i< eto.registro->frameInicial.size(); i++){
-       int q_inicial = eto.registro->frameInicial[i];
-       int q_final = eto.registro->frameFinal[i];
-       for(int j=0; j< q_final - q_inicial; j++ ){
-           saida.push_back(eto.registro->id[i]);
-       }
+    std::vector<int> saida;
+    auto testa_quadros_dentro = [](int qnt_inicial, int qnt_final, int q_testado){
+        bool r_teste = qnt_inicial <= q_testado ;
+        bool r_teste_2 = q_testado <= qnt_final;
 
-   }
-   return saida;
+        return r_teste && r_teste_2;
+    };
+
+    std::vector<int> vetor_quadros;
+    for(int i=eto.video->frameProce; i< eto.video->frameFinal; i++){
+        vetor_quadros.push_back(i);
+    }
+
+    auto encontra_quadros_gap = [&](){
+
+        std::vector<int> list_quadros_gap;
+
+        for(int i=0; i < (int) vetor_quadros.size(); i++){
+            int q_teste = vetor_quadros[i];
+
+            bool r_foi_marcado = false;
+            for(int j=0; j< (int) eto.registro->frameInicial.size(); j++){
+                bool r_dentro_range = testa_quadros_dentro(eto.registro->frameInicial[j],
+                                                           eto.registro->frameFinal[j],
+                                                           q_teste);
+
+
+                if(r_dentro_range){
+                    r_foi_marcado = true;
+                    break;
+                }
+
+            }
+            if(!r_foi_marcado){
+                list_quadros_gap.push_back(q_teste);
+            }
+        }
+
+        return list_quadros_gap;
+
+    };
+
+
+
+    std::vector<int> list_quadros_gap = encontra_quadros_gap();
+
+    for(int i=0; i< (int) vetor_quadros.size(); i++){
+        int q_teste = vetor_quadros[i];
+
+        bool r_no_gap = true;
+        for(int j=0; j< (int) list_quadros_gap.size(); j++){
+            bool r_valor_gap = list_quadros_gap[j] == q_teste;
+            if(r_valor_gap){
+                r_no_gap = false;
+                break;
+            }
+        }
+        if(r_no_gap){
+            for(int k=0; k< eto.registro->frameInicial.size(); k++){
+
+                int q_inicial = eto.registro->frameInicial[k];
+                int q_final = eto.registro->frameFinal[k];
+                int id_cate = eto.registro->id[k];
+
+                bool r_dentro_range = testa_quadros_dentro(q_inicial, q_final, q_teste);
+
+                if(r_dentro_range){
+                    saida.push_back(id_cate);
+                    break;
+                }
+            }
+
+        }else{
+            saida.push_back(-1);
+        }
+
+    }
+
+    return saida;
 }
+
+
+//       for(int i=0; i< eto.registro->frameInicial.size(); i++){
+
+
+//           int q_inicial = eto.registro->frameInicial[i];
+//           int q_final = eto.registro->frameFinal[i];
+//           for(int j=0; j< q_final - q_inicial; j++ ){
+//               saida.push_back(eto.registro->id[i]);
+//           }
+
+//       }
+
+//       bool r_checa_se_todos_quadros_marcados = saida.size() == (eto.video->frameFinal - eto.video->frameProce);
+
+//       if(r_checa_se_todos_quadros_marcados){
+//          qDebug() << "Construiu o array corretamente";
+//       }
+
+

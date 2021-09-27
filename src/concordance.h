@@ -18,6 +18,8 @@ public:
     void grava_xml_analise(QString caminho_arquivo);
 
     void gravar_csv(QString path_eto, QString t_saida);
+    Etografia eto1;
+    Etografia eto2;
 
 private:
     struct confiabilidade_categoria {
@@ -43,8 +45,7 @@ private:
     void calculo_concordancia();
     void le_xml_analise(QString caminho_arquivo);
 
-    Etografia eto1;
-    Etografia eto2;
+
     std::vector<int> lista_eto1;
     std::vector<int> lista_eto2;
     std::vector<int> catalogo_id;
