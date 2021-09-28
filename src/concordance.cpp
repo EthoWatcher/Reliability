@@ -9,7 +9,7 @@ QString Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
 {
     // Função utilizada para carregar as etografias pelo objeto.
     this->eto1 = eto1;
-    this->eto1 = eto2;
+    this->eto2 = eto2;
 
     this->catalogo_id = eto1.catalogo->id;
     this->catalogo_id.push_back( (int) catalogo_id.size());
@@ -21,6 +21,8 @@ QString Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
     this->catalogo_categorias_nomes = eto1.catalogo->nome;
     this->catalogo_categorias_nomes.push_back("Undefined (frames that are not marked)");
 
+
+
     this->calculo_concordancia();
     return this->text_csv_concordancia();
 
@@ -30,7 +32,55 @@ QString Concordance_Cohen::carrega_etografia(Etografia eto1, Etografia eto2)
 
 void Concordance_Cohen::calculo_concordancia()
 {
+    auto conta_quantidade_quadros = [&](std::vector<std::vector<int> > matriz_concordancia) -> int {
+            int contador_dados = 0;
+            for (auto linha: matriz_concordancia){
+                for(auto elemento: linha){
+
+                    contador_dados = contador_dados +elemento;
+                }
+            }
+
+            return contador_dados;
+            };
+
+    auto conta_quantidade_linha = [&](std::vector<std::vector<int> > matriz_concordancia) -> std::vector<float> {
+        int qnt_elementos =conta_quantidade_quadros(matriz_concordancia);
+        std::vector<float> qnt_linha;
+        for (auto linha: matriz_concordancia){
+            float qnt_elementos_linha=0;
+            qnt_elementos_linha = accumulate(linha.begin(), linha.end(), qnt_elementos_linha);
+            qnt_linha.push_back(qnt_elementos_linha/qnt_elementos);
+        }
+       return qnt_linha;
+
+    };
+
+    auto conta_quantidade_coluna = [&](std::vector<std::vector<int> > matriz_concordancia) -> std::vector<float>{
+       int qnt_elementos = conta_quantidade_quadros(matriz_concordancia);
+       std::vector<float> qnt_coluna;
+
+       int i_coluna = 0;
+        for (auto linha: matriz_concordancia){
+            float soma_coluna = 0;
+            for(auto linha:matriz_concordancia){
+                soma_coluna = soma_coluna + linha[i_coluna];
+            }
+          qnt_coluna.push_back(soma_coluna/ qnt_elementos);
+          i_coluna++;
+        }
+
+
+      return qnt_coluna;
+    };
+
+
+
+
     matrix_concordance_nn = constroi_matrix_concordancia_cohen(this->lista_eto1, this->lista_eto2, this->catalogo_id);
+    soma_linha = conta_quantidade_linha(matrix_concordance_nn);
+    soma_coluna =  conta_quantidade_coluna(matrix_concordance_nn);
+
     // implementar as funções de calculo de concordancia.
     this->concordancia_acaso = calcula_concordancia_acaso(matrix_concordance_nn);
     this->concordancia_observada = calcula_concordancia_observada(matrix_concordance_nn);
@@ -499,7 +549,22 @@ QString Concordance_Cohen::text_csv_concordancia()
         + QString::number(this->eto1.video->fps) + ";"
         + QString::number(this->eto1.video->frameProce) +";"
         + QString::number(this->eto1.video->frameFinal) + "\n";
-        //TODO: CONFERIR O PROCESO DE LEITURA DO XML, o frame inicial é usado para outra coisa
+
+
+        return saida;
+    }();
+
+    QString gera_info_eto  = [&](){
+        QString saida = "The ethographys analised:\n";
+        saida = saida + "Id;"+ "Path;" + " Type;\n";
+
+        saida = saida + "0" +";" + this->eto1.registro->caminho_etografia  + ";" + this->eto1.registro->tipoDeAnalise + "\n";
+        saida = saida + "1" +";"+ this->eto2.registro->caminho_etografia  + ";" +this->eto2.registro->tipoDeAnalise + "\n";
+
+
+
+
+
         return saida;
     }();
 
@@ -525,10 +590,11 @@ QString Concordance_Cohen::text_csv_concordancia()
         QString titulos = ";";
 
         for(int i=0; i< (int) this->catalogo_categorias_nomes.size(); i++){
-            titulos = titulos + this->catalogo_categorias_nomes[i]+ ";";
+            titulos = titulos + this->catalogo_categorias_nomes[i] + ";";
 
         }
-        saida = saida + titulos + "\n";
+        titulos =  titulos + ";" +"sum";
+        saida = saida + titulos+ "\n";
 
         for(int i=0; i< (int) matrix_concordance_nn.size(); i++){
             std::vector<int> linha = matrix_concordance_nn[i];
@@ -536,9 +602,17 @@ QString Concordance_Cohen::text_csv_concordancia()
             for(int j=0; j< (int) linha.size(); j++){
               saida = saida + QString::number(linha[j])+";";
             }
+            saida = saida + QString::number(this->soma_linha[i]) + ";";
 
             saida = saida + "\n";
         }
+
+        saida = saida + ";";
+        for(int i=0; i< (int) this->catalogo_categorias_nomes.size(); i++){
+            saida = saida + QString::number(this->soma_coluna[i]) + ";";
+
+        }
+        saida = saida + "\n";
 
 
 
@@ -603,6 +677,7 @@ QString Concordance_Cohen::text_csv_concordancia()
 
     texto_saida = texto_saida + gera_user_info
             +"\n\n" + gera_info_video
+            +"\n\n" + gera_info_eto
             +"\n\n" + gera_info_catalogo
             +"\n\n" + gera_resumo_analise
             +"\n\n" + gera_matriz_concordancia_all

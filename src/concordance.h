@@ -21,6 +21,8 @@ public:
     Etografia eto1;
     Etografia eto2;
     std::vector<std::vector<int> > matrix_concordance_nn ;
+    std::vector<float> soma_linha;
+    std::vector<float> soma_coluna;
 
 private:
     struct confiabilidade_categoria {
