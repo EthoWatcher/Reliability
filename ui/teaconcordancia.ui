@@ -17,7 +17,7 @@
    <item>
     <widget class="QStackedWidget" name="swPrincipal">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -143,20 +143,20 @@
                 <property name="columnCount">
                  <number>1</number>
                 </property>
-                <attribute name="horizontalHeaderDefaultSectionSize">
+                <attribute name="horizontalHeaderMinimumSectionSize">
                  <number>79</number>
                 </attribute>
-                <attribute name="horizontalHeaderMinimumSectionSize">
+                <attribute name="horizontalHeaderDefaultSectionSize">
                  <number>79</number>
                 </attribute>
                 <attribute name="verticalHeaderVisible">
                  <bool>false</bool>
                 </attribute>
-                <attribute name="verticalHeaderDefaultSectionSize">
-                 <number>20</number>
-                </attribute>
                 <attribute name="verticalHeaderMinimumSectionSize">
                  <number>19</number>
+                </attribute>
+                <attribute name="verticalHeaderDefaultSectionSize">
+                 <number>20</number>
                 </attribute>
                 <column>
                  <property name="text">
@@ -467,20 +467,20 @@
                 <property name="columnCount">
                  <number>1</number>
                 </property>
-                <attribute name="horizontalHeaderDefaultSectionSize">
+                <attribute name="horizontalHeaderMinimumSectionSize">
                  <number>79</number>
                 </attribute>
-                <attribute name="horizontalHeaderMinimumSectionSize">
+                <attribute name="horizontalHeaderDefaultSectionSize">
                  <number>79</number>
                 </attribute>
                 <attribute name="verticalHeaderVisible">
                  <bool>false</bool>
                 </attribute>
-                <attribute name="verticalHeaderDefaultSectionSize">
-                 <number>20</number>
-                </attribute>
                 <attribute name="verticalHeaderMinimumSectionSize">
                  <number>19</number>
+                </attribute>
+                <attribute name="verticalHeaderDefaultSectionSize">
+                 <number>20</number>
                 </attribute>
                 <column>
                  <property name="text">

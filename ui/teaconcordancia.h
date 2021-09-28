@@ -41,6 +41,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QXmlStreamReader>
 //#include "parserxmltocsv.h"
 
+#include "../src/ethowatcher.h"
+#include "../src/concordance.h"
+
 
 
 namespace Ui {
@@ -77,7 +80,7 @@ private:
     //Ui::telaEstatistica *ui;
     QString fonteVideoETOXML;
     QFile OutEtografia;
-    void lerETOXML(QString nomeArquivo);
+//    void lerETOXML(QString nomeArquivo);
 
 
     struct dadosVideo{
@@ -266,6 +269,8 @@ private:
  };
  paramtrosFleiss pEntrada;
 
+
+std::vector< Etografia> list_eto;
 
 signals:
 

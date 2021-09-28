@@ -53,19 +53,23 @@ void teaConcordancia::on_pushButton_5_clicked()
                 );
 
     //se final vxml
-    etografiaLida = new analiseEtografica();
-    catalagoLido = new catalago();
-    videoLido = new dadosVideo();
+//    etografiaLida = new analiseEtografica();
+//    catalagoLido = new catalago();
+//    videoLido = new dadosVideo();
 
-    lerETOXML(fonteVideoETOXML);
+    Etografia eto = lerETOXML(fonteVideoETOXML);
 
     caminhoAnalise.push_back(fonteVideoETOXML);
+    list_eto.push_back(eto);
+//    lerETOXML(fonteVideoETOXML)   ;
 
-    dadosDosVideos.push_back(*videoLido); //forma pratica de fazer um vetor com varios videos lidos
+//    caminhoAnalise.push_back(fonteVideoETOXML);
 
-    etografiaDosVideos.push_back(*etografiaLida); // forma pratica de fazer um vetor com varias analises etogrificas
+//    dadosDosVideos.push_back(*videoLido); //forma pratica de fazer um vetor com varios videos lidos
 
-    catalagoDosVideos.push_back(*catalagoLido); //forma pratica de fazer um vetor de alguma variavel
+//    etografiaDosVideos.push_back(*etografiaLida); // forma pratica de fazer um vetor com varias analises etogrificas
+
+//    catalagoDosVideos.push_back(*catalagoLido); //forma pratica de fazer um vetor de alguma variavel
 
 
     quantidadeDeVideo++;
@@ -91,469 +95,216 @@ void teaConcordancia::on_pushButton_5_clicked()
 void teaConcordancia::on_pushButton_6_clicked()
 {
     //cria um vetor com alocação dinamica de memoria no qual ele tem o tamanho de quantidadeDeVideo
-        //quantidade de video é um contador que soma toda vez que adiciona um novo video
-        etografiaKoho = new analiseEtografica[quantidadeDeVideo];
-        videosKoho = new dadosVideo[quantidadeDeVideo];
-        catalagoKoho = new catalago[quantidadeDeVideo];
-        int quantCate=0; //quantidade de categoria para fazer o vetor de categoria undefinida
+    //quantidade de video é um contador que soma toda vez que adiciona um novo video
+    Concordance_Cohen cohen;
 
-        for(int j=0; j<quantidadeDeVideo;j++){
+    QString saida = cohen.carrega_etografia(list_eto[0], list_eto[1]);
 
-            *(etografiaKoho + j) = etografiaDosVideos[j]; //aponta para o seu respectivo vetor
-            *(videosKoho +j)    =  dadosDosVideos[j];
-            *(catalagoKoho+j)   = catalagoDosVideos[j];
+    ui->lblVideo1->setText(caminhoAnalise[0]);
+    ui->lblVideo2->setText(caminhoAnalise[1]);
 
+    int qnt_categorias = cohen.eto1.catalogo->quantidadeDeCategorias;
+
+
+    ui->tabCoKapp->setColumnCount(qnt_categorias+1);
+
+    for(int k=0; k< qnt_categorias+1; k++){
+
+        if(k<qnt_categorias){
+            titulos << cohen.eto1.catalogo->nome[k];
+        }else{
+
+            titulos << "Undefinido" << "Somatório";
         }
+    }
 
-        //setando os nomes
+    //colocando os valores da tabela de concordando no GUI
+    ui->tabCoKapp->setHorizontalHeaderLabels(titulos);
 
+    int loopContador=0;
+    int tabela;
+    tabela= qnt_categorias+1;
 
-            ui->lblVideo1->setText(caminhoAnalise[0]);
-            ui->lblVideo2->setText(caminhoAnalise[1]);
+    for(int k=0;k<(qnt_categorias+1);k++){
+        ui->tabCoKapp->insertRow(ui->tabCoKapp->rowCount());
+        //cria uma nova linha
+        //categoria
 
+        int ja;
+//        for(ja=0; ja<(qnt_categorias+1); ja++){
+//            //no valor zero coloca
+//            ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
+//                                   ,ja,new QTableWidgetItem(
+//                                       QString::number(cohoKappa[loopContador])));
 
-
-        //conversão dos ponto
-        int qDPontos=0;
-        int pontos=0;
-        //bool entrou= false;
-        int v=0;
-        int lido;
-    //    std::vector<int> frameInfo;  //é uma linha dinahmica
-
-
-        for(v=0; v<quantidadeDeVideo; v++){
-        //m é giaul ao id do catalago 3 pq são 3 no catalgo
-        for(int m=0; m<catalagoKoho[0].quantidadeDeCategorias; m++){
-
-    //        std::vector<double> fInicial;
-    //        std::vector<double> fFinal;
-            fInicial.clear();
-            fFinal.clear();
-            frameInfo.clear();
-            pontos=0;
-            //encontra as regioões de determinada categoria do catalago
-            //encontra de acordo com o valor de m
-            for(qDPontos=0; qDPontos<etografiaKoho[v].quantidadeDePontos; qDPontos++){
-
-
-                if(etografiaKoho[v].id[qDPontos] ==m){
-                    fInicial.push_back(etografiaKoho[v].frameInicial[qDPontos]);
-                    fFinal.push_back(etografiaKoho[v].frameFinal[qDPontos]);
-                    pontos++;
-                }
+//            loopContador++;
+//        }
 
 
 
-            }
-            //qDPontos é o numero de pontos postos
-
-                //gera um for com um valor inicial igual ao frame inicial do video
-                //gera umf or com um valor final de acordo com o valor final do video
-               for(int frame= videosKoho[v].frameInicial; frame <
-                   videosKoho[v].frameFinal; frame++){
-                //para cada frame do video lido
-                    //o video lido é de acorodo com valor v
-               for(int geraVetor=0; geraVetor<pontos; geraVetor++){
-
-                   // ele testa o frame para cada intervalo de pontos lido
-                   // se encontrar ele coloca um  ponto com o valor do id da categoria
-                   if(((frame>=fInicial[geraVetor])&&(frame<=fFinal[geraVetor]))){
-
-                       frameInfo.push_back(m);
-                       entrou= true;
-                   }
-
-               }
-               //se o frame nao estiver dentro do intervalo o programa coloca o valor de -1
-               //-1 porque os id do catalago são sempre valores positivos
-
-                  if(!entrou){
-                       frameInfo.push_back(-1); //quer dissser que o usuario nao deixou precionado o botão
-
-                   }
-                   entrou= false;
-
-
-               }
-
-               //ao fim dos looping  de encontras os valores das categorias
-               //ele grava o vetor em uma matrix de pontos
-               frameVideo.push_back(frameInfo);
-               frameInfo.clear();
-               fInicial.clear();
-               fFinal.clear();
-
-           }
-
-
-        //e vai para a analise da categoria indefinida
-        std::vector<int> claUndefinida;
-        quantCate = catalagoKoho[0].quantidadeDeCategorias;
-
-
-     bool entra=false;
-
-     //tal
-        for(int p=0; p< (videosKoho[0].frameFinal-videosKoho[0].frameInicial);
-            p++){
-
-            //testa todas as  possibildiade de videos e de categorias do catalago
-            for(int z=0; z<quantCate;z++){
-                //for(int y=0; y<2; y++){
-
-                    //se alguma delas for diferente de vazio(-1) ele grava como vazio
-                    //vazio siginifica que não esta dentro da categoria testada
-                    //valor padrao
-                lido=frameVideo[z][p];
-                if((lido!=-1)&&(!entra)){
-
-                    claUndefinida.push_back(-1);
-                    entra=true;
-                   // break;
-
-                   // igualdade[y+z]=false;
-                    }
-                //}
-
-            }
-
-            if(!entra){
-                claUndefinida.push_back(quantCate); //o indefinido é classificado como ultimo
-
-            }
-            entra=false;
+//        ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
+//                               ,tabela,new QTableWidgetItem(
+//                                   QString::number(somatorioLinha[k])));
 
 
 
-        }
-        //ao fim ele grava o vetor em uma matriz
-        frameVideo.push_back(claUndefinida);
+        //escreve o ultimo valor que é a soma
+
+    }
+
+    int ma;
+    ui->tabCoKapp->insertRow(ui->tabCoKapp->rowCount());
+
+    for( ma=0;ma<(qnt_categorias+1);ma++)
+    {
 
 
-        // e ao fim de todas as operações ele grava o valor da matriz em uma
-        //matriz de 3 dimensões
-        //um cubo de pontos que possui pra cada
-        //[a][b][c]
-          //[a] numero do video
-          //[b] categoria
-          //[c] qtd de frame.
-        //grava o [b] e [c] no [a]
-
-
-            anaEtoDosVideos.push_back(frameVideo);
-            frameVideo.clear();
-
+//        ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
+//                               ,ma,new QTableWidgetItem(
+//                                   QString::number(somatorioColuna[ma])));
 
     }
 
 
-        //nesse botão ele faz a analise da matriz cubica de pontos
-        //    //quantidade de frames
+//    ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
+//                           ,tabela,new QTableWidgetItem(
+//                               QString::number(somatorioTotal)));
 
-        //matriz de acordo
-        //primeiro ele cria um vetor de pontos com a quantidade total de pontos
 
-        for(int j=0; j<(catalagoKoho[0].quantidadeDeCategorias+1); j++){
-            for(int k=0; k<(catalagoKoho[0].quantidadeDeCategorias+1); k++){
 
-            cohoKappa.push_back(0);
-            }
-        }
 
-        int quantKappa=0;
-
-
-        //encontrando a concordancia
-
-                //para cada categoria do catalago mais a categoria indefinida
-               for(int quantVideo=0; quantVideo<(catalagoKoho[0].quantidadeDeCategorias+1);quantVideo++){
-
-                    //para cada frame do video
-                   for(int qq=0; (qq<videosKoho[0].frameFinal- videosKoho[0].frameInicial)
-
-                       ;qq++){
-
-                        //para cada categoria do catalado
-                    for(int m=0; m<(catalagoKoho[0].quantidadeDeCategorias+1); m++ ){
-
-                            //o programa testa se o vator de pontos do video 2 é
-                            //igual ao do video 1
-                            //se forem ele adiciona 1 a qual categoria
-
-                         if((anaEtoDosVideos[0][quantVideo][qq]==quantVideo)&&
-                           (anaEtoDosVideos[1][m][qq]==m)){
-
-                             cohoKappa[quantKappa+m]=cohoKappa[quantKappa+m]+1;
-
-
-                      }
-
-
-
-                   }
-
-
-                }
-                quantKappa += catalagoKoho[0].quantidadeDeCategorias+1;
-
-             }
-
-    //           std::vector<int> somatorioLinha;
-                int soma=0;
-                int sCategoria=0;
-               for(int m=0; m<(catalagoKoho[0].quantidadeDeCategorias+1);m++){
-                    soma=0;
-
-                   for(int n=0; n<(catalagoKoho[0].quantidadeDeCategorias+1);n++){
-
-                   soma= soma +cohoKappa[sCategoria+n];
-
-                   }
-
-                    sCategoria=sCategoria+ catalagoKoho[0].quantidadeDeCategorias+1;
-                   somatorioLinha.push_back(soma);
-
-               }
-
-
-    //           std::vector<int> somatorioColuna;
-                sCategoria=0;
-               for(int m=0; m<(catalagoKoho[0].quantidadeDeCategorias+1);m++){
-                    soma=0;
-
-                   for(int n=0; n<((catalagoKoho[0].quantidadeDeCategorias+1)*
-                                   (catalagoKoho[0].quantidadeDeCategorias+1))
-                       ;n+=(catalagoKoho[0].quantidadeDeCategorias+1)){
-
-                   soma= soma +cohoKappa[m+n];
-
-                   }
-
-                   somatorioColuna.push_back(soma);
-
-               }
-
-               //fim de encontrar a concordancia
-               //encontrando os totais
-
-
-               for(int q=0;q<(catalagoKoho[0].quantidadeDeCategorias+1);q++){
-                   somatorioTotal=somatorioTotal+somatorioColuna[q];
-
-               }
-
-
-
-
-
-               //inicio de mostrar a tabela
-
-
-
-
-               ui->tabCoKapp->setColumnCount(catalagoKoho[0].quantidadeDeCategorias+1+1);
-
-               for(int k=0; k<catalagoKoho[0].quantidadeDeCategorias+1; k++){
-
-                    if(k<catalagoKoho[0].quantidadeDeCategorias){
-                        titulos << catalagoKoho[0].nome[k];
-                    }else{
-
-                        titulos << "Undefinido" << "Somatório";
-                    }
-
-
-
-               }
-
-           //colocando os valores da tabela de concordando no GUI
-               ui->tabCoKapp->setHorizontalHeaderLabels(titulos);
-
-                        int loopContador=0;
-                        int tabela;
-                        tabela= catalagoKoho[0].quantidadeDeCategorias+1;
-
-                        for(int k=0;k<(catalagoKoho[0].quantidadeDeCategorias+1);k++){
-                                ui->tabCoKapp->insertRow(ui->tabCoKapp->rowCount());
-                                //cria uma nova linha
-                                //categoria
-
-                                int ja;
-                                for(ja=0; ja<(catalagoKoho[0].quantidadeDeCategorias+1); ja++){
-                                    //no valor zero coloca
-                                  ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
-                                                           ,ja,new QTableWidgetItem(
-                                                               QString::number(cohoKappa[loopContador])));
-
-                                  loopContador++;
-                                }
-
-
-
-                                  ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
-                                                           ,tabela,new QTableWidgetItem(
-                                                               QString::number(somatorioLinha[k])));
-
-
-
-                                //escreve o ultimo valor que é a soma
-
-                        }
-
-                        int ma;
-                        ui->tabCoKapp->insertRow(ui->tabCoKapp->rowCount());
-
-                        for( ma=0;ma<(catalagoKoho[0].quantidadeDeCategorias+1);ma++)
-                        {
-
-
-                        ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
-                                                 ,ma,new QTableWidgetItem(
-                                                     QString::number(somatorioColuna[ma])));
-
-                        }
-
-
-                        ui->tabCoKapp->setItem(ui->tabCoKapp->rowCount()-1
-                                                 ,tabela,new QTableWidgetItem(
-                                                     QString::number(somatorioTotal)));
-
-
-
-
-                         ui->tabCoKapp->setVerticalHeaderLabels(titulos);
+    ui->tabCoKapp->setVerticalHeaderLabels(titulos);
 
 
     //    int a=frameVideo[2][2];
     //    ui->label->setText(QString::number(a));
 
-                         //    std::vector< std::vector<float> > porcentageTabela;
-                         //    std::vector<float> porcentagemLinha;
+    //    std::vector< std::vector<float> > porcentageTabela;
+    //    std::vector<float> porcentagemLinha;
 
-                             //encontra a tabela de porcentagem
-                             //+1 por causa da clase indefinida
-                             int somaAjuda=0;
-                             float grava;
-                             for(int l1=0;l1<(catalagoKoho[0].quantidadeDeCategorias+1);l1++){
+    //encontra a tabela de porcentagem
+    //+1 por causa da clase indefinida
+    //                             int somaAjuda=0;
+    //                             float grava;
+    //                             for(int l1=0;l1<(catalagoKoho[0].quantidadeDeCategorias+1);l1++){
 
-                                 porcentagemLinha.clear();
+    //                                 porcentagemLinha.clear();
 
-                                 for(int c1=0;c1<(catalagoKoho[0].quantidadeDeCategorias+1);c1++){
-
-
-                                      grava= (float) cohoKappa[c1+somaAjuda]/somatorioTotal;
+    //                                 for(int c1=0;c1<(catalagoKoho[0].quantidadeDeCategorias+1);c1++){
 
 
-                                     porcentagemLinha.push_back(grava);
-
-                                 }
-
-                                  somaAjuda+=catalagoKoho[0].quantidadeDeCategorias+1;
-
-                                 porcentageTabela.push_back(porcentagemLinha);
-
-                             }
-
-                             //até aqui enconrta a tabela de porcentagem apenas da tabela falta do somatorio
-
-                             float grava2;
-                             for(int l2=0;l2<(catalagoKoho[0].quantidadeDeCategorias+1);l2++){
-
-                                  porcentagemLinha.clear();
-                                  porcentagemLinha=porcentageTabela[l2];
-
-                                  grava2= (float)somatorioLinha[l2]/somatorioTotal;
-
-                                  porcentagemLinha.push_back(grava2);
+    //                                      grava= (float) cohoKappa[c1+somaAjuda]/somatorioTotal;
 
 
-                                  porcentageTabela[l2]=porcentagemLinha;
-                             }
+    //                                     porcentagemLinha.push_back(grava);
 
-                             //cria a ultima linha da tabela de porcentagem
-                             //que é a linha do somatorio
+    //                                 }
 
+    //                                  somaAjuda+=catalagoKoho[0].quantidadeDeCategorias+1;
 
-                             float grava3;
-                             porcentagemLinha.clear();
+    //                                 porcentageTabela.push_back(porcentagemLinha);
 
-                             for(int l3=0;l3<(catalagoKoho[0].quantidadeDeCategorias+1);l3++){
+    //                             }
 
+    //                             //até aqui enconrta a tabela de porcentagem apenas da tabela falta do somatorio
 
-                                 grava3= (float)somatorioColuna[l3]/somatorioTotal;
+    //                             float grava2;
+    //                             for(int l2=0;l2<(catalagoKoho[0].quantidadeDeCategorias+1);l2++){
 
-                                 porcentagemLinha.push_back(grava3);
+    //                                  porcentagemLinha.clear();
+    //                                  porcentagemLinha=porcentageTabela[l2];
 
+    //                                  grava2= (float)somatorioLinha[l2]/somatorioTotal;
 
-                             }
-
-                             grava3= (float) somatorioTotal/somatorioTotal;
-
-
-                             porcentagemLinha.push_back(grava3);
-                             porcentageTabela.push_back(porcentagemLinha);
+    //                                  porcentagemLinha.push_back(grava2);
 
 
-                             //mostra a tabela;
+    //                                  porcentageTabela[l2]=porcentagemLinha;
+    //                             }
 
-                             ui->tabPoKapp->setColumnCount(catalagoKoho[0].quantidadeDeCategorias+1+1);
-
-                             ui->tabPoKapp->setHorizontalHeaderLabels(titulos);
-
-
-                             for(int l4=0;l4<(catalagoKoho[0].quantidadeDeCategorias+1+1);l4++){
-                                     ui->tabPoKapp->insertRow(ui->tabPoKapp->rowCount());
-                                     //cria uma nova linha
-                                     //categoria
-
-                                     for(int c4=0; c4<(catalagoKoho[0].quantidadeDeCategorias+1+1); c4++){
-                                         //no valor zero coloca
-                                       ui->tabPoKapp->setItem(ui->tabPoKapp->rowCount()-1
-                                                                ,c4,new QTableWidgetItem(
-                                                                    QString::number(porcentageTabela[l4][c4])));
+    //                             //cria a ultima linha da tabela de porcentagem
+    //                             //que é a linha do somatorio
 
 
-                                     }
-                             }
+    //                             float grava3;
+    //                             porcentagemLinha.clear();
+
+    //                             for(int l3=0;l3<(catalagoKoho[0].quantidadeDeCategorias+1);l3++){
 
 
-                             ui->tabPoKapp->setVerticalHeaderLabels(titulos);
+    //                                 grava3= (float)somatorioColuna[l3]/somatorioTotal;
 
-                             //gerou a ultima linha de porcentagem;
-
-                             int novoContador=0;
-                              for(int l5=0;l5<(catalagoKoho[0].quantidadeDeCategorias+1);l5++){
-
-                                  cohoK1= (float) cohoKappa[l5+novoContador]+cohoK1;
-
-                                  novoContador += catalagoKoho[0].quantidadeDeCategorias+1;
-                              }
-
-                              cohoK1= (float) cohoK1/somatorioTotal;
-
-                              ui->leK1->setText(QString::number(cohoK1));
+    //                                 porcentagemLinha.push_back(grava3);
 
 
-                              int ultimaPosicao= (catalagoKoho[0].quantidadeDeCategorias+1);
+    //                             }
+
+    //                             grava3= (float) somatorioTotal/somatorioTotal;
 
 
-                              for(int cont=0; cont<(catalagoKoho[0].quantidadeDeCategorias+1);cont++ ){
-
-                                  cohoK2= (float)cohoK2 + porcentageTabela[ultimaPosicao][cont] * porcentageTabela[cont][ultimaPosicao];
-
-                              }
-
-                              ui->leK2->setText(QString::number(cohoK2));
+    //                             porcentagemLinha.push_back(grava3);
+    //                             porcentageTabela.push_back(porcentagemLinha);
 
 
-                              cohoKappaResultado= (float) (cohoK1-cohoK2)/(1-cohoK2);
+    //mostra a tabela;
 
-                              ui->leCKappa->setText(QString::number(cohoKappaResultado));
+    ui->tabPoKapp->setColumnCount(qnt_categorias+1+1);
+
+    ui->tabPoKapp->setHorizontalHeaderLabels(titulos);
+
+
+    for(int l4=0;l4<(qnt_categorias+1+1);l4++){
+        ui->tabPoKapp->insertRow(ui->tabPoKapp->rowCount());
+        //cria uma nova linha
+        //categoria
+
+        for(int c4=0; c4<(qnt_categorias+1+1); c4++){
+            //no valor zero coloca
+//            ui->tabPoKapp->setItem(ui->tabPoKapp->rowCount()-1
+//                                   ,c4,new QTableWidgetItem(
+//                                       QString::number(porcentageTabela[l4][c4])));
+
+
+        }
+    }
+
+
+    ui->tabPoKapp->setVerticalHeaderLabels(titulos);
+
+    //gerou a ultima linha de porcentagem;
+
+    int novoContador=0;
+    for(int l5=0;l5<(qnt_categorias+1);l5++){
+
+//        cohoK1= (float) cohoKappa[l5+novoContador]+cohoK1;
+
+//        novoContador += qnt_categorias+1;
+    }
+
+//    cohoK1= (float) cohoK1/somatorioTotal;
+
+    ui->leK1->setText(QString::number(cohoK1));
+
+
+    int ultimaPosicao= (qnt_categorias+1);
+
+
+    for(int cont=0; cont<(qnt_categorias+1);cont++ ){
+
+//        cohoK2= (float)cohoK2 + porcentageTabela[ultimaPosicao][cont] * porcentageTabela[cont][ultimaPosicao];
+
+    }
+
+//    ui->leK2->setText(QString::number(cohoK2));
+
+
+//    cohoKappaResultado= (float) (cohoK1-cohoK2)/(1-cohoK2);
+
+//    ui->leCKappa->setText(QString::number(cohoKappaResultado));
 
 
 
-               ui->swKohoneKappa->setCurrentIndex(1);
+    ui->swKohoneKappa->setCurrentIndex(1);
 }
 
 void teaConcordancia::on_pbCohenGravar_clicked()
@@ -799,22 +550,23 @@ void teaConcordancia::on_pbCarregarFleis_clicked()
                 );
 
     //se final vxml
-    etografiaLida = new analiseEtografica();
-    catalagoLido = new catalago();
-    videoLido = new dadosVideo();
 
-    lerETOXML(fonteVideoETOXML);
-
-    caminhoAnalise.push_back(fonteVideoETOXML);
-
-    dadosDosVideos.push_back(*videoLido); //forma pratica de fazer um vetor com varios videos lidos
-
-    etografiaDosVideos.push_back(*etografiaLida); // forma pratica de fazer um vetor com varias analises etogrificas
-
-    catalagoDosVideos.push_back(*catalagoLido); //forma pratica de fazer um vetor de alguma variavel
+    Etografia eto = lerETOXML(fonteVideoETOXML);
 
 
-    quantidadeDeVideo++;
+//    etografiaLida = new analiseEtografica();
+//    catalagoLido = new catalago();
+//    videoLido = new dadosVideo();
+
+//    lerETOXML(fonteVideoETOXML);
+
+//    caminhoAnalise.push_back(fonteVideoETOXML);
+//    dadosDosVideos.push_back(*videoLido); //forma pratica de fazer um vetor com varios videos lidos
+//    etografiaDosVideos.push_back(*etografiaLida); // forma pratica de fazer um vetor com varias analises etogrificas
+//    catalagoDosVideos.push_back(*catalagoLido); //forma pratica de fazer um vetor de alguma variavel
+
+
+//    quantidadeDeVideo++;
 
     ui->tabDadCat_2->insertRow(ui->tabDadCat_2->rowCount());
     ui->tabDadCat_2->setItem(ui->tabDadCat_2->rowCount()-1,0,new QTableWidgetItem(fonteVideoETOXML));
@@ -1499,104 +1251,104 @@ void teaConcordancia::on_pbGerarKappa_clicked()
 //    parser->converteArquivo(nomeGravarCatalago);
 }
 
-void teaConcordancia::lerETOXML(QString nomeArquivo)
-{
-    OutEtografia.setFileName(nomeArquivo);
-    OutEtografia.open(QIODevice::ReadOnly);
+//void teaConcordancia::lerETOXML(QString nomeArquivo)
+//{
+//    OutEtografia.setFileName(nomeArquivo);
+//    OutEtografia.open(QIODevice::ReadOnly);
 
-    QXmlStreamReader streamReader(&OutEtografia); //passa o endereço
+//    QXmlStreamReader streamReader(&OutEtografia); //passa o endereço
 
-    QString conversor;
-
-
-//    while(!streamReader.atEnd() && !streamReader.hasError()){
-
-//        streamReader.readNext();
-
-//        if(streamReader.name() == "analise"){
-
-//          if(etografiaLida->controle){
-
-//              etografiaLida->ponto.push_back(streamReader.attributes().value("ponto").toInt());
-//              etografiaLida->id.push_back(streamReader.attributes().value("id").toInt());
-//              etografiaLida->frameInicial.push_back(streamReader.attributes().value("frameInicial").toDouble());
-//              etografiaLida->frameFinal.push_back(streamReader.attributes().value("frameFinal").toDouble()-1);
-//             // etografiaLida->frameFinal.push_back(streamReader.attributes().value("frameFinal").toDouble());
-//              //   contadorTamanho++;
-//              etografiaLida->quantidadeDePontos++;
-
-//            }
-//            etografiaLida->controle=!etografiaLida->controle;
-//           //qDebug() << leitorXML.attributes().value("id").toInt();
-
-//        }
+//    QString conversor;
 
 
-//        if(streamReader.name() == "categoria"){
+////    while(!streamReader.atEnd() && !streamReader.hasError()){
 
-//          if(catalagoLido->controle){
-//              QString nome;
-//             // etografiaLida.ponto.push_back(streamReader.attributes().value("ponto").toInt());
-//              catalagoLido->id.push_back(streamReader.attributes().value("id").toInt());
-//                nome= streamReader.attributes().value("nome").toString();
-//              catalagoLido->nome.push_back(nome);
-//              //etografiaLida.frameFinal.push_back(streamReader.attributes().value("frameFinal").toDouble());
-//              //   contadorTamanho++;
-//              catalagoLido->quantidadeDeCategorias++;
+////        streamReader.readNext();
 
-//            }
-//            catalagoLido->controle=!catalagoLido->controle;
-//           //qDebug() << leitorXML.attributes().value("id").toInt();
+////        if(streamReader.name() == "analise"){
 
-//        }
+////          if(etografiaLida->controle){
 
-//        if(streamReader.name() == "nomeCaminhoExt"){
-//            catalagoLido->caminhoArquivo= streamReader.readElementText();
+////              etografiaLida->ponto.push_back(streamReader.attributes().value("ponto").toInt());
+////              etografiaLida->id.push_back(streamReader.attributes().value("id").toInt());
+////              etografiaLida->frameInicial.push_back(streamReader.attributes().value("frameInicial").toDouble());
+////              etografiaLida->frameFinal.push_back(streamReader.attributes().value("frameFinal").toDouble()-1);
+////             // etografiaLida->frameFinal.push_back(streamReader.attributes().value("frameFinal").toDouble());
+////              //   contadorTamanho++;
+////              etografiaLida->quantidadeDePontos++;
 
+////            }
+////            etografiaLida->controle=!etografiaLida->controle;
+////           //qDebug() << leitorXML.attributes().value("id").toInt();
 
-//        }
-
-//        if(streamReader.name() == "tipoAnalise"){
-//            catalagoLido->tipoAnalise= streamReader.readElementText();
+////        }
 
 
-//        }
+////        if(streamReader.name() == "categoria"){
 
-//        if((streamReader.name() == "dadosVideoAnalisado")||(videoLido->controle)){
+////          if(catalagoLido->controle){
+////              QString nome;
+////             // etografiaLida.ponto.push_back(streamReader.attributes().value("ponto").toInt());
+////              catalagoLido->id.push_back(streamReader.attributes().value("id").toInt());
+////                nome= streamReader.attributes().value("nome").toString();
+////              catalagoLido->nome.push_back(nome);
+////              //etografiaLida.frameFinal.push_back(streamReader.attributes().value("frameFinal").toDouble());
+////              //   contadorTamanho++;
+////              catalagoLido->quantidadeDeCategorias++;
 
+////            }
+////            catalagoLido->controle=!catalagoLido->controle;
+////           //qDebug() << leitorXML.attributes().value("id").toInt();
 
-//          if(streamReader.name() == "nomeVxml"){
-//           videoLido->nome= streamReader.readElementText();
+////        }
 
-//          }
-
-//          if(streamReader.name() == "frameProces"){
-
-//              videoLido->frameInicial= streamReader.readElementText().toInt();
-
-//          }
-
-//          if(streamReader.name() == "frameFinal"){
-//           videoLido->frameFinal= streamReader.readElementText().toInt();
-
-//            videoLido->controle=false;
-//        }
-//          if(streamReader.name() == "fps"){
-//              videoLido->fps= streamReader.readElementText().toDouble();
-
-//              videoLido->controle=false;
-//          }
+////        if(streamReader.name() == "nomeCaminhoExt"){
+////            catalagoLido->caminhoArquivo= streamReader.readElementText();
 
 
-//        }
+////        }
 
-//    }
+////        if(streamReader.name() == "tipoAnalise"){
+////            catalagoLido->tipoAnalise= streamReader.readElementText();
 
-//    //correção
-//    etografiaLida->frameFinal[etografiaLida->frameFinal.size()-1]++;
 
-//    OutEtografia.close();
-}
+////        }
+
+////        if((streamReader.name() == "dadosVideoAnalisado")||(videoLido->controle)){
+
+
+////          if(streamReader.name() == "nomeVxml"){
+////           videoLido->nome= streamReader.readElementText();
+
+////          }
+
+////          if(streamReader.name() == "frameProces"){
+
+////              videoLido->frameInicial= streamReader.readElementText().toInt();
+
+////          }
+
+////          if(streamReader.name() == "frameFinal"){
+////           videoLido->frameFinal= streamReader.readElementText().toInt();
+
+////            videoLido->controle=false;
+////        }
+////          if(streamReader.name() == "fps"){
+////              videoLido->fps= streamReader.readElementText().toDouble();
+
+////              videoLido->controle=false;
+////          }
+
+
+////        }
+
+////    }
+
+////    //correção
+////    etografiaLida->frameFinal[etografiaLida->frameFinal.size()-1]++;
+
+////    OutEtografia.close();
+//}
 
 double teaConcordancia::calcularPI(std::vector<int> entrada)
 {
