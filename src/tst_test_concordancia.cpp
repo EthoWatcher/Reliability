@@ -4,6 +4,8 @@
 
 #include "ethowatcher.h"
 #include "concordance.h"
+#include "bootstrap.h"
+
 #include <QApplication>
 #include <QDir>
 
@@ -38,6 +40,10 @@ private slots:
 //    void test_fless_kappa();
 //    void test_integracao_cohen();
     void test_artigo_dados();
+
+
+    // testando bootstrap
+    void test_bootstrap();
 
 
 };
@@ -273,6 +279,22 @@ void test_concordancia::test_artigo_dados()
 //    qDebug() << calcula_concordancia_acaso(matriz_concordancia
 
 
+}
+
+void test_concordancia::test_bootstrap(){
+    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
+    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
+    std::vector<int> catalogo  = {0, 1, 2};
+
+    Bootstrap a = Bootstrap(etrografia_1,etrografia_2 );
+    std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
+    std::vector<int> na1 = std::get<0>(novas_etografias);
+    std::vector<int> na2 = std::get<1>(novas_etografias);
+
+    std::tuple< std::vector<int>, std::vector<int> >  novas_etografias_2  = a.generate_new_etografia();
+    std::vector<int> nb1 = std::get<0>(novas_etografias_2);
+    std::vector<int> nb2 = std::get<1>(novas_etografias_2);
+    std::tuple< std::vector<int>, std::vector<int> >  novas_etografias_3  = a.generate_new_etografia();
 }
 
 
