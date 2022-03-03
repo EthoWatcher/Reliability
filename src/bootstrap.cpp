@@ -12,7 +12,7 @@ Bootstrap::Bootstrap(std::vector<int> etrografia_1, std::vector<int> etrografia_
     }
     //tem que ver qual é a melhor solução, uma o srand
 //    std::srand(s_rand);
-    srand (time(NULL));
+//    srand (time(NULL));
 
 
 }

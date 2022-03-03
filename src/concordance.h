@@ -130,6 +130,27 @@ private:
 
 
 
+class Calculo_paper{
+    public:
+    struct Concordancia{
+        int categoria;
+        float observada;
+        float acaso;
+        float kappa;
+        float vies;
+        float prevalencia;
+        std::vector< std::vector<int> > matriz_concordancia;
+
+    };
+    std::vector<int> et1;
+    std::vector<int> et2;
+    std::vector<Calculo_paper::Concordancia> list_kappa_cat;
+    std::vector<Calculo_paper::Concordancia> list_kappa_cat_max;
+    Calculo_paper::Concordancia catalogo_var;
+
+    Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo );
+
+};
 
 
 #endif // CONCORDANCE_H

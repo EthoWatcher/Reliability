@@ -1758,3 +1758,64 @@ std::vector<int> _constroi_lista_quadros(Etografia eto)
 //       }
 
 
+
+Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo )
+{
+    //arrumar essa função para deixar ela generica e guardar todos os valores.
+    // para depois poder aplicar a tecnica de bootstrap.
+    et1 = etrografia_1;
+    et2 = etrografia_2;
+    auto matriz_concordancia = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
+
+
+    catalogo_var.matriz_concordancia = matriz_concordancia;
+    catalogo_var.acaso = calcula_concordancia_acaso(matriz_concordancia);
+    catalogo_var.observada =calcula_concordancia_observada(matriz_concordancia);
+    catalogo_var.kappa = calcula_kappa_medio(matriz_concordancia);
+    catalogo_var.vies = 0;
+    catalogo_var.prevalencia = 0;
+//    float concordancia_acaso_catalogo = calcula_concordancia_acaso(matriz_concordancia);
+//    float concordancia_observada_catalogo = calcula_concordancia_observada(matriz_concordancia);
+//    float kappa_catalogo = calcula_kappa_medio(matriz_concordancia);
+//    qDebug() << "Concordancia Cohone catalogo "<< matriz_concordancia << "concordancia acaso: " << concordancia_acaso_catalogo << "concordancia observada: " << concordancia_observada_catalogo << "Kappa: " << kappa_catalogo;
+
+
+    for(int cat : catalogo){
+        Calculo_paper::Concordancia kappa_categoria;
+        kappa_categoria.categoria = cat;
+        kappa_categoria.matriz_concordancia = gera_matrix_22_pela_categoria(etrografia_1, etrografia_2, catalogo, cat);
+        kappa_categoria.acaso = calcula_concordancia_acaso(kappa_categoria.matriz_concordancia);
+        kappa_categoria.observada = calcula_concordancia_observada(kappa_categoria.matriz_concordancia);
+        kappa_categoria.kappa = calcula_kappa_medio(kappa_categoria.matriz_concordancia);
+        kappa_categoria.vies = calculo_vies_categoria(kappa_categoria.matriz_concordancia);
+        kappa_categoria.prevalencia = calculo_prevalencia_categoria(kappa_categoria.matriz_concordancia);
+        list_kappa_cat.push_back(kappa_categoria);
+
+        Calculo_paper::Concordancia kappa_categoria_max;
+        kappa_categoria_max.categoria = cat;
+        kappa_categoria_max.matriz_concordancia = arruma_matrix_kappa_maximo(kappa_categoria.matriz_concordancia);
+        kappa_categoria_max.acaso = calcula_concordancia_acaso(kappa_categoria_max.matriz_concordancia);
+        kappa_categoria_max.observada = calcula_concordancia_observada(kappa_categoria_max.matriz_concordancia);
+        kappa_categoria_max.vies = calculo_vies_categoria(kappa_categoria_max.matriz_concordancia);
+        kappa_categoria_max.kappa = calcula_kappa_medio(kappa_categoria_max.matriz_concordancia);
+        kappa_categoria_max.prevalencia = calculo_prevalencia_categoria(kappa_categoria_max.matriz_concordancia);
+        list_kappa_cat_max.push_back(kappa_categoria_max);
+
+    }
+
+
+//    std::vector<std::vector<int> > matrix_22_swimming = gera_matrix_22_pela_categoria(etrografia_1, etrografia_2, catalogo, 0);
+//    float viez_swimming = calculo_vies_categoria(matrix_22_swimming);
+//    float prevalencia_swimming = calculo_prevalencia_categoria(matrix_22_swimming);
+//    float kappa_swimming = calcula_kappa_medio(matrix_22_swimming);
+//    qDebug() << "Swimming \n" << matrix_22_swimming << "Vies: " << viez_swimming << "Prevalencia: " << prevalencia_swimming << "Kappa: " << kappa_swimming;
+
+//    std::vector<std::vector<int>> kappa_maximo_matrix = arruma_matrix_kappa_maximo(matrix_22_swimming);
+//    float viez_max_swimming = calculo_vies_categoria(kappa_maximo_matrix);
+//    float prevalencia_max_swimming = calculo_prevalencia_categoria(kappa_maximo_matrix);
+//    float kappa_max_swimming = calcula_kappa_medio(kappa_maximo_matrix);
+//    qDebug() << "Swimming max \n" << kappa_maximo_matrix << "Vies: " << viez_max_swimming << "Prevalencia: " << prevalencia_max_swimming << "Kappa: " << kappa_max_swimming;
+
+
+
+}

@@ -8,6 +8,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <numeric>
 
 // add necessary includes here
 QString PATH_DATA = "C:/Doutorado_softwares/Reliability/data/"; //variavel global.
@@ -44,6 +45,7 @@ private slots:
 
     // testando bootstrap
     void test_bootstrap();
+    void test_get_all_var();
 
 
 };
@@ -295,6 +297,107 @@ void test_concordancia::test_bootstrap(){
     std::vector<int> nb1 = std::get<0>(novas_etografias_2);
     std::vector<int> nb2 = std::get<1>(novas_etografias_2);
     std::tuple< std::vector<int>, std::vector<int> >  novas_etografias_3  = a.generate_new_etografia();
+}
+
+void test_concordancia::test_get_all_var()
+{
+    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
+    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
+    std::vector<int> catalogo  = {0, 1, 2};
+
+    std::vector< Calculo_paper>  varios_kappa;
+    Calculo_paper c_1 = Calculo_paper(etrografia_1, etrografia_2, catalogo);
+//    varios_kappa.push_back(c_1);
+
+    for(int i=0; i<1000; i++){
+        Bootstrap a = Bootstrap(etrografia_1,etrografia_2 );
+        std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
+        std::vector<int> e1 = std::get<0>(novas_etografias);
+        std::vector<int> e2 = std::get<1>(novas_etografias);
+        Calculo_paper c = Calculo_paper(e1, e2, catalogo);
+        varios_kappa.push_back(c);
+
+    }
+
+
+    // calculando media e std
+
+    auto calc_media = [](std::vector<float> kappa_medidos )
+        {
+
+
+            //calculando a media
+            float media=0;
+            for(float x: kappa_medidos){
+                media = media + x;
+
+            }
+            media = media/kappa_medidos.size();
+            return media;
+        };
+
+    auto calc_std = [](std::vector<float> kappa_medidos )
+        {
+            //calculando a media
+            float media=0;
+            for(float x: kappa_medidos){
+                media = media + x;
+
+            }
+            media = media/kappa_medidos.size();
+
+            double accum = 0.0;
+            std::for_each (std::begin(kappa_medidos), std::end(kappa_medidos), [&](const double d) {
+                accum += (d - media) * (d - media);
+            });
+
+            double stdev = sqrt(accum / (kappa_medidos.size()-1));
+
+            return stdev;
+        };
+
+
+    // pegando as variaveis
+    auto get_catalogo_kappa = [](std::vector< Calculo_paper>  varios_kappa){
+        std::vector<float> kappa_medidos;
+        for(Calculo_paper x: varios_kappa){
+            kappa_medidos.push_back(x.catalogo_var.kappa);
+        }
+        return kappa_medidos;
+    };
+
+    auto get_kappa_cat_n = [](std::vector< Calculo_paper>  varios_kappa, int n){
+        std::vector<float> kappa_medidos;
+        for(Calculo_paper x: varios_kappa){
+            kappa_medidos.push_back(x.list_kappa_cat[n].kappa);
+        }
+        return kappa_medidos;
+    };
+
+    auto get_max_kappa_cat_n = [](std::vector< Calculo_paper>  varios_kappa, int n){
+        std::vector<float> kappa_medidos;
+        for(Calculo_paper x: varios_kappa){
+            kappa_medidos.push_back(x.list_kappa_cat_max[n].kappa);
+        }
+        return kappa_medidos;
+    };
+
+
+    auto kappa_catalogo = get_catalogo_kappa(varios_kappa);
+    auto kappa_med_cate_0 = get_kappa_cat_n(varios_kappa, 0);
+    auto kappa_max_cate_0 = get_max_kappa_cat_n(varios_kappa, 0);
+
+
+   float m_medida  = calc_media(kappa_med_cate_0);
+   float m_max     = calc_media(kappa_max_cate_0);
+   float std_mdida = calc_std(kappa_med_cate_0);
+   float std_max   = calc_std(kappa_max_cate_0);
+   float d_cohen   = (m_max - m_medida)/ sqrt(((std_max * std_max) + (std_mdida * std_mdida))/2);
+
+    qDebug() << m_medida << m_max << std_mdida << std_max << d_cohen;
+
+
+
 }
 
 
