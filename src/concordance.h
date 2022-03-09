@@ -80,6 +80,54 @@ float calculo_por_categoria(std::vector<std::vector<int> > matiz_concordancia_22
 float transforma_matris_nn_22();
 
 
+// calculo do kappa maximo
+int  get_soma_linha(std::vector<int> l_grid);
+
+class Marginal{
+public:
+    int linha;
+    int colun;
+    Marginal(int linha, int colun){
+        this->colun = linha;
+        this->linha = colun;
+    };
+    int get_menor_valor(){
+        if (this->colun > this->linha){
+            return this->linha;
+        }else{
+            return this->colun;
+        }
+
+    };
+    int get_maior_Valor(){
+        if (this->colun < this->linha){
+            return this->linha;
+        }else{
+            return this->colun;
+        }
+    };
+
+
+};
+
+std::vector<int>  transpose_linha(std::vector<std::vector<int> >grid, int linha);
+std::vector<bool>  transpose_linha_bool(std::vector<std::vector<bool> >grid, int linha);
+Marginal get_colu_linha_soma(std::vector<std::vector<int> >grid, int linha);
+std::vector<int>  get_all_marginal(std::vector<std::vector<int> >grid);
+std::vector<Marginal>  get_tuple_marginal(std::vector<std::vector<int> >grid);
+std::vector<std::vector<int> > generate_matriz_maxima(std::vector<std::vector<int> >grid);
+
+std::vector<std::vector<bool> > generate_matriz_maxima_visitada(std::vector<std::vector<int> >grid);
+
+
+//int get_maior_Valor(Marginal tuple_in);
+
+std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector<int> > &grid_max,
+            std::vector<std::vector<bool> > matrix_max_visitada,
+            std::vector<Marginal> tuple_marginal);
+
+
+std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid);
 
 
 // Calculo da concordancia

@@ -1757,6 +1757,264 @@ std::vector<int> _constroi_lista_quadros(Etografia eto)
 //          qDebug() << "Construiu o array corretamente";
 //       }
 
+int  get_soma_linha(std::vector<int> l_grid){
+    int soma = 0;
+    for(int i=0; i< l_grid.size(); i++){
+        soma = soma + l_grid[i];
+    }
+    return soma;
+}
+
+std::vector<int>  transpose_linha(std::vector<std::vector<int> >grid, int linha){
+    std::vector<int> saida = {};
+    for(std::vector<int> l_grid: grid){
+        saida.push_back(l_grid[linha]);
+    }
+    return saida;
+}
+
+std::vector<bool> transpose_linha_bool(std::vector<std::vector<bool> >grid, int linha){
+    std::vector<bool> saida = {};
+    for(std::vector<bool> l_grid: grid){
+        saida.push_back(l_grid[linha]);
+    }
+    return saida;
+}
+
+Marginal get_colu_linha_soma(std::vector<std::vector<int> >grid, int linha){
+    Marginal m = Marginal(0,0);
+    m.linha = get_soma_linha(grid[linha]);
+    m.colun = get_soma_linha(transpose_linha(grid, linha));
+    return  m;
+}
+std::vector<int> get_all_marginal(std::vector<std::vector<int> > grid)
+{
+    std::vector<int> ls_marginal ={};
+
+     for(int i=0; i < grid[0].size(); i++){
+        ls_marginal.push_back(get_colu_linha_soma(grid, i).get_menor_valor());
+
+    }
+     return ls_marginal;
+
+}
+
+std::vector<Marginal> get_tuple_marginal(std::vector<std::vector<int> >grid){
+    std::vector<Marginal> ls_marginal ={};
+
+     for(int i=0; i< grid[0].size(); i++){
+     ls_marginal.push_back(get_colu_linha_soma(grid, i));
+
+     }
+
+     return ls_marginal;
+
+}
+
+std::vector<std::vector<int> > generate_matriz_maxima(std::vector<std::vector<int> > grid)
+{
+    std::vector<int> ls_marginal = get_all_marginal(grid);
+    std::vector<std::vector<int> > grid_novo ={};
+
+    for(int coluna=0; coluna< ls_marginal.size(); coluna++){
+        std::vector<int> col_nova = {};
+        for(int linha=0; linha< ls_marginal.size(); linha++){
+            bool r_centro = linha == coluna;
+             if (r_centro){
+                col_nova.push_back(ls_marginal[coluna]);
+             }else{
+                col_nova.push_back(0);
+             }
+
+        }
+        grid_novo.push_back(col_nova);
+    }
+    return grid_novo;
+}
+
+std::vector<std::vector<bool> > generate_matriz_maxima_visitada(std::vector<std::vector<int> > grid)
+{
+    std::vector<int> ls_marginal = get_all_marginal(grid);
+    std::vector<std::vector<bool> > grid_novo ={};
+
+    for(int coluna=0; coluna< ls_marginal.size(); coluna++){
+        std::vector<bool> col_nova = {};
+        for(int linha=0; linha< ls_marginal.size(); linha++){
+            bool r_centro = linha == coluna;
+             if (r_centro){
+                col_nova.push_back(ls_marginal[coluna]);
+             }else{
+                col_nova.push_back(0);
+             }
+
+        }
+        grid_novo.push_back(col_nova);
+    }
+    return grid_novo;
+}
+
+
+
+std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector<int> > & grid_max,
+            std::vector<std::vector<bool> > matrix_max_visitada,
+            std::vector<Marginal> tuple_marginal){
+    struct NextItem{
+        int i;
+        int j;
+        bool existe;
+    };
+
+    auto get_next_item = [] (std::vector<std::vector<bool> > grid)
+    {
+        NextItem saida;
+        for(int i=0; i< grid[0].size(); i++){
+            for(int j=0; j< grid[i].size(); j++){
+                bool r_vazia = grid[i][j] == false;
+                if(r_vazia){
+                    saida.i = i;
+                    saida.j = j;
+                    saida.existe = true;
+                    return saida;
+                }else{
+
+                }
+            }
+        }
+        saida.i = 0;
+        saida.j = 0;
+        saida.existe = false;
+        return saida;
+
+
+    };
+
+    auto checa_valido = [] (
+            std::vector<std::vector<int> > matrix,
+            std::vector<std::vector<bool> >matrix_max_visitada,
+            std::vector<Marginal> tuple_marginal,
+            int linha,
+            int coluna){
+
+        auto soma_linha  = get_soma_linha(matrix[linha]);
+        auto soma_coluna = get_colu_linha_soma(matrix, coluna).colun;
+
+        auto max_valor_linha   = tuple_marginal[linha].get_maior_Valor();
+        auto max_valor_colun   = tuple_marginal[coluna].get_maior_Valor();
+
+        bool r_linha_completa = max_valor_linha == soma_linha;
+        bool r_col_completa   = max_valor_colun == soma_coluna;
+
+
+
+        auto linha_visitada = matrix_max_visitada[linha];
+        std::vector<bool> linha_falsa;
+
+
+        auto col_visitada = transpose_linha_bool(matrix_max_visitada, coluna);
+        std::vector<bool> col_falsa;
+
+        std::copy_if (linha_visitada.begin(), linha_visitada.end(), std::back_inserter(linha_falsa), [](bool i){return i== false;} );
+        std::copy_if (col_visitada.begin(), col_visitada.end(), std::back_inserter(col_falsa), [](bool i){return i== false;} );
+
+        int qnt_menos_linha = linha_falsa.size();
+        int qnt_menos_col =  col_falsa.size();
+
+        bool r_linha_toda_visitada = qnt_menos_linha == 0;
+        bool r_coluna_toda_visitada = qnt_menos_col == 0;
+
+//        int qnt_menos_linha =  len(list(filter(lambda x: x == False, matrix_max_visitada[linha])))
+
+        if (r_linha_toda_visitada || r_coluna_toda_visitada){
+            if (r_linha_completa && r_col_completa){
+                return true;
+            }else{
+                return false;
+            }
+
+        }else{
+            auto r_linha_maior    = soma_linha  > max_valor_linha;
+            auto r_col_maior      = soma_coluna > max_valor_colun;
+            auto r_linha_menor    = soma_linha  < max_valor_linha;
+            auto r_col_menor      = soma_coluna < max_valor_colun;
+            if (r_linha_maior or r_col_maior){
+                return false;
+                // return 0 # aqui tem q voltar no backtracking
+            }
+            if(r_linha_menor || r_col_menor || r_linha_completa || r_col_completa ){
+                return true;
+            }
+
+        }
+
+
+
+        return false;
+    };
+
+
+
+    NextItem item = get_next_item(matrix_max_visitada);
+
+//std::tuple<bool, std::vector<std::vector<int> > >
+    if(item.existe == false){
+        return  std::make_tuple(true, grid_max);
+    }else{
+        auto max_valor_linha = tuple_marginal[item.i].get_maior_Valor();
+        auto max_valor_colun   = tuple_marginal[item.j].get_maior_Valor();
+        int valor_ate = max_valor_linha;
+        if (max_valor_linha < max_valor_colun){
+            valor_ate = max_valor_colun;
+        }
+
+        for(int i=0; i< valor_ate; i++){
+            grid_max[item.i][item.j] = i;
+            matrix_max_visitada[item.i][item.j] = true;
+
+            bool r_valido = checa_valido(grid_max,
+                                             matrix_max_visitada,
+                                             tuple_marginal,
+                                             item.i,
+                                             item.j);
+
+            if (r_valido){
+                auto saida = solver(grid_max, matrix_max_visitada,  tuple_marginal);
+//                grid_max = std::get<1>(saida);
+
+                bool r_resolvido = std::get<0>(saida);
+                if (r_resolvido){
+                    return std::make_tuple(true, grid_max);
+                }
+
+            }else{
+                grid_max[item.i][item.j] = 0;
+                matrix_max_visitada[item.i][item.j] = false;
+            }
+
+
+        }
+
+//        auto valor_ate = max_valor_linha;
+        return std::make_tuple(false, grid_max);;
+
+    }
+
+
+}
+
+std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid){
+    std::vector<std::vector<int> > grid_max = generate_matriz_maxima(grid);
+    std::vector<std::vector<bool> > matrix_max_visitada = generate_matriz_maxima_visitada(grid);
+    std::vector<Marginal> tuple_marginal = get_tuple_marginal(grid);
+
+
+   auto resolucao = solver(grid_max, matrix_max_visitada, tuple_marginal);
+
+   std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
+   return resolucao;
+
+//   bool r_saida = solver(matrix_max, matrix_max_visitada, tuple_marginal );
+}
+
 
 
 Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo )
@@ -1819,3 +2077,6 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
 
 
 }
+
+
+

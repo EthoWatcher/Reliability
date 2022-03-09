@@ -47,6 +47,10 @@ private slots:
     void test_bootstrap();
     void test_get_all_var();
 
+    //testando matriz maxima
+    void test_soma_linha();
+    void test_solver();
+
 
 };
 
@@ -301,6 +305,9 @@ void test_concordancia::test_bootstrap(){
 
 void test_concordancia::test_get_all_var()
 {
+    //0 - swimming
+    //1 - climbimg
+    //2 - Immobility
     std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
     std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
     std::vector<int> catalogo  = {0, 1, 2};
@@ -397,6 +404,43 @@ void test_concordancia::test_get_all_var()
     qDebug() << m_medida << m_max << std_mdida << std_max << d_cohen;
 
 
+
+}
+
+void test_concordancia::test_soma_linha()
+{
+    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
+    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
+    std::vector<int> catalogo  = {0, 1, 2};
+
+    auto matriz_concordancia = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
+
+    std::vector< std::vector<int> > grid = {
+        {2, 2, 2},
+        {4, 0, 2},
+        {2, 2, 3}
+    };
+    Marginal m = get_colu_linha_soma(grid, 0);
+
+    qDebug() << m.colun << m.linha;
+
+}
+
+void test_concordancia::test_solver()
+{
+    std::vector< std::vector<int> > grid = {
+        {2, 2, 2},
+        {4, 0, 2},
+        {2, 2, 3}
+    };
+    std::vector<std::vector<int> > grid_max = generate_matriz_maxima(grid);
+    std::vector<std::vector<bool> > matrix_max_visitada = generate_matriz_maxima_visitada(grid);
+    std::vector<Marginal> tuple_marginal = get_tuple_marginal(grid);
+
+    auto resolucao = solver(grid_max, matrix_max_visitada, tuple_marginal);
+
+    std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
+    qDebug() << "saiida";
 
 }
 
