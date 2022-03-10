@@ -1974,6 +1974,17 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
     NextItem item = get_next_item(matrix_max_visitada);
     matrix_max_visitada[item.i][item.j] = true;
 
+//    bool r_todos_certo = [&matrix_max_visitada] (){
+//        for(auto linha: matrix_max_visitada){
+//            for(auto celula: linha){
+//                if(celula == false){
+//                    return false;
+//                }
+//            }
+//        }
+
+//        return true;
+//    }();
 
 //std::tuple<bool, std::vector<std::vector<int> > >
     if(item.existe == false){
@@ -1986,7 +1997,7 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
             valor_ate = max_valor_colun;
         }
 
-        for(int i=0; i< valor_ate; i++){
+        for(int i=0; i<= valor_ate; i++){
             grid_max[item.i][item.j] = i;
             bool r_valido = checa_valido(grid_max,
                                              matrix_max_visitada,
@@ -2173,6 +2184,13 @@ std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta
     auto ls_matriz = get_lista_max_visto(grid, grid_max);
 
     auto saida = solver_nova_max(grid_max, matrix_max_visitada, ls_matriz, tuple_marginal);
+
+//     auto saida = solver(grid_max, matrix_max_visitada, tuple_marginal);
+
+     if(std::get<0>(saida) == false){
+         qDebug() << "nao encontrou";
+
+     }
 
     qDebug() <<"saida";
     return  saida;
