@@ -1898,11 +1898,11 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
         auto soma_linha  = get_soma_linha(matrix[linha]);
         auto soma_coluna = get_colu_linha_soma(matrix, coluna).colun;
 
-        auto max_valor_linha   = tuple_marginal[linha].get_maior_Valor();
-        auto max_valor_colun   = tuple_marginal[coluna].get_maior_Valor();
+        auto valor_linha       = tuple_marginal[linha].linha;
+        auto valor_colun       = tuple_marginal[coluna].colun;
 
-        bool r_linha_completa = max_valor_linha == soma_linha;
-        bool r_col_completa   = max_valor_colun == soma_coluna;
+        bool r_linha_completa = valor_linha == soma_linha;
+        bool r_col_completa   = valor_colun == soma_coluna;
 
 
 
@@ -1925,20 +1925,35 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
 //        int qnt_menos_linha =  len(list(filter(lambda x: x == False, matrix_max_visitada[linha])))
 
 
-
-
-        if (r_linha_toda_visitada || r_coluna_toda_visitada){
-            if (r_linha_completa && r_col_completa){
+        if(r_linha_toda_visitada && r_coluna_toda_visitada ){
+            if(r_linha_completa && r_col_completa){
                 return true;
             }else{
                 return false;
             }
 
+        } else if (r_linha_toda_visitada){
+            if(r_linha_completa){
+                return true;
+            }else{
+                return false;
+            }
+
+
+        }else if(r_coluna_toda_visitada){
+             if (r_col_completa){
+                    return true;
+              }else{
+                    return false;
+               }
+
+
+
         }else{
-            auto r_linha_maior    = soma_linha  > max_valor_linha;
-            auto r_col_maior      = soma_coluna > max_valor_colun;
-            auto r_linha_menor    = soma_linha  < max_valor_linha;
-            auto r_col_menor      = soma_coluna < max_valor_colun;
+            auto r_linha_maior    = soma_linha  > valor_linha;
+            auto r_col_maior      = soma_coluna > valor_colun;
+            auto r_linha_menor    = soma_linha  < valor_linha;
+            auto r_col_menor      = soma_coluna < valor_colun;
             if (r_linha_maior or r_col_maior){
                 return false;
                 // return 0 # aqui tem q voltar no backtracking
@@ -1957,10 +1972,12 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
 
 
     NextItem item = get_next_item(matrix_max_visitada);
+    matrix_max_visitada[item.i][item.j] = true;
+
 
 //std::tuple<bool, std::vector<std::vector<int> > >
     if(item.existe == false){
-        return  std::make_tuple(false, grid_max); //aqui esta errado.
+        return  std::make_tuple(true, grid_max);
     }else{
         auto max_valor_linha = tuple_marginal[item.i].get_maior_Valor();
         auto max_valor_colun   = tuple_marginal[item.j].get_maior_Valor();
@@ -1971,8 +1988,6 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
 
         for(int i=0; i< valor_ate; i++){
             grid_max[item.i][item.j] = i;
-            matrix_max_visitada[item.i][item.j] = true;
-
             bool r_valido = checa_valido(grid_max,
                                              matrix_max_visitada,
                                              tuple_marginal,
@@ -1986,18 +2001,24 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
                 bool r_resolvido = std::get<0>(saida);
                 if (r_resolvido){
                     return std::make_tuple(true, grid_max);
-                    grid_max[item.i][item.j] = 0;
+
+                }else{
+                    grid_max = std::get<1>(saida);
+
+
                 }
+//                else{
+//                    grid_max[item.i][item.j] = 0;
 
-            }else{
+//                }
 
 
-            }
 
 
+           }
         }
         matrix_max_visitada[item.i][item.j] = false;
-
+        grid_max[item.i][item.j] = 0;
 //        auto valor_ate = max_valor_linha;
         return std::make_tuple(false, grid_max);;
 
