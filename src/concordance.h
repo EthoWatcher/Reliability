@@ -121,6 +121,16 @@ std::vector<std::vector<bool> > generate_matriz_maxima_visitada(std::vector<std:
 
 
 //int get_maior_Valor(Marginal tuple_in);
+struct valor_visto_pos{
+  int valor_visto;
+  int pos;
+  bool visited;
+};
+
+std::tuple<bool, std::vector<std::vector<int> > > solver_nova_max(std::vector<std::vector<int> > & grid_max,
+            std::vector<std::vector<bool> > matrix_max_visitada,
+            std::vector<valor_visto_pos > ls_matriz,
+            std::vector<Marginal> tuple_marginal);
 
 std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector<int> > &grid_max,
             std::vector<std::vector<bool> > matrix_max_visitada,
@@ -195,6 +205,7 @@ class Calculo_paper{
     std::vector<Calculo_paper::Concordancia> list_kappa_cat;
     std::vector<Calculo_paper::Concordancia> list_kappa_cat_max;
     Calculo_paper::Concordancia catalogo_var;
+     Calculo_paper::Concordancia catalogo_var_max;
 
     Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo );
 

@@ -50,6 +50,7 @@ private slots:
     //testando matriz maxima
     void test_soma_linha();
     void test_solver();
+    void test_generate_matriz_maxima_correta();
 
 
 };
@@ -305,6 +306,7 @@ void test_concordancia::test_bootstrap(){
 
 void test_concordancia::test_get_all_var()
 {
+    //arrumar isso para ser uma função
     //0 - swimming
     //1 - climbimg
     //2 - Immobility
@@ -428,20 +430,59 @@ void test_concordancia::test_soma_linha()
 
 void test_concordancia::test_solver()
 {
+//    std::vector< std::vector<int> > grid = {
+//        {2, 2, 2},
+//        {4, 0, 2},
+//        {2, 2, 3}
+//    };
     std::vector< std::vector<int> > grid = {
-        {2, 2, 2},
-        {4, 0, 2},
-        {2, 2, 3}
+        {4, 2, 0},
+        {3, 0, 0},
+        {0, 2, 2}
     };
-    std::vector<std::vector<int> > grid_max = generate_matriz_maxima(grid);
+
+//    std::vector<std::vector<int> > grid_max = generate_matriz_maxima(grid);
+
+    std::vector< std::vector<int> > grid_max = {
+        {4, 0, 0},
+        {0, 0, 0},
+        {0, 0, 2}
+    };
+
+
+
     std::vector<std::vector<bool> > matrix_max_visitada = generate_matriz_maxima_visitada(grid);
     std::vector<Marginal> tuple_marginal = get_tuple_marginal(grid);
 
-    auto resolucao = solver(grid_max, matrix_max_visitada, tuple_marginal);
+//    auto resolucao = solver(grid_max, matrix_max_visitada, tuple_marginal);
 
-    std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
+//    std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
+//    bool r_saida = std::get<0>(resolucao);
+//    qDebug() << "saiida";
+
+
+    auto resolucao_solver = solver(grid_max, matrix_max_visitada, tuple_marginal);
+
+    std::vector<std::vector<int> > m_saida_2 = std::get<1>(resolucao_solver);
+    bool r_saida_max = std::get<0>(resolucao_solver);
     qDebug() << "saiida";
 
+}
+
+void test_concordancia::test_generate_matriz_maxima_correta()
+{
+//    std::vector< std::vector<int> > grid = {
+//        {4, 2, 0},
+//        {3, 0, 0},
+//        {0, 2, 2}
+//    };
+
+//    std::vector< std::vector<int> > grid = {
+//        {3, 0, 0},
+//        {2, 0, 0},
+//        {0, 3, 5}
+//    };
+//    auto resolucao_solver = generate_matriz_maxima_correta(grid);
 }
 
 

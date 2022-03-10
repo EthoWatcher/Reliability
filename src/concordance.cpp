@@ -1924,6 +1924,9 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
 
 //        int qnt_menos_linha =  len(list(filter(lambda x: x == False, matrix_max_visitada[linha])))
 
+
+
+
         if (r_linha_toda_visitada || r_coluna_toda_visitada){
             if (r_linha_completa && r_col_completa){
                 return true;
@@ -1957,7 +1960,7 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
 
 //std::tuple<bool, std::vector<std::vector<int> > >
     if(item.existe == false){
-        return  std::make_tuple(true, grid_max);
+        return  std::make_tuple(false, grid_max); //aqui esta errado.
     }else{
         auto max_valor_linha = tuple_marginal[item.i].get_maior_Valor();
         auto max_valor_colun   = tuple_marginal[item.j].get_maior_Valor();
@@ -1983,15 +1986,17 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
                 bool r_resolvido = std::get<0>(saida);
                 if (r_resolvido){
                     return std::make_tuple(true, grid_max);
+                    grid_max[item.i][item.j] = 0;
                 }
 
             }else{
-                grid_max[item.i][item.j] = 0;
-                matrix_max_visitada[item.i][item.j] = false;
+
+
             }
 
 
         }
+        matrix_max_visitada[item.i][item.j] = false;
 
 //        auto valor_ate = max_valor_linha;
         return std::make_tuple(false, grid_max);;
@@ -2001,18 +2006,157 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
 
 }
 
+
+
+
+
+std::tuple<bool, std::vector<std::vector<int> > > solver_nova_max(std::vector<std::vector<int> > & grid_max, std::vector<std::vector<bool> > matrix_max_visitada,
+            std::vector<valor_visto_pos> ls_matriz,
+            std::vector<Marginal> tuple_marginal){
+
+    auto generate_next_element = [](std::vector<valor_visto_pos> ls_matriz){
+        for(int i=0; i< ls_matriz.size(); i++){
+            auto elemento = ls_matriz[i];
+
+            if(elemento.visited == false){
+                return i;
+            }
+
+        }
+
+        return -1;
+
+
+    };
+
+
+
+    auto resolucao = solver(grid_max, matrix_max_visitada, tuple_marginal);
+    std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
+    bool r_saida_solucao = std::get<0>(resolucao);
+    if(r_saida_solucao){
+        return resolucao;
+    }else{
+
+
+        std::vector<valor_visto_pos> linha_faltando;
+
+        std::copy_if (ls_matriz.begin(), ls_matriz.end(), std::back_inserter(linha_faltando), [](valor_visto_pos i){return i.visited == false;} );
+
+
+        for(valor_visto_pos next_item : linha_faltando){
+//            auto item_en = ls_matriz[pros_item_i];
+//            ls_matriz[pros_item_i].visited = true;
+            int valor_antigo = grid_max[next_item.pos][next_item.pos];
+            grid_max[next_item.pos][next_item.pos] = next_item.valor_visto;
+
+            auto resolucao = solver(grid_max, matrix_max_visitada, tuple_marginal);
+            std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
+            bool r_saida_solucao = std::get<0>(resolucao);
+            if(r_saida_solucao){
+                return resolucao;
+            }
+
+        }
+
+        int pros_item_i = generate_next_element(ls_matriz);
+        bool r_encontrou = pros_item_i != -1;
+        if(r_encontrou == false){
+            return resolucao;
+        }else{
+            auto item_en = ls_matriz[pros_item_i];
+            ls_matriz[pros_item_i].visited = true;
+            int valor_antigo = grid_max[item_en.pos][item_en.pos];
+            grid_max[item_en.pos][item_en.pos] = item_en.valor_visto;
+            auto saida = solver_nova_max(grid_max, matrix_max_visitada, ls_matriz, tuple_marginal );
+            bool r_saida_solucao = std::get<0>(saida);
+            if(r_saida_solucao){
+                return saida;
+            }else{
+                grid_max[item_en.pos][item_en.pos] = valor_antigo;
+                ls_matriz[pros_item_i].visited = false;
+                return saida;
+            }
+
+        }
+
+    }
+
+
+}
+
+
+
+
+
+
 std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid){
     std::vector<std::vector<int> > grid_max = generate_matriz_maxima(grid);
     std::vector<std::vector<bool> > matrix_max_visitada = generate_matriz_maxima_visitada(grid);
     std::vector<Marginal> tuple_marginal = get_tuple_marginal(grid);
 
 
-   auto resolucao = solver(grid_max, matrix_max_visitada, tuple_marginal);
 
-   std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
-   return resolucao;
+    auto get_lista_max_visto = [] ( std::vector<std::vector<int> > grid,  std::vector<std::vector<int> > grid_max){
+        struct max_visto{
+          int visto;
+          int max;
+        };
+        std::vector< max_visto> saida;
+        for(int i=0; i< grid[0].size(); i++){
+            for(int j=0; j< grid[0].size(); j++){
+                bool r_centro = i == j;
+                if(r_centro){
+                    max_visto m;
+                    m.visto = grid[i][j];
+                    m.max = grid_max[i][j];
 
-//   bool r_saida = solver(matrix_max, matrix_max_visitada, tuple_marginal );
+                    saida.push_back(m);
+                }
+
+            }
+        }
+
+        std::vector<std::vector<valor_visto_pos>> queue;
+
+        auto lis_max = saida;
+        for( max_visto i : lis_max){
+        std::vector<valor_visto_pos> q;
+            for(int linha = i.max; linha >= i.visto; linha--){
+                valor_visto_pos s;
+                s.pos = queue.size();
+                s.valor_visto = linha;
+                s.visited = false;
+
+                q.push_back(s);
+            }
+            queue.push_back(q);
+        }
+
+
+        std::vector<valor_visto_pos> q_saida;
+
+        for(auto linha: queue){
+            for(auto ele: linha){
+                q_saida.push_back(ele);
+            }
+        }
+
+
+
+
+        return q_saida;
+
+    };
+
+    auto ls_matriz = get_lista_max_visto(grid, grid_max);
+
+    auto saida = solver_nova_max(grid_max, matrix_max_visitada, ls_matriz, tuple_marginal);
+
+    qDebug() <<"saida";
+    return  saida;
+
+
 }
 
 
@@ -2032,6 +2176,22 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
     catalogo_var.kappa = calcula_kappa_medio(matriz_concordancia);
     catalogo_var.vies = 0;
     catalogo_var.prevalencia = 0;
+
+//    auto resolucao = generate_matriz_maxima_correta(catalogo_var.matriz_concordancia);
+
+//    bool encontrou = std::get<0>(resolucao); // nunca testei se quando nao encontra resolução volta um false, nem sei se é possivel nao ter solução.
+//    std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
+
+
+//    catalogo_var_max.matriz_concordancia = m_saida;
+//    catalogo_var_max.acaso = calcula_concordancia_acaso(catalogo_var_max.matriz_concordancia);
+//    catalogo_var_max.observada =calcula_concordancia_observada(catalogo_var_max.matriz_concordancia);
+//    catalogo_var_max.kappa = calcula_kappa_medio(catalogo_var_max.matriz_concordancia);
+//    catalogo_var_max.vies = 0;
+//    catalogo_var_max.prevalencia = 0;
+
+
+
 //    float concordancia_acaso_catalogo = calcula_concordancia_acaso(matriz_concordancia);
 //    float concordancia_observada_catalogo = calcula_concordancia_observada(matriz_concordancia);
 //    float kappa_catalogo = calcula_kappa_medio(matriz_concordancia);
