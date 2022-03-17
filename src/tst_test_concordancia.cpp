@@ -54,6 +54,9 @@ private slots:
     void test_generate_matriz_maxima_correta();
 
 
+    void test_rotacional();
+    void test_calcula_prevalencia_NN();
+
 };
 
 test_concordancia::test_concordancia()
@@ -515,6 +518,50 @@ void test_concordancia::test_generate_matriz_maxima_correta()
         {0, 0, 0}
     };
     auto resolucao_solver = generate_matriz_maxima_correta(grid);
+}
+
+
+void test_concordancia::test_rotacional()
+{
+    auto saida = rota_vetor(180, 1); // {-1, 0}
+    auto saida2 = rota_vetor(180, 0); // {0, 0}
+    auto saida3 = rota_vetor(0, 1);   // {1, 0}
+
+    qDebug() << saida;
+
+}
+
+void test_concordancia::test_calcula_prevalencia_NN()
+{
+//        std::vector< std::vector<int> > grid = {
+//            {4, 2, 0},
+//            {3, 0, 0},
+//            {0, 2, 2}
+//        };
+
+//    std::vector< std::vector<int> > grid = {
+//        {2, 4, 2},
+//        {2, 0, 2},
+//        {2, 2, 3}
+//    };
+//    std::vector< std::vector<int> > grid = {
+//        {2, 4, 2},
+//        {2, 3, 2},
+//        {2, 2, 3}
+//    };
+
+    //preciso checar as permutações.
+
+            std::vector< std::vector<int> > grid = {
+                {2, 2},
+                {4, 3}
+            };
+
+
+    auto prevalencia = calcula_prevalencia_NN(grid);
+    auto vies = calcula_vies_NN(grid);
+
+    qDebug() << vies;
 }
 
 

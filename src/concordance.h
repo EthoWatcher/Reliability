@@ -120,6 +120,13 @@ std::vector<std::vector<int> > generate_matriz_maxima(std::vector<std::vector<in
 std::vector<std::vector<bool> > generate_matriz_maxima_visitada(std::vector<std::vector<int> >grid);
 
 
+
+// calculando vies e prevalencia de uma matriz NN
+std::vector<float> rota_vetor(double teta, int celula);
+float soma_vetor(std::vector<int> ls_celulas);
+float calcula_prevalencia_NN(std::vector<std::vector<int>> grid);
+float calcula_vies_NN(std::vector<std::vector<int>> grid);
+
 //int get_maior_Valor(Marginal tuple_in);
 struct valor_visto_pos{
   int valor_visto;

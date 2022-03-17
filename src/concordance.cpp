@@ -2279,3 +2279,186 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
 
 
 
+
+std::vector<float> rota_vetor(double teta, int celula)
+{
+
+
+    auto gera_matriz_rotacao = [](double teta){
+        std::vector<std::vector<float>> mt_rotacao;
+        mt_rotacao.push_back({
+                                 float(cos(teta)),
+                                 float(sin(teta))
+                             });
+
+        mt_rotacao.push_back({
+                                 float(-sin(teta)),
+                                 float(cos(teta))
+                             });
+
+
+        return mt_rotacao;
+    };
+
+    auto multipla_matriz = [](std::vector<float> v_entrada,
+            std::vector<std::vector<float>> mt_rotada){
+
+        std::vector<float> saida = {
+                           mt_rotada[0][0]* v_entrada[0] + mt_rotada[0][1]* v_entrada[1],
+                           mt_rotada[1][0]* v_entrada[0] + mt_rotada[1][1]* v_entrada[1]
+                        };
+
+
+        return  saida;
+
+    };
+
+    std::vector<float> vetor_entrada = {float(celula), 0};
+
+    auto mt_ro =  gera_matriz_rotacao(teta * 3.14159265358979323846/180);
+    auto saida = multipla_matriz(vetor_entrada, mt_ro);
+    return saida;
+
+
+}
+
+
+float soma_vetor(std::vector<int> ls_celulas){
+
+    float qnt_rotacao = 360 / ls_celulas.size();
+
+    std::vector<std::vector<float>> ls_vetore;
+    int i=0;
+    for(auto ele : ls_celulas){
+
+        ls_vetore.push_back( rota_vetor(qnt_rotacao*i, ele));
+        i++;
+    }
+
+    float soma_x = 0;
+    float soma_y = 0;
+    for(int i=0; i< ls_vetore.size(); i++){
+        for(int c=0; c< ls_vetore[i].size(); c++){
+            if(c == 0){
+                soma_x = soma_x + ls_vetore[i][c];
+
+            }else if(c ==1 ){
+
+                soma_y = soma_y + ls_vetore[i][c];
+            }
+        }
+    }
+
+    float norma = sqrt((soma_x * soma_x) + (soma_y * soma_y) );
+    return norma;
+
+
+}
+
+
+
+
+
+float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
+
+    auto get_linha_central =[&grid](){
+        std::vector<int> saida;
+        for(int linha=0; linha < grid.size(); linha++){
+            for(int col=0; col < grid.size(); col++){
+                bool r_linha_central = linha == col;
+                if(r_linha_central){
+                    saida.push_back(grid[linha][col]);
+                }
+            }
+
+        }
+        return saida;
+    };
+//    auto calcula_max_prevalencia = [] (auto l_centr){
+//        float saida = 0;
+
+
+//        for(auto valor: l_centr){
+//            saida = valor + saida;
+//        }
+
+//        return saida;
+//    };
+
+    auto l_centr = get_linha_central();
+
+    std::vector<float> l_vetores;
+
+    std::sort(std::begin(l_centr), std::end(l_centr));
+    do {
+        qDebug() << l_centr;
+        l_vetores.push_back(soma_vetor(l_centr));
+
+//        std::vector<int> copy;
+//        std::copy(std::begin(l_centr), std::end(l_centr), std::begin(copy));
+
+//        combinacoes.push_back(copy);
+    } while (std::next_permutation(l_centr.begin(), l_centr.end()));
+
+
+    auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
+
+    return a;
+
+//    auto gera_permutacao = [](auto l_centr,  int l, int r){
+
+//        bool r_mesmo_numero = l == r;
+//        if(r_mesmo_numero){
+
+//        }
+
+
+//    };
+
+
+
+
+
+
+
+}
+
+
+float calcula_vies_NN(std::vector<std::vector<int>> grid){
+
+    auto get_linha_central =[&grid](){
+        std::vector<int> saida;
+        for(int linha=0; linha < grid.size(); linha++){
+            for(int col=0; col < grid.size(); col++){
+                bool r_not_linha_central = linha != col;
+                if(r_not_linha_central){
+                    saida.push_back(grid[linha][col]);
+                }
+            }
+
+        }
+        return saida;
+    };
+
+    auto l_centr = get_linha_central();
+
+    std::vector<float> l_vetores;
+
+    std::sort(std::begin(l_centr), std::end(l_centr));
+    do {
+        qDebug() << l_centr;
+        l_vetores.push_back(soma_vetor(l_centr));
+    } while (std::next_permutation(l_centr.begin(), l_centr.end()));
+
+
+    auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
+
+    return a;
+
+
+
+
+
+
+
+}
