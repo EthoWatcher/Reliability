@@ -1,10 +1,12 @@
 #include <QString>
 #include <QtTest>
-
+#include <QFile>
+#include <QTextStream>
 
 #include "ethowatcher.h"
 #include "concordance.h"
 #include "bootstrap.h"
+#include "relatorio_paper.h"
 
 #include <QApplication>
 #include <QDir>
@@ -56,6 +58,9 @@ private slots:
 
     void test_rotacional();
     void test_calcula_prevalencia_NN();
+
+    void test_convert_json_list_int();
+    void test_relatorio_paper();
 
 };
 
@@ -562,6 +567,44 @@ void test_concordancia::test_calcula_prevalencia_NN()
     auto vies = calcula_vies_NN(grid);
 
     qDebug() << vies;
+}
+
+void test_concordancia::test_convert_json_list_int()
+{
+    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
+    auto saida = creat_var("aaa",generate_list_number_json(etrografia_1));
+    QList<QString> saida_ls;
+    saida_ls.push_back(saida);
+
+    auto s_l = creat_object(saida_ls);
+
+    qDebug() << saida;
+}
+
+
+
+
+void test_concordancia::test_relatorio_paper()
+{
+    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
+    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
+    std::vector<int> catalogo  = {0, 1, 2};
+    Relatorio_paper relatorio = Relatorio_paper(etrografia_1,
+                                                etrografia_2,
+                                                catalogo,
+                                                10);
+
+    relatorio.generate_relatorio();
+
+    QString filename = "C:/saida_teste/data.txt";
+    QFile file(filename);
+    if (file.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream << relatorio.txt_relatorio;
+    }
+
+
+    qDebug() << "vies";
 }
 
 

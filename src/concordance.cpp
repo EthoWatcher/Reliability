@@ -2192,7 +2192,7 @@ std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta
 
      }
 
-    qDebug() <<"saida";
+//    qDebug() <<"saida";
     return  saida;
 
 
@@ -2208,26 +2208,26 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
     et2 = etrografia_2;
     auto matriz_concordancia = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
 
-
+    catalogo_var.categoria = 0;
     catalogo_var.matriz_concordancia = matriz_concordancia;
     catalogo_var.acaso = calcula_concordancia_acaso(matriz_concordancia);
     catalogo_var.observada =calcula_concordancia_observada(matriz_concordancia);
     catalogo_var.kappa = calcula_kappa_medio(matriz_concordancia);
-    catalogo_var.vies = 0;
-    catalogo_var.prevalencia = 0;
+    catalogo_var.vies = calcula_vies_NN(matriz_concordancia) ;
+    catalogo_var.prevalencia = calcula_prevalencia_NN(matriz_concordancia);
 
     auto resolucao = generate_matriz_maxima_correta(catalogo_var.matriz_concordancia);
 
     bool encontrou = std::get<0>(resolucao); // nunca testei se quando nao encontra resolução volta um false, nem sei se é possivel nao ter solução.
     std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);
 
-
+    catalogo_var_max.categoria = 0;
     catalogo_var_max.matriz_concordancia = m_saida;
     catalogo_var_max.acaso = calcula_concordancia_acaso(catalogo_var_max.matriz_concordancia);
     catalogo_var_max.observada =calcula_concordancia_observada(catalogo_var_max.matriz_concordancia);
     catalogo_var_max.kappa = calcula_kappa_medio(catalogo_var_max.matriz_concordancia);
-    catalogo_var_max.vies = 0;
-    catalogo_var_max.prevalencia = 0;
+    catalogo_var_max.vies = calcula_vies_NN(catalogo_var_max.matriz_concordancia);
+    catalogo_var_max.prevalencia = calcula_prevalencia_NN(catalogo_var_max.matriz_concordancia);
 
 
 
@@ -2391,7 +2391,7 @@ float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
 
     std::sort(std::begin(l_centr), std::end(l_centr));
     do {
-        qDebug() << l_centr;
+//        qDebug() << l_centr;
         l_vetores.push_back(soma_vetor(l_centr));
 
 //        std::vector<int> copy;
@@ -2446,7 +2446,7 @@ float calcula_vies_NN(std::vector<std::vector<int>> grid){
 
     std::sort(std::begin(l_centr), std::end(l_centr));
     do {
-        qDebug() << l_centr;
+//        qDebug() << l_centr;
         l_vetores.push_back(soma_vetor(l_centr));
     } while (std::next_permutation(l_centr.begin(), l_centr.end()));
 
@@ -2462,3 +2462,7 @@ float calcula_vies_NN(std::vector<std::vector<int>> grid){
 
 
 }
+
+
+
+

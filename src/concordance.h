@@ -212,11 +212,12 @@ class Calculo_paper{
     std::vector<Calculo_paper::Concordancia> list_kappa_cat;
     std::vector<Calculo_paper::Concordancia> list_kappa_cat_max;
     Calculo_paper::Concordancia catalogo_var;
-     Calculo_paper::Concordancia catalogo_var_max;
+    Calculo_paper::Concordancia catalogo_var_max;
 
     Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo );
 
 };
+
 
 
 #endif // CONCORDANCE_H
