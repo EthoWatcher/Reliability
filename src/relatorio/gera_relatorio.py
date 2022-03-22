@@ -36,5 +36,6 @@ if __name__ == '__main__':
     worksheet = workbook.add_worksheet()
 
     worksheet.write('A1', "bbbb")
+    worksheet.write('A1', s['medido']['catalogo_var']['observada'])
 
     workbook.close()

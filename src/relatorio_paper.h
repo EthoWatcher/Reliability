@@ -18,6 +18,7 @@ public:
     Relatorio_paper(std::vector<int> etrografia_1,
                                      std::vector<int> etrografia_2,
                                      std::vector<int> catalogo,
+                                     std::vector<QString> cata_name,
                                      int qnt_amostras);
 
     std::vector< Calculo_paper *>  varios_kappa;
@@ -25,6 +26,8 @@ public:
     QString txt_relatorio;
 
     void generate_relatorio();
+private:
+    std::vector<QString> cata_name;
 
 };
 void gera_relatorio_python(QString path, QString text);

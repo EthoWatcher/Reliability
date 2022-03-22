@@ -3,12 +3,15 @@
 Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  std::vector<int> etrografia_2,
                                  std::vector<int> catalogo,
+                                 std::vector<QString> cata_name,
                                  int qnt_amostras)
 {
 
     auto transfor_to_saida  = [](Calculo_paper c){
 
     };
+
+    this->cata_name = cata_name;
 
 //    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
 //    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
@@ -35,7 +38,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
 void Relatorio_paper::generate_relatorio()
 {
 
-    auto ge_conc = [](Calculo_paper::Concordancia con){
+    auto ge_conc = [](Calculo_paper::Concordancia con, std::vector<QString> texto ){
         auto gene_matriz_conco = [](std::vector< std::vector<int> > matriz_concordancia){
             QList<QString> ls_matriz;
             for(auto linha: matriz_concordancia){
@@ -46,7 +49,7 @@ void Relatorio_paper::generate_relatorio()
         };
 
         QList<QString> ls_kappa;
-        ls_kappa.push_back(creat_var("categoria",  QString::number(con.categoria)));
+        ls_kappa.push_back(creat_var("categoria", "'" + texto[con.categoria]+ "'"));
         ls_kappa.push_back(creat_var("observada",  QString::number(con.observada)));
         ls_kappa.push_back(creat_var("acaso",  QString::number(con.acaso)));
         ls_kappa.push_back(creat_var("vies",  QString::number(con.vies)));
@@ -56,13 +59,27 @@ void Relatorio_paper::generate_relatorio()
         return creat_object(ls_kappa);
     };
 
-
-    auto generating_calculo_paper_json = [&ge_conc](Calculo_paper *c){
+    auto ge_ls_categoria = [&ge_conc](std::vector<Calculo_paper::Concordancia> list_concordancia,
+                                      std::vector<QString> texto){
         QList<QString> saida_ls;
+
+        for(auto linha: list_concordancia){
+            saida_ls.push_back(ge_conc(linha, texto));
+        }
+        return creat_list(saida_ls);
+
+    };
+
+    auto generating_calculo_paper_json = [&ge_conc, &ge_ls_categoria ](Calculo_paper *c ,
+                                             std::vector<QString> texto_ls_cat   ){
+        QList<QString> saida_ls;
+        std::vector<QString> texto = {"Catalog"};
         saida_ls.push_back(creat_var("et1",generate_list_number_json(c->et1)));
         saida_ls.push_back(creat_var("et2",generate_list_number_json(c->et2)));
-        saida_ls.push_back(creat_var("catalogo_var",ge_conc(c->catalogo_var)));
-        saida_ls.push_back(creat_var("catalogo_var_max",ge_conc(c->catalogo_var_max)));
+        saida_ls.push_back(creat_var("catalogo_var",ge_conc(c->catalogo_var, texto)));
+        saida_ls.push_back(creat_var("catalogo_var_max",ge_conc(c->catalogo_var_max, texto)));
+        saida_ls.push_back(creat_var("list_kappa_cat",ge_ls_categoria(c->list_kappa_cat, texto_ls_cat)));
+        saida_ls.push_back(creat_var("list_kappa_cat_max",ge_ls_categoria(c->list_kappa_cat_max, texto_ls_cat)));
 
         return creat_object(saida_ls);
     };
@@ -72,12 +89,12 @@ void Relatorio_paper::generate_relatorio()
 
     QList<QString> relatorio;
     relatorio.push_back(creat_var("medido",
-                                  generating_calculo_paper_json(this->medido)));
+                                  generating_calculo_paper_json(this->medido, this->cata_name)));
 
 
     QList<QString> varios_kapp;
     for(auto bootstraped: this->varios_kappa){
-        varios_kapp.push_back(generating_calculo_paper_json(bootstraped));
+        varios_kapp.push_back(generating_calculo_paper_json(bootstraped, this->cata_name));
     }
 
     relatorio.push_back(creat_var("varios_kappa",creat_list(varios_kapp)));
