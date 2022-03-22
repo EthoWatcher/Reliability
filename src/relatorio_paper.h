@@ -18,7 +18,7 @@ public:
     Relatorio_paper(std::vector<int> etrografia_1,
                                      std::vector<int> etrografia_2,
                                      std::vector<int> catalogo,
-                                     std::vector<QString> cata_name,
+                                     QList<QString> cata_name,
                                      int qnt_amostras);
 
     std::vector< Calculo_paper *>  varios_kappa;
@@ -27,7 +27,7 @@ public:
 
     void generate_relatorio();
 private:
-    std::vector<QString> cata_name;
+    QList<QString> cata_name;
 
 };
 void gera_relatorio_python(QString path, QString text);
@@ -37,6 +37,7 @@ void gera_relatorio_python(QString path, QString text);
 
 
 QString creat_var(QString name, QString saida_ls);
+QString creat_list_string(QList<QString> saida_ls);
 QString creat_list(QList<QString> saida_ls);
 QString generate_list_number_json(std::vector<int> ls_int);
 QString creat_object(QList<QString> saida_ls);
