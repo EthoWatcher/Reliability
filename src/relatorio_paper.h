@@ -5,18 +5,10 @@
 #include "concordance.h"
 #include "bootstrap.h"
 #include <QtCore>
-
-//struct RelatorioSaida{
-//    int categoria;
-//    float observada;
-//    float acaso;
-//    float kappa;
-//    float vies;
-//    float prevalencia;
-//    std::vector< std::vector<int> > matriz_concordancia;
-//};
-
-
+#include <QTemporaryFile>
+#include <QProcess>
+#include <QFileDialog>
+#include <QFile>
 
 
 class Relatorio_paper
@@ -33,7 +25,12 @@ public:
     QString txt_relatorio;
 
     void generate_relatorio();
+
 };
+void gera_relatorio_python(QString path, QString text);
+
+
+
 
 
 QString creat_var(QString name, QString saida_ls);

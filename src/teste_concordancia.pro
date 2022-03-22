@@ -22,3 +22,6 @@ HEADERS += \
     ethowatcher.h \
     concordance.h \
     relatorio_paper.h
+
+RESOURCES += \
+    script.qrc

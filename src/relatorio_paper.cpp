@@ -90,7 +90,7 @@ void Relatorio_paper::generate_relatorio()
 
     txt_relatorio = creat_object(relatorio);
 
-    qDebug() << txt_relatorio;
+//    qDebug() << txt_relatorio;
 
 
 }
@@ -155,5 +155,66 @@ QString generate_list_number_json(std::vector<int> ls_int)
     }
 
     return saida;
+
+}
+
+
+void gera_relatorio_python(QString path, QString text)
+{
+    //    https://forum.qt.io/topic/115682/how-to-get-the-path-of-a-c-file-which-is-added-as-the-resource-file/12
+
+    //C:\Users\User\AppData\Local\Temp o arquivo temporario fica aqui
+
+    std::string path_inside_qrc = ":/script/relatorio/dist/gera_relatorio.exe";
+    std::unique_ptr<QTemporaryFile> temporary_file;
+
+    temporary_file.reset(
+        QTemporaryFile::createNativeFile(QString::fromStdString(path_inside_qrc))
+     );
+    std::string file_name = temporary_file->fileName().toUtf8().constData();
+
+//    QObject *parent;
+    QString program = temporary_file->fileName();
+    QStringList arguments;
+    QString newname = program + ".exe";
+
+
+    QFile::copy(program, newname);
+
+    arguments << path << text;
+
+
+
+
+//     QString Cmd = "cmd";
+//    QProcess::startDetached(program, arguments );
+    QObject *parent = nullptr;
+
+    QProcess *myProcess = new QProcess(parent);
+    myProcess->start( newname, arguments);
+//    myProcess->waitForFinished(-1);
+
+
+    if(myProcess->waitForStarted(5000))
+    {
+        QByteArray out_data = myProcess->readAllStandardOutput();
+        QString out_string(out_data);
+        qDebug() << out_string.toStdString().c_str();
+    }
+    else
+    {
+        qDebug() << "myProcess did not start in time";
+    }
+     myProcess->waitForFinished();
+
+
+    temporary_file.reset();
+
+
+    if (QFile::exists(newname))
+    {
+        QFile::remove(newname);
+
+    }
 
 }

@@ -596,13 +596,27 @@ void test_concordancia::test_relatorio_paper()
 
     relatorio.generate_relatorio();
 
-    QString filename = "C:/saida_teste/data.txt";
+    QWidget *parent1 = nullptr;
+    const QString &caption = QString("Save File");
+    QString path = QFileDialog::getSaveFileName(
+                parent1,
+                caption,
+                "C://Users//Bio//Desktop//videos//",
+                "Report (*.xlsx)"
+                );
+
+
+    QString filename = path + ".txt";
     QFile file(filename);
     if (file.open(QIODevice::ReadWrite)) {
         QTextStream stream(&file);
         stream << relatorio.txt_relatorio;
     }
 
+
+
+
+    gera_relatorio_python(path, relatorio.txt_relatorio);
 
     qDebug() << "vies";
 }

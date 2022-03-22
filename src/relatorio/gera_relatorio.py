@@ -35,6 +35,6 @@ if __name__ == '__main__':
     workbook = xlsxwriter.Workbook(args.path)
     worksheet = workbook.add_worksheet()
 
-    worksheet.write('A1', "aa")
+    worksheet.write('A1', "bbbb")
 
     workbook.close()
