@@ -599,7 +599,7 @@ void test_concordancia::test_relatorio_paper()
                                                 etrografia_2,
                                                 catalogo,
                                                 cata_name,
-                                                10);
+                                                1000);
 
     relatorio.generate_relatorio();
 

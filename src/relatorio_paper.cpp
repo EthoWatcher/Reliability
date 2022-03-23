@@ -218,7 +218,7 @@ void gera_relatorio_python(QString path, QString text)
 
     QFile::copy(program, newname);
 
-    arguments << path << text;
+    arguments << path; //<< text;
 
 
 
