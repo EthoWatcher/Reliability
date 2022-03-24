@@ -27,9 +27,16 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../src/build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/release/ -lAgreement
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../src/build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/debug/ -lAgreement
-else:unix: LIBS += -L$$PWD/../src/build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/ -lAgreement
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../src/build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/release/ -lAgreement
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../src/build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/debug/ -lAgreement
+#else:unix: LIBS += -L$$PWD/../src/build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/ -lAgreement
 
-INCLUDEPATH += $$PWD/../src/Agreement
-DEPENDPATH += $$PWD/../src/Agreement
+#INCLUDEPATH += $$PWD/../src/Agreement
+#DEPENDPATH += $$PWD/../src/Agreement
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/release/ -lAgreement
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/debug/ -lAgreement
+else:unix: LIBS += -L$$PWD/../build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debug/ -lAgreement
+
+INCLUDEPATH += $$PWD/../Agreement
+DEPENDPATH += $$PWD/../Agreement
