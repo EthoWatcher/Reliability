@@ -36,23 +36,23 @@ def creta_matriz_confusao(wk, local, mat, ls_cat):
     return letter
 
 def set_descricao(wk, local, mat):
-    wk.write(local[0] + str(local[1]-1), 'observada')
+    wk.write(local[0] + str(local[1]-1), 'Observed agreement')
     wk.write(local[0] + str(local[1]), mat['observada'])
     local = (next_alpha(local[0]), local[1])
 
-    wk.write(local[0] + str(local[1]-1), 'acaso')
+    wk.write(local[0] + str(local[1]-1), 'Chance agreement')
     wk.write(local[0] + str(local[1]), mat['acaso'])
     local = (next_alpha(local[0]), local[1])
 
-    wk.write(local[0] + str(local[1]-1), 'kappa')
+    wk.write(local[0] + str(local[1]-1), 'Cohen Kappa')
     wk.write(local[0] + str(local[1]), mat['kappa'])
     local = (next_alpha(local[0]), local[1])
 
-    wk.write(local[0] + str(local[1]-1), 'vies')
+    wk.write(local[0] + str(local[1]-1), 'Bias')
     wk.write(local[0] + str(local[1]), mat['vies'])
     local = (next_alpha(local[0]), local[1])
 
-    wk.write(local[0] + str(local[1]-1), 'prevalencia')
+    wk.write(local[0] + str(local[1]-1), 'Prevalence')
     wk.write(local[0] + str(local[1]), mat['prevalencia'])
     local = (next_alpha(local[0]), local[1])
     return local
@@ -84,7 +84,7 @@ def create_cate(wk, local_inicio, data, numero):
     ls_name = creat_lis_name(data['medido']['list_kappa_cat'][numero]['categoria'])
 
     
-    la            = set_text(wk, (local_inicio[0], local_inicio[1]+4), "Measured")
+    la            = set_text(wk, (local_inicio[0], local_inicio[1]+4), "Measured Agreement from  behavioral categorie")
     last_letter_4 = creta_matriz_confusao(wk, (local_inicio[0], local_inicio[1]+4), mat, ls_name)
     last_letter_5 = set_descricao(wk, (local_inicio[0], last_letter_4[1]+2) , data['medido']['list_kappa_cat'][numero])
 
@@ -92,7 +92,7 @@ def create_cate(wk, local_inicio, data, numero):
     ## create maximum matrix
     la            = set_text(wk, 
                              (next_alpha(next_alpha(next_alpha(last_letter_4[0]))), local_inicio[1]+4),
-                             "Maximum")
+                             "Maximum Agreement from behavioral categorie")
     last_letter_6 = creta_matriz_confusao(wk, 
                                           (next_alpha(next_alpha(next_alpha(last_letter_4[0]))), local_inicio[1]+4),
                                           data['medido']['list_kappa_cat_max'][numero]['matriz_concordancia'], ls_name)
@@ -135,16 +135,16 @@ def set_var(wk, local, nome):
     return local
 
 def creat_cabecalho(wk, local):
-    saida = set_var(wk, local, 'observada mean')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'observada std')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'acaso mean')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'acaso std')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'vies mean')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'vies std')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'prevalencia mean')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'prevalencia std')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'kappa mean')
-    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'kappa std')
+    saida = set_var(wk, local, 'Observed agreement mean')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Observed agreement std')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Chance agreement mean')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Chance agreement std')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Bias mean')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Bias std')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Prevalence mean')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Prevalence std')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Cohen Kappa mean')
+    saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Cohen Kappa std')
     
 
 
@@ -158,12 +158,12 @@ def create_excel_file(data, path):
 
     local = ("C", 10)
 
-    la            = set_text(worksheet, local, "Measured")
+    la            = set_text(worksheet, local, "Agreement from measured data")
     last_letter   = creta_matriz_confusao(worksheet, local, mat, ls_cat)
     last_letter_1 = set_descricao(worksheet, (local[0], last_letter[1]+2) , data['medido']['catalogo_var'])
 
 
-    la            = set_text(worksheet, (next_alpha(next_alpha(last_letter[0])), local[1]), "Maximum")
+    la            = set_text(worksheet, (next_alpha(next_alpha(last_letter[0])), local[1]), "Maximum Agreement from measured data")
     last_letter_2 = creta_matriz_confusao(worksheet, (next_alpha(next_alpha(last_letter[0])), local[1]),
                                         data['medido']['catalogo_var_max']['matriz_concordancia'], ls_cat)
 
@@ -183,7 +183,7 @@ def create_excel_file(data, path):
     dt_max = get_descritores_max(True, data)
 
     s     = creat_cabecalho(worksheet, (next_alpha(last_letter_8[0]), last_letter_8[1] - 1 ))
-    saida = set_var(worksheet, last_letter_8, "Bootstrap measured")
+    saida = set_var(worksheet, last_letter_8, "Parameter estimated:  ")
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['observada'])
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['acaso'])
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['vies'])
@@ -191,7 +191,7 @@ def create_excel_file(data, path):
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['kappa'])
 
 
-    saida = set_var(worksheet, (last_letter_8[0], last_letter_8[1]+1), "Bootstrap max")
+    saida = set_var(worksheet, (last_letter_8[0], last_letter_8[1]+1), "Maximum parameter estimated: ")
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['observada'])
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['acaso'])
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['vies'])

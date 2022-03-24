@@ -2380,7 +2380,6 @@ float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
                     saida.push_back(grid[linha][col]);
                 }
             }
-
         }
         return saida;
     };
