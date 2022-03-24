@@ -111,8 +111,23 @@ def set_text(wk, local, text):
 
 
 def set_wt(wk, local, linha):
-    wk.write(local[0] + str(local[1]), linha.mean())
-    wk.write(next_alpha(local[0]) + str(local[1]), linha.std())
+    def calcula_mean(linha):
+        a = sum(linha)
+        tamanho = len(linha)
+        return a/tamanho
+
+    def calcula_std(linha):
+        mean = calcula_mean(linha)
+        def map_linha(el):
+            return (el - mean) ** 2
+        
+        s = sum(map(map_linha, linha))/(len(linha)-1)
+        return s
+        
+
+
+    wk.write(local[0] + str(local[1]), calcula_mean(linha))
+    wk.write(next_alpha(local[0]) + str(local[1]), calcula_std(linha))
     return (next_alpha(local[0]), local[1])
 
 def set_var(wk, local, nome):
@@ -164,23 +179,23 @@ def create_excel_file(data, path):
     # bootstrap resume
     last_letter_8 = (local[0], last_letter_7[1] + 4)
 
-    # dt = pd.DataFrame.from_dict(get_descritores_max(False, data))
-    # dt_max = pd.DataFrame.from_dict(get_descritores_max(True, data))
+    dt = get_descritores_max(False, data)
+    dt_max = get_descritores_max(True, data)
 
-    # s     = creat_cabecalho(worksheet, (next_alpha(last_letter_8[0]), last_letter_8[1] - 1 ))
-    # saida = set_var(worksheet, last_letter_8, "Bootstrap measured")
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['observada'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['acaso'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['vies'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['prevalencia'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['kappa'])
+    s     = creat_cabecalho(worksheet, (next_alpha(last_letter_8[0]), last_letter_8[1] - 1 ))
+    saida = set_var(worksheet, last_letter_8, "Bootstrap measured")
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['observada'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['acaso'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['vies'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['prevalencia'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt['kappa'])
 
 
-    # saida = set_var(worksheet, (last_letter_8[0], last_letter_8[1]+1), "Bootstrap max")
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['observada'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['acaso'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['vies'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['prevalencia'])
-    # saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['kappa'])
+    saida = set_var(worksheet, (last_letter_8[0], last_letter_8[1]+1), "Bootstrap max")
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['observada'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['acaso'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['vies'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['prevalencia'])
+    saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['kappa'])
 
     workbook.close()

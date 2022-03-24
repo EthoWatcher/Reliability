@@ -2361,6 +2361,16 @@ float soma_vetor(std::vector<int> ls_celulas){
 
 float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
 
+    auto get_numero_frames =[&grid](){
+        int saida = 0;
+        for(int linha=0; linha < grid.size(); linha++){
+            for(int col=0; col < grid.size(); col++){
+                 saida = saida + grid[linha][col];
+            }
+        }
+        return saida;
+    }();
+
     auto get_linha_central =[&grid](){
         std::vector<int> saida;
         for(int linha=0; linha < grid.size(); linha++){
@@ -2403,7 +2413,7 @@ float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
 
     auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
 
-    return a;
+    return a/get_numero_frames;
 
 //    auto gera_permutacao = [](auto l_centr,  int l, int r){
 
@@ -2425,6 +2435,19 @@ float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
 
 
 float calcula_vies_NN(std::vector<std::vector<int>> grid){
+
+
+    auto get_numero_frames =[&grid](){
+        int saida = 0;
+        for(int linha=0; linha < grid.size(); linha++){
+            for(int col=0; col < grid.size(); col++){
+                 saida = saida + grid[linha][col];
+            }
+        }
+        return saida;
+    }();
+
+
 
     auto get_linha_central =[&grid](){
         std::vector<int> saida;
@@ -2453,7 +2476,7 @@ float calcula_vies_NN(std::vector<std::vector<int>> grid){
 
     auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
 
-    return a;
+    return a/get_numero_frames;
 
 
 
