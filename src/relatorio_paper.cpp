@@ -201,7 +201,15 @@ void gera_relatorio_python(QString path, QString text)
     //    https://forum.qt.io/topic/115682/how-to-get-the-path-of-a-c-file-which-is-added-as-the-resource-file/12
 
     //C:\Users\User\AppData\Local\Temp o arquivo temporario fica aqui
+    //gerando relatorio
+    QString filename = path + ".txt";
+    QFile file(filename);
+    if (file.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream << text;
+    }
 
+    //fazendo outras coisas
     std::string path_inside_qrc = ":/script/relatorio/dist/gera_relatorio.exe";
     std::unique_ptr<QTemporaryFile> temporary_file;
 

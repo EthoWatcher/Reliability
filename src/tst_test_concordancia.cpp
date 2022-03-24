@@ -613,12 +613,12 @@ void test_concordancia::test_relatorio_paper()
                 );
 
 
-    QString filename = path + ".txt";
-    QFile file(filename);
-    if (file.open(QIODevice::ReadWrite)) {
-        QTextStream stream(&file);
-        stream << relatorio.txt_relatorio;
-    }
+//    QString filename = path + ".txt";
+//    QFile file(filename);
+//    if (file.open(QIODevice::ReadWrite)) {
+//        QTextStream stream(&file);
+//        stream << relatorio.txt_relatorio;
+//    }
 
 
 
