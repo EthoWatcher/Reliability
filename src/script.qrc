@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/script">
-        <file>relatorio/dist/gera_relatorio.exe</file>
-    </qresource>
-</RCC>
