@@ -31,7 +31,20 @@ void MainWindow::on_pushButton_clicked()
 
     Agreement ma;
 
-    qDebug() << ma.generate_report(path);
+    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
+    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
+    std::vector<int> catalogo  = {0, 1, 2};
+
+    QList<QString> cata_name = {"swimming",
+                                 "climbimg",
+                                 "Immobility"};
+
+
+
+    qDebug() << ma.generate_report(path, etrografia_1,
+                                   etrografia_2,
+                                   catalogo,
+                                   cata_name);
 
 
 }
