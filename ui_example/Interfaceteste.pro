@@ -40,3 +40,6 @@ else:unix: LIBS += -L$$PWD/../build-Agreement-Desktop_Qt_6_1_2_MinGW_64_bit-Debu
 
 INCLUDEPATH += $$PWD/../Agreement
 DEPENDPATH += $$PWD/../Agreement
+
+RESOURCES += \
+    props/resource.qrc

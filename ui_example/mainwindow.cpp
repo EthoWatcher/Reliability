@@ -69,6 +69,14 @@ void MainWindow::on_pb_add_categorie_clicked()
 
     ls_label.append(label);
 
+
+    bool r_qnt_categorias = ls_label.count() >= 3;
+    if(r_qnt_categorias){
+        ui->pb_create_matriz->setEnabled(true);
+
+    }
+
+
 //    QLayout * layout = ui->wd_cate->layout();
 
 //    QVBoxLayout *vLayout = new QVBoxLayout(ui->wd_cate);
@@ -119,6 +127,10 @@ void MainWindow::on_pb_create_matriz_clicked()
         ls_edi.push_back(coluna);
 
     }
+
+    ui->pb_create_matriz->setEnabled(false);
+    ui->groupBox_3->setEnabled(false);
+    ui->pushButton_2->setEnabled(true);
 
 
 }

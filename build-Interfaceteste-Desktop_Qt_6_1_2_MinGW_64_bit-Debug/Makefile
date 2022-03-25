@@ -200,7 +200,8 @@ Makefile: ../ui_example/Interfaceteste.pro C:/Qt_new/6.1.2/mingw81_64/mkspecs/wi
 		C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Gui.prl \
 		C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Core.prl \
 		C:/Qt_new/6.1.2/mingw81_64/lib/Qt6EntryPoint.prl \
-		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/build_pass.prf
+		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/build_pass.prf \
+		../ui_example/props/resource.qrc
 	$(QMAKE) -o Makefile ..\ui_example\Interfaceteste.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/spec_pre.prf:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/device_config.prf:
@@ -333,6 +334,7 @@ C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Gui.prl:
 C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Core.prl:
 C:/Qt_new/6.1.2/mingw81_64/lib/Qt6EntryPoint.prl:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/build_pass.prf:
+../ui_example/props/resource.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\ui_example\Interfaceteste.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 
