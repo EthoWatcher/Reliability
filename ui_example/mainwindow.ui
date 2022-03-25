@@ -6,20 +6,76 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>334</width>
-    <height>333</height>
+    <width>627</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pb_add_categorie">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>240</y>
-      <width>301</width>
+      <x>164</x>
+      <y>30</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add new categorie</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="le_categorie_text">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>30</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="wd_catregorias" native="true">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>30</y>
+      <width>241</width>
+      <height>121</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pb_create_matriz">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>130</y>
+      <width>251</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Create Agreement Matriz</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="wd_matriz" native="true">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>190</y>
+      <width>581</width>
+      <height>291</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>510</y>
+      <width>181</width>
       <height>51</height>
      </rect>
     </property>
@@ -33,7 +89,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>334</width>
+     <width>627</width>
      <height>21</height>
     </rect>
    </property>
