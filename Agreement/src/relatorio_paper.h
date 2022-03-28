@@ -10,16 +10,20 @@
 #include <QFileDialog>
 #include <QFile>
 
+#include <QObject>
 
-class Relatorio_paper
+
+class Relatorio_paper: public QObject
 {
+    Q_OBJECT
+
 public:
 
-    Relatorio_paper(std::vector<int> etrografia_1,
+    explicit Relatorio_paper(std::vector<int> etrografia_1,
                                      std::vector<int> etrografia_2,
                                      std::vector<int> catalogo,
                                      QList<QString> cata_name,
-                                     int qnt_amostras, int qnt_simpl, int qnt_simpl_boots);
+                                     int qnt_amostras, int qnt_simpl, int qnt_simpl_boots, QObject *parent = nullptr);
 
     std::vector< Calculo_paper *>  varios_kappa;
     Calculo_paper *medido;
@@ -28,6 +32,10 @@ public:
     void generate_relatorio();
 private:
     QList<QString> cata_name;
+
+signals:
+    void valueChanged(int s);
+
 
 };
 void gera_relatorio_python(QString path, QString text);

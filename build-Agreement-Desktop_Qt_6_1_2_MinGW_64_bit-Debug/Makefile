@@ -170,6 +170,7 @@ Makefile: ../Agreement/Agreement.pro C:/Qt_new/6.1.2/mingw81_64/mkspecs/win32-g+
 		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/qt_config.prf \
 		C:/Qt_new/6.1.2/mingw81_64/mkspecs/win32-g++/qmake.conf \
 		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/exclusive_builds.prf \
 		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/toolchain.prf \
 		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/default_pre.prf \
@@ -198,7 +199,6 @@ Makefile: ../Agreement/Agreement.pro C:/Qt_new/6.1.2/mingw81_64/mkspecs/win32-g+
 		C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Widgets.prl \
 		C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Gui.prl \
 		C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Core.prl \
-		.qmake.stash \
 		C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/build_pass.prf \
 		../Agreement/src/script.qrc
 	$(QMAKE) -o Makefile ..\Agreement\Agreement.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -302,6 +302,7 @@ C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/qt_functions.prf:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/qt_config.prf:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/win32-g++/qmake.conf:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/exclusive_builds.prf:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/toolchain.prf:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/default_pre.prf:
@@ -330,7 +331,6 @@ C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/lex.prf:
 C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Widgets.prl:
 C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Gui.prl:
 C:/Qt_new/6.1.2/mingw81_64/lib/Qt6Core.prl:
-.qmake.stash:
 C:/Qt_new/6.1.2/mingw81_64/mkspecs/features/build_pass.prf:
 ../Agreement/src/script.qrc:
 qmake: FORCE

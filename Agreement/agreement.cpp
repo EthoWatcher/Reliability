@@ -2,13 +2,16 @@
 
 Agreement::Agreement()
 {
+
 }
 
 QString Agreement::generate_report(QString path,
                                    std::vector<int> etrografia_1,
                                    std::vector<int> etrografia_2,
                                    std::vector<int> catalogo,
-                                   QList<QString> cata_name
+                                   QList<QString> cata_name,
+                                   int qnt_reamostras,
+                                   int qnt_simpl, int qnt_simpl_boots
                                    )
 {
 //    qDebug() << "report";
@@ -22,20 +25,124 @@ QString Agreement::generate_report(QString path,
 ////    0 - swimming
 ////    1 - climbimg
 ////    2 - Immobility
-    Relatorio_paper relatorio = Relatorio_paper(etrografia_1,
+    relatorio = new Relatorio_paper(etrografia_1,
                                                 etrografia_2,
                                                 catalogo,
                                                 cata_name,
-                                                1000);
+                                                qnt_reamostras,
+                                                qnt_simpl, qnt_simpl_boots);
 
-    relatorio.generate_relatorio();
-
-
-
-
-    gera_relatorio_python(path, relatorio.txt_relatorio);
+    this->path = path;
 
 
-    return relatorio.txt_relatorio;
+
+
+
+    connect(relatorio, SIGNAL(valueChanged(int)), this, SLOT(chega_valor(int)));
+
+//            &Relatorio_paper::valueChanged, this, &Agreement::chega_valor);
+
+//    relatorio.generate_relatorio();
+//    gera_relatorio_python(path, relatorio.txt_relatorio);
+
+    return "relatorio.txt_relatorio";
+
+}
+
+Etografia Agreement::read_eto(QString path)
+{
+    return lerETOXML(path);
+}
+
+std::vector<int> Agreement::extrai_lista_quadros(Etografia eto)
+{
+    std::tuple<QList<QString> , std::vector<int>> catalogo = this->get_catalogo(eto);
+
+
+    auto arruma_lista = [](std::vector<int> ls_quadros, QList<QString> cata_nam){
+        int cat_indef = cata_nam.count() -1 ;
+        std::vector<int> saida;
+
+        for(auto quadro: ls_quadros){
+            bool r_quadro_indefinido = quadro == -1;
+            if(r_quadro_indefinido){
+                saida.push_back(cat_indef);
+            }else{
+                saida.push_back(quadro);
+            }
+
+        }
+
+        return saida;
+
+    };
+
+
+    return arruma_lista(_constroi_lista_quadros(eto), std::get<0>(catalogo));
+
+}
+
+std::tuple<QList<QString>, std::vector<int> > Agreement::get_catalogo(Etografia eto)
+{
+    std::vector<QString> catalogo_categorias_nomes;
+    catalogo_categorias_nomes = eto.catalogo->nome;
+    catalogo_categorias_nomes.push_back("Undefined (frames that are not marked)");
+
+    std::vector<int> catalogo  = [](std::vector<QString> catalogo_categorias_nomes){
+        std::vector<int> saida;
+
+        int i=0;
+        for(auto cate: catalogo_categorias_nomes){
+            saida.push_back(i);
+            i++;
+        }
+
+        return saida;
+
+    }(catalogo_categorias_nomes);
+
+    QList<QString> cata_name = [](std::vector<QString> catalogo_categorias_nomes){
+        QList<QString> saida ;
+
+        for(auto cate: catalogo_categorias_nomes){
+            saida.push_back(cate);
+        }
+
+        return saida;
+    }(catalogo_categorias_nomes);
+
+    std::tuple<QList<QString> , std::vector<int>> saida =
+            std::tuple< QList<QString> , std::vector<int> > (cata_name, catalogo);
+
+    return saida;
+
+}
+
+std::vector<std::vector<int> > Agreement::get_matrix_concordancia_cohen(std::vector<int> etografia_1, std::vector<int> etografia_2, std::vector<int> catalogo)
+{
+    return constroi_matrix_concordancia_cohen(etografia_1, etografia_2 , catalogo );
+}
+
+void Agreement::processa()
+{
+    relatorio->generate_relatorio();
+    gera_relatorio_python(path, relatorio->txt_relatorio);
+    emit finished();
+}
+
+void Agreement::process()
+{
+    relatorio->generate_relatorio();
+    gera_relatorio_python(path, relatorio->txt_relatorio);
+    emit finished();
+}
+
+
+
+
+void Agreement::chega_valor(int a)
+{
+    qDebug() << a << "FROM CLASSE";
+    emit qnt_bootstrap(a);
 
 }

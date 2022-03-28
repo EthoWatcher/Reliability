@@ -696,7 +696,7 @@ void test_concordancia::test_carrega_etografia()
                                                     ls_quadros_2,
                                                     catalogo,
                                                     cata_name,
-                                                    200, 1, 2);
+                                                    10, 1, 2);
 
         relatorio.generate_relatorio();
 
@@ -716,6 +716,8 @@ void test_concordancia::test_carrega_etografia()
 
 
         qDebug() << "tudo certo";
+
+//        connect(&relatorio, SIGNAL(chan) )
 
 }
 

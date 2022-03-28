@@ -6,7 +6,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  QList<QString> cata_name,
                                  int qnt_amostras,
                                  int qnt_simpl,
-                                 int qnt_simpl_boots)
+                                 int qnt_simpl_boots, QObject *parent): QObject(parent)
 {
 
     auto transfor_to_saida  = [](Calculo_paper c){
@@ -31,6 +31,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
         Calculo_paper *c = new Calculo_paper(e1, e2, catalogo, qnt_simpl_boots);
         this->varios_kappa.push_back(c);
 
+        emit valueChanged(i);
         qDebug() << i;
 
     }
