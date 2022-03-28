@@ -29,7 +29,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
         Calculo_paper *c = new Calculo_paper(e1, e2, catalogo);
         this->varios_kappa.push_back(c);
 
-//        qDebug() << i;
+        qDebug() << i;
 
     }
 

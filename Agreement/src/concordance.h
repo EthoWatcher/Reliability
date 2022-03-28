@@ -107,6 +107,16 @@ public:
         }
     };
 
+    int get_diferenca(){
+        bool r_linha_maior = linha > colun;
+        if(r_linha_maior){
+            return linha - colun;
+        }else{
+            return colun - linha;
+        }
+
+    }
+
 
 };
 

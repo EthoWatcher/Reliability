@@ -26,6 +26,8 @@ public:
     ~test_concordancia();
 
 private slots:
+
+    void test_carrega_etografia();
     void test_case1();
 //    void testCase1();
 //    void testCase12();
@@ -60,7 +62,12 @@ private slots:
     void test_calcula_prevalencia_NN();
 
     void test_convert_json_list_int();
+
+
+
     void test_relatorio_paper();
+
+
 
 };
 
@@ -599,7 +606,7 @@ void test_concordancia::test_relatorio_paper()
                                                 etrografia_2,
                                                 catalogo,
                                                 cata_name,
-                                                1000);
+                                                10);
 
     relatorio.generate_relatorio();
 
@@ -626,6 +633,90 @@ void test_concordancia::test_relatorio_paper()
     gera_relatorio_python(path, relatorio.txt_relatorio);
 
     qDebug() << "vies";
+}
+
+void test_concordancia::test_carrega_etografia()
+{
+        Etografia eto_lida2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6.etoxml");
+        Etografia eto_lida3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6bis4.etoxml");
+
+        std::vector<QString> catalogo_categorias_nomes;
+        catalogo_categorias_nomes = eto_lida2.catalogo->nome;
+        catalogo_categorias_nomes.push_back("Undefined (frames that are not marked)");
+
+        std::vector<int> catalogo  = [](std::vector<QString> catalogo_categorias_nomes){
+            std::vector<int> saida;
+
+            int i=0;
+            for(auto cate: catalogo_categorias_nomes){
+                saida.push_back(i);
+                i++;
+            }
+
+            return saida;
+
+        }(catalogo_categorias_nomes);
+
+        QList<QString> cata_name = [](std::vector<QString> catalogo_categorias_nomes){
+            QList<QString> saida ;
+
+            for(auto cate: catalogo_categorias_nomes){
+                saida.push_back(cate);
+            }
+
+            return saida;
+        }(catalogo_categorias_nomes);
+
+
+        auto arruma_lista = [](std::vector<int> ls_quadros, QList<QString> cata_nam){
+            int cat_indef = cata_nam.count() -1 ;
+            std::vector<int> saida;
+
+            for(auto quadro: ls_quadros){
+                bool r_quadro_indefinido = quadro == -1;
+                if(r_quadro_indefinido){
+                    saida.push_back(cat_indef);
+                }else{
+                    saida.push_back(quadro);
+                }
+
+            }
+
+            return saida;
+
+        };
+
+        std::vector<int> ls_quadros_1 = arruma_lista(_constroi_lista_quadros(eto_lida2), cata_name);
+        std::vector<int> ls_quadros_2 = arruma_lista(_constroi_lista_quadros(eto_lida3), cata_name);
+
+
+
+
+        Relatorio_paper relatorio = Relatorio_paper(ls_quadros_1,
+                                                    ls_quadros_2,
+                                                    catalogo,
+                                                    cata_name,
+                                                    10);
+
+        relatorio.generate_relatorio();
+
+        QWidget *parent1 = nullptr;
+        const QString &caption = QString("Save File");
+        QString path = QFileDialog::getSaveFileName(
+                    parent1,
+                    caption,
+                    "C://Users//Bio//Desktop//videos//",
+                    "Report (*.xlsx)"
+                    );
+
+
+
+        gera_relatorio_python(path, relatorio.txt_relatorio);
+
+
+
+        qDebug() << "tudo certo";
+
 }
 
 

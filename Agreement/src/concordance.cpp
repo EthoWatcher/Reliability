@@ -1990,10 +1990,11 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
     if(item.existe == false){
         return  std::make_tuple(true, grid_max);
     }else{
-        auto max_valor_linha = tuple_marginal[item.i].get_maior_Valor();
-        auto max_valor_colun   = tuple_marginal[item.j].get_maior_Valor();
+        auto max_valor_linha = tuple_marginal[item.i].get_diferenca();
+        auto max_valor_colun   = tuple_marginal[item.j].get_diferenca();
+
         int valor_ate = max_valor_linha;
-        if (max_valor_linha < max_valor_colun){
+        if (max_valor_linha > max_valor_colun){ //vani
             valor_ate = max_valor_colun;
         }
 
@@ -2123,9 +2124,30 @@ std::tuple<bool, std::vector<std::vector<int> > > solver_nova_max(std::vector<st
 
 
 std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid){
+    int qnt_simpl = 1;
+
+    auto arruma_grid = [&grid] (int dive_por){
+        std::vector<std::vector<int>> saida;
+
+        for(auto linha: grid){
+            std::vector<int> linha_add;
+            for(auto celula: linha){
+                linha_add.push_back( int(ceil( celula/dive_por)));
+            }
+            saida.push_back(linha_add);
+        }
+
+        return saida;
+
+    }(qnt_simpl);
+
+    grid = arruma_grid;
     std::vector<std::vector<int> > grid_max = generate_matriz_maxima(grid);
     std::vector<std::vector<bool> > matrix_max_visitada = generate_matriz_maxima_visitada(grid);
     std::vector<Marginal> tuple_marginal = get_tuple_marginal(grid);
+
+
+
 
 
 
@@ -2191,6 +2213,21 @@ std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta
          qDebug() << "nao encontrou";
 
      }
+
+     std::vector<std::vector<int>> sa = std::get<1>(saida);
+
+     auto arruma_vetor = [](int qnt_simpl, std::vector<std::vector<int>> &vetor){
+         for(int i=0; i< vetor.size(); i++){
+             for(int j=0; j< vetor.size(); j++){
+                 vetor[i][j] = vetor[i][j] * qnt_simpl;
+             }
+         }
+         return qnt_simpl;
+     }(qnt_simpl, std::get<1>(saida));
+
+
+
+
 
 //    qDebug() <<"saida";
     return  saida;
@@ -2466,14 +2503,31 @@ float calcula_vies_NN(std::vector<std::vector<int>> grid){
 
     std::vector<float> l_vetores;
 
+    float maior = -1;
     std::sort(std::begin(l_centr), std::end(l_centr));
+
+    int qnt_maxima = 10000;
+    int i =0;
+    bool r_nao_chego_maximo = i < qnt_maxima;
     do {
+        int soma_encontrada = soma_vetor(l_centr);
 //        qDebug() << l_centr;
-        l_vetores.push_back(soma_vetor(l_centr));
-    } while (std::next_permutation(l_centr.begin(), l_centr.end()));
+        bool r_bool_maior = soma_encontrada > maior;
+        if(r_bool_maior){
+            maior = soma_encontrada;
+        }
+
+        i++;
+
+        r_nao_chego_maximo = i < qnt_maxima;
 
 
-    auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
+//        l_vetores.push_back(soma_vetor(l_centr));
+    } while ((std::next_permutation(l_centr.begin(), l_centr.end()) && r_nao_chego_maximo));
+
+
+//    auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
+    auto a = maior;
 
     return a/get_numero_frames;
 
