@@ -331,7 +331,7 @@ void test_concordancia::test_get_all_var()
     std::vector<int> catalogo  = {0, 1, 2};
 
     std::vector< Calculo_paper>  varios_kappa;
-    Calculo_paper c_1 = Calculo_paper(etrografia_1, etrografia_2, catalogo);
+    Calculo_paper c_1 = Calculo_paper(etrografia_1, etrografia_2, catalogo, 1);
 //    varios_kappa.push_back(c_1);
 
     for(int i=0; i<1000; i++){
@@ -339,7 +339,7 @@ void test_concordancia::test_get_all_var()
         std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
         std::vector<int> e1 = std::get<0>(novas_etografias);
         std::vector<int> e2 = std::get<1>(novas_etografias);
-        Calculo_paper c = Calculo_paper(e1, e2, catalogo);
+        Calculo_paper c = Calculo_paper(e1, e2, catalogo, 1);
         varios_kappa.push_back(c);
 
     }
@@ -529,7 +529,7 @@ void test_concordancia::test_generate_matriz_maxima_correta()
         {7, 0, 0},
         {0, 0, 0}
     };
-    auto resolucao_solver = generate_matriz_maxima_correta(grid);
+    auto resolucao_solver = generate_matriz_maxima_correta(grid, 1);
 }
 
 
@@ -606,7 +606,7 @@ void test_concordancia::test_relatorio_paper()
                                                 etrografia_2,
                                                 catalogo,
                                                 cata_name,
-                                                10);
+                                                10, 1, 1);
 
     relatorio.generate_relatorio();
 
@@ -637,8 +637,8 @@ void test_concordancia::test_relatorio_paper()
 
 void test_concordancia::test_carrega_etografia()
 {
-        Etografia eto_lida2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6.etoxml");
-        Etografia eto_lida3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6bis4.etoxml");
+        Etografia eto_lida2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/7e5h4h6a.etoxml");
+        Etografia eto_lida3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/9e5h4h6b.etoxml");
 
         std::vector<QString> catalogo_categorias_nomes;
         catalogo_categorias_nomes = eto_lida2.catalogo->nome;
@@ -696,7 +696,7 @@ void test_concordancia::test_carrega_etografia()
                                                     ls_quadros_2,
                                                     catalogo,
                                                     cata_name,
-                                                    10);
+                                                    200, 1, 2);
 
         relatorio.generate_relatorio();
 

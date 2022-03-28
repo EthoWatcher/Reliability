@@ -2123,8 +2123,8 @@ std::tuple<bool, std::vector<std::vector<int> > > solver_nova_max(std::vector<st
 
 
 
-std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid){
-    int qnt_simpl = 1;
+std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid, int qnt_simpl){
+//    int qnt_simpl = 1;
 
     auto arruma_grid = [&grid] (int dive_por){
         std::vector<std::vector<int>> saida;
@@ -2237,7 +2237,7 @@ std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta
 
 
 
-Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo )
+Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo, int qnt_simpl)
 {
     //arrumar essa função para deixar ela generica e guardar todos os valores.
     // para depois poder aplicar a tecnica de bootstrap.
@@ -2253,7 +2253,7 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
     catalogo_var.vies = calcula_vies_NN(matriz_concordancia) ;
     catalogo_var.prevalencia = calcula_prevalencia_NN(matriz_concordancia);
 
-    auto resolucao = generate_matriz_maxima_correta(catalogo_var.matriz_concordancia);
+    auto resolucao = generate_matriz_maxima_correta(catalogo_var.matriz_concordancia, qnt_simpl);
 
     bool encontrou = std::get<0>(resolucao); // nunca testei se quando nao encontra resolução volta um false, nem sei se é possivel nao ter solução.
     std::vector<std::vector<int> > m_saida = std::get<1>(resolucao);

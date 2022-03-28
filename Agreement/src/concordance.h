@@ -154,7 +154,7 @@ std::tuple<bool, std::vector<std::vector<int> > > solver(std::vector<std::vector
             std::vector<Marginal> tuple_marginal);
 
 
-std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid);
+std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta(std::vector<std::vector<int> >grid, int qnt_simpl);
 
 
 // Calculo da concordancia
@@ -224,7 +224,7 @@ class Calculo_paper{
     Calculo_paper::Concordancia catalogo_var;
     Calculo_paper::Concordancia catalogo_var_max;
 
-    Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo );
+    Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo , int qnt_simpl);
 
 };
 

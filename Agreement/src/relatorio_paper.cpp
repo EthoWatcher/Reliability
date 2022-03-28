@@ -4,7 +4,9 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  std::vector<int> etrografia_2,
                                  std::vector<int> catalogo,
                                  QList<QString> cata_name,
-                                 int qnt_amostras)
+                                 int qnt_amostras,
+                                 int qnt_simpl,
+                                 int qnt_simpl_boots)
 {
 
     auto transfor_to_saida  = [](Calculo_paper c){
@@ -18,7 +20,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
 //    std::vector<int> catalogo  = {0, 1, 2};
 
 
-     this->medido = new Calculo_paper(etrografia_1, etrografia_2, catalogo);
+     this->medido = new Calculo_paper(etrografia_1, etrografia_2, catalogo, qnt_simpl);
 //    varios_kappa.push_back(c_1);
 
     for(int i=0; i<qnt_amostras; i++){
@@ -26,7 +28,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
         std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
         std::vector<int> e1 = std::get<0>(novas_etografias);
         std::vector<int> e2 = std::get<1>(novas_etografias);
-        Calculo_paper *c = new Calculo_paper(e1, e2, catalogo);
+        Calculo_paper *c = new Calculo_paper(e1, e2, catalogo, qnt_simpl_boots);
         this->varios_kappa.push_back(c);
 
         qDebug() << i;

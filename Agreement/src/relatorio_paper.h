@@ -19,7 +19,7 @@ public:
                                      std::vector<int> etrografia_2,
                                      std::vector<int> catalogo,
                                      QList<QString> cata_name,
-                                     int qnt_amostras);
+                                     int qnt_amostras, int qnt_simpl, int qnt_simpl_boots);
 
     std::vector< Calculo_paper *>  varios_kappa;
     Calculo_paper *medido;
