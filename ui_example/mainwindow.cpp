@@ -199,6 +199,7 @@ void MainWindow::on_pushButton_2_clicked()
 
     int qnt_maxima_permutaca= 10000;
     int seed_bootstap = 1;
+    int qnt_threads = 7;
 
 
     ui->progress_editados->setMaximum(qnt_reamostras -1);
@@ -214,7 +215,8 @@ void MainWindow::on_pushButton_2_clicked()
                                    qnt_simpl,
                                    qnt_simpl_boots,
                                               qnt_maxima_permutaca,
-                                              seed_bootstap);
+                                              seed_bootstap,
+                                              qnt_threads);
 
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots_editados);
@@ -399,8 +401,9 @@ void MainWindow::on_pb_creat_analisis_clicked()
 
     int qnt_maxima_permutaca= 10000;
     int seed_bootstap = 1;
+    int qnt_threads = 7;
 
-    ui->progress_load_eto->setMaximum(qnt_reamostras -1);
+    ui->progress_load_eto->setMaximum(qnt_reamostras);
 
 
     Agreement* workerThread = new Agreement();
@@ -415,7 +418,8 @@ void MainWindow::on_pb_creat_analisis_clicked()
                                    qnt_simpl,
                                    qnt_simpl_boots,
                                               qnt_maxima_permutaca,
-                                              seed_bootstap);
+                                              seed_bootstap,
+                                              qnt_threads);
 
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots);
