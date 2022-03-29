@@ -2396,7 +2396,7 @@ float soma_vetor(std::vector<int> ls_celulas){
 
 
 
-float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
+float calcula_prevalencia_NN(std::vector<std::vector<int>> grid, int qnt_maxima){
 
     auto get_numero_frames =[&grid](){
         int saida = 0;
@@ -2420,47 +2420,15 @@ float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
         }
         return saida;
     };
-//    auto calcula_max_prevalencia = [] (auto l_centr){
-//        float saida = 0;
 
-
-//        for(auto valor: l_centr){
-//            saida = valor + saida;
-//        }
-
-//        return saida;
-//    };
 
     auto l_centr = get_linha_central();
 
-    std::vector<float> l_vetores;
-
     std::sort(std::begin(l_centr), std::end(l_centr));
-    do {
-//        qDebug() << l_centr;
-        l_vetores.push_back(soma_vetor(l_centr));
 
-//        std::vector<int> copy;
-//        std::copy(std::begin(l_centr), std::end(l_centr), std::begin(copy));
-
-//        combinacoes.push_back(copy);
-    } while (std::next_permutation(l_centr.begin(), l_centr.end()));
-
-
-    auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
+    auto a = realiza_permutacao(l_centr, qnt_maxima);
 
     return a/get_numero_frames;
-
-//    auto gera_permutacao = [](auto l_centr,  int l, int r){
-
-//        bool r_mesmo_numero = l == r;
-//        if(r_mesmo_numero){
-
-//        }
-
-
-//    };
-
 
 
 
@@ -2470,7 +2438,7 @@ float calcula_prevalencia_NN(std::vector<std::vector<int>> grid){
 }
 
 
-float calcula_vies_NN(std::vector<std::vector<int>> grid){
+float calcula_vies_NN(std::vector<std::vector<int>> grid, int qnt_maxima){
 
 
     auto get_numero_frames =[&grid](){
@@ -2501,12 +2469,35 @@ float calcula_vies_NN(std::vector<std::vector<int>> grid){
 
     auto l_centr = get_linha_central();
 
-    std::vector<float> l_vetores;
+//    std::vector<float> l_vetores;
 
-    float maior = -1;
+
     std::sort(std::begin(l_centr), std::end(l_centr));
 
-    int qnt_maxima = 10000;
+
+
+
+//    auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
+    auto a = realiza_permutacao(l_centr, qnt_maxima);
+
+    return a/get_numero_frames;
+
+
+
+
+
+
+
+}
+
+
+
+
+
+float realiza_permutacao(std::vector<int> l_centr, int qnt_maxima)
+{
+
+    float maior = -1;
     int i =0;
     bool r_nao_chego_maximo = i < qnt_maxima;
     do {
@@ -2529,16 +2520,7 @@ float calcula_vies_NN(std::vector<std::vector<int>> grid){
 //    auto a =  *std::max_element(l_vetores.begin(), l_vetores.end());
     auto a = maior;
 
-    return a/get_numero_frames;
-
-
-
-
-
+    return a;
 
 
 }
-
-
-
-

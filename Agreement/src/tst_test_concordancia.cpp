@@ -27,7 +27,7 @@ public:
 
 private slots:
 
-    void test_carrega_etografia();
+
     void test_case1();
 //    void testCase1();
 //    void testCase12();
@@ -66,6 +66,7 @@ private slots:
 
     void test_bootstra_seed();
     void test_relatorio_paper();
+    void test_carrega_etografia();
 
 
 
