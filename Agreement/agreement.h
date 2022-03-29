@@ -27,7 +27,9 @@ public:
                             std::vector<int> catalogo,
                             QList<QString> cata_name,
                             int qnt_reamostras,
-                            int qnt_simpl, int qnt_simpl_boots, int qnt_maxima_permutaca, int seed_bootstap, int qnt_threads);
+                            int qnt_simpl, int qnt_simpl_boots,
+                            QList<QString> ls_path_eto,
+                            int qnt_maxima_permutaca, int seed_bootstap, int qnt_threads);
 
     Etografia read_eto(QString path);
     std::vector<int> extrai_lista_quadros(Etografia eto);
@@ -55,7 +57,9 @@ private:
                                             qnt_reamostras,
                                             qnt_simpl,
                                             qnt_simpl_boots,
+
                                             qnt_maxima_permutaca,
+                                            ls_path_eto,
                                             seed_bootstap,
                                             qnt_threads);
 
@@ -80,6 +84,7 @@ private:
    int qnt_maxima_permutaca;
    int seed_bootstap;
    int qnt_threads;
+   QList<QString> ls_path_eto;
 
 };
 

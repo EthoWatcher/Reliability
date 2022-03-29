@@ -12,6 +12,7 @@ QString Agreement::generate_report(QString path,
                                    QList<QString> cata_name,
                                    int qnt_reamostras,
                                    int qnt_simpl, int qnt_simpl_boots,
+                                   QList<QString> ls_path_eto,
                                    int qnt_maxima_permutaca,
                                    int seed_bootstap,
                                    int qnt_threads
@@ -37,6 +38,7 @@ QString Agreement::generate_report(QString path,
     this->qnt_reamostras = qnt_reamostras;
     this->qnt_simpl =  qnt_simpl;
     this->qnt_simpl_boots = qnt_simpl_boots;
+    this->ls_path_eto = ls_path_eto;
 
     this->qnt_maxima_permutaca =  qnt_maxima_permutaca;
     this->seed_bootstap = seed_bootstap;
