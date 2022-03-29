@@ -27,7 +27,7 @@ public:
                                      int qnt_amostras,
                                      int qnt_simpl, int qnt_simpl_boots,
                                      int qnt_maxima_permutaca,
-                                     int seed_bootstap = 1, QObject *parent = nullptr);
+                                     int seed_bootstap = 1,int qnt_threads =5, QObject *parent = nullptr);
 
     void do_proces();
     void generate_relatorio();
@@ -47,6 +47,7 @@ private:
      int qnt_simpl_boots;
      int qnt_maxima_permutaca;
      int seed_bootstap;
+     int qnt_threads;
 
 
 signals:

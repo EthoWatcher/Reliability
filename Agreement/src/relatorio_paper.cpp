@@ -7,7 +7,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  int qnt_amostras,
                                  int qnt_simpl,
                                  int qnt_simpl_boots, int qnt_maxima_permutaca,
-                                 int seed_bootstap, QObject *parent): QObject(parent)
+                                 int seed_bootstap, int qnt_threads, QObject *parent): QObject(parent)
 {
 
      this->etrografia_1 =  etrografia_1;
@@ -20,6 +20,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
      this->seed_bootstap = seed_bootstap;
      this->qnt_maxima_permutaca = qnt_maxima_permutaca;
 
+    this->qnt_threads = qnt_threads;
 }
 
 void Relatorio_paper::do_proces()
@@ -56,7 +57,7 @@ void Relatorio_paper::do_proces()
 
 
         std::vector<Calculo_paper*> ls_parelo;
-        int qnt_threads =5;
+//        int qnt_threads =5;
 //        int j=0;
 //        bool r_regra_parale = i < qnt_amostras && (j < qnt_threads);
         for(int j=0; j< qnt_threads; j++){
