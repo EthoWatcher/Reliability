@@ -392,6 +392,7 @@ void MainWindow::on_pb_creat_analisis_clicked()
                 );
 
 
+    ui->pb_creat_analisis->setEnabled(false);
     ui->gb_controlers->setEnabled(false);
     Agreement func;
     auto etrografia_1 = func.extrai_lista_quadros(ls_etografias[0]);
