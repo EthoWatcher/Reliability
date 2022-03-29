@@ -53,6 +53,7 @@ private:
     QList<QList<QLineEdit*>> ls_edi;
 
     QList<Etografia> ls_etografias;
+    QList<QString> ls_path_lidos;
 
     std::vector<std::vector<int>> matriz_confusao;
     std::tuple<QList<QString> , std::vector<int> > catalogo;

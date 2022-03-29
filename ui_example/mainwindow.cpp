@@ -215,9 +215,10 @@ void MainWindow::on_pushButton_2_clicked()
                                    qnt_reamostras,
                                    qnt_simpl,
                                    qnt_simpl_boots,
-                                              qnt_maxima_permutaca,
-                                              seed_bootstap,
-                                              qnt_threads);
+                                  ls_path_lidos,
+                                  qnt_maxima_permutaca,
+                                  seed_bootstap,
+                                  qnt_threads);
 
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots_editados);
@@ -247,7 +248,7 @@ void MainWindow::on_pb_load_eto_clicked()
     int i = path.lastIndexOf("/");
     QString y = path.mid(i+1, path.size());
 
-
+    this->ls_path_lidos.append(path);
     ls_etografias.append(ma.read_eto(path));
 
     bool r_colocou_todas_eto = ls_etografias.count() ==2;
@@ -408,6 +409,11 @@ void MainWindow::on_pb_creat_analisis_clicked()
 
     ui->progress_load_eto->setMaximum(qnt_reamostras);
 
+//    QList<QString> ls_path_eto;
+//    for(auto eto: ls_etografias){
+//        ls_path_eto.append(eto.video->nome);
+//    }
+
 
     Agreement* workerThread = new Agreement();
 
@@ -420,9 +426,10 @@ void MainWindow::on_pb_creat_analisis_clicked()
                                    qnt_reamostras,
                                    qnt_simpl,
                                    qnt_simpl_boots,
-                                              qnt_maxima_permutaca,
-                                              seed_bootstap,
-                                              qnt_threads);
+                                  ls_path_lidos,
+                                  qnt_maxima_permutaca,
+                                  seed_bootstap,
+                                  qnt_threads);
 
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots);
