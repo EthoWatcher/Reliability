@@ -205,14 +205,22 @@ QString creat_list_string(QList<QString> saida_ls){
     QString saida;
 
     saida = saida + "[";
-    for(int i=0 ; i< saida_ls.size(); i++){
-        bool r_ultimo = i == saida_ls.size() - 1;
-        if(r_ultimo){
-            saida = saida + "'"+ saida_ls[i] +"'" + "]";
-        }else{
-            saida = saida + "'"+ saida_ls[i] +"'" + " , " ;
+    bool r_nao_tem = saida_ls.size() == 0;
+    if(r_nao_tem){
+        saida = saida + "]";
+    }else{
+        for(int i=0 ; i< saida_ls.size(); i++){
+            bool r_ultimo = i == saida_ls.size() - 1;
+            if(r_ultimo){
+                saida = saida + "'"+ saida_ls[i] +"'" + "]";
+            }else{
+                saida = saida + "'"+ saida_ls[i] +"'" + " , " ;
+            }
         }
+
     }
+
+
     return saida;
 
 };

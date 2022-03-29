@@ -608,6 +608,7 @@ void test_concordancia::test_bootstra_seed()
     QList<QString> cata_name = {"swimming",
                                      "climbimg",
                                      "Immobility"};
+    QList<QString> ls_path_eto;
 //    0 - swimming
 //    1 - climbimg
 //    2 - Immobility
@@ -615,7 +616,9 @@ void test_concordancia::test_bootstra_seed()
                                                 etrografia_2,
                                                 catalogo,
                                                 cata_name,
-                                                10, 1, 1, 5);
+                                                10, 1,
+
+                                                1, 5, ls_path_eto);
     relatorio.do_proces();
     relatorio.generate_relatorio();
 
@@ -634,11 +637,13 @@ void test_concordancia::test_bootstra_seed()
     qDebug() << "vies";
 
 
+
     Relatorio_paper relatorio_2 = Relatorio_paper(etrografia_1,
                                                 etrografia_2,
                                                 catalogo,
                                                 cata_name,
-                                                10, 1, 1, 5);
+                                                10, 1,
+                                                  1, 5, ls_path_eto);
     relatorio_2.do_proces();
     relatorio_2.generate_relatorio();
 
@@ -677,6 +682,7 @@ void test_concordancia::test_relatorio_paper()
     int qnt_maxima_permutaca = 10000;
     int seed_bootstap = 2;
 
+    QList<QString> ls_path_eto;
     Relatorio_paper relatorio = Relatorio_paper(etrografia_1,
                                                 etrografia_2,
                                                 catalogo,
@@ -684,6 +690,7 @@ void test_concordancia::test_relatorio_paper()
                                                 qnt_amostras, qnt_simpl,
                                                 qnt_simpl_boots,
                                                 qnt_maxima_permutaca,
+                                                ls_path_eto,
                                                 seed_bootstap);
     relatorio.do_proces();
     relatorio.generate_relatorio();
@@ -775,14 +782,14 @@ void test_concordancia::test_carrega_etografia()
         int qnt_maxima_permutaca = 10000;
         int seed = 2;
 
-
+        QList<QString> ls_path_eto;
         Relatorio_paper relatorio = Relatorio_paper(ls_quadros_1,
                                                     ls_quadros_2,
                                                     catalogo,
                                                     cata_name,
                                                     qnt_amostras,
                                                     qnt_simpl, qnt_simpl_boots,
-                                                    qnt_maxima_permutaca, seed);
+                                                    qnt_maxima_permutaca,ls_path_eto, seed);
 
         relatorio.do_proces();
         relatorio.generate_relatorio();
