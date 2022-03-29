@@ -12,6 +12,7 @@
 
 #include <QObject>
 
+#include <QThread>
 
 class Relatorio_paper: public QObject
 {

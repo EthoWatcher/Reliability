@@ -2250,7 +2250,7 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
     this->qnt_simpl = qnt_simpl;
     this-> qnt_maxima_permutaca =  qnt_maxima_permutaca;
 
-    this->do_proces();
+//    this->do_proces();
 
 }
 

@@ -244,7 +244,8 @@ private:
     int qnt_simpl;
     int qnt_maxima_permutaca;
     void run() override {
-            qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
+            qDebug() << "THREAD DA CALCULOOO DOS DESCRITORES " << QThread::currentThreadId();
+            this->do_proces();
     }
 };
 

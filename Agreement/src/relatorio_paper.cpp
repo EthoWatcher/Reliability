@@ -34,8 +34,17 @@ void Relatorio_paper::do_proces()
 //    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
 //    std::vector<int> catalogo  = {0, 1, 2};
 
+    qDebug() << "THREAD DA relatorio " << QThread::currentThreadId();
 
      this->medido = new Calculo_paper(etrografia_1, etrografia_2, catalogo, qnt_simpl, qnt_maxima_permutaca);
+
+
+     this->medido->start(QThread::HighestPriority);
+
+     connect(medido, &Calculo_paper::finished, medido, &QObject::deleteLater);
+
+
+
 //    varios_kappa.push_back(c_1);
     Bootstrap a = Bootstrap(etrografia_1,etrografia_2, seed_bootstap );
 
@@ -44,13 +53,51 @@ void Relatorio_paper::do_proces()
         std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
         std::vector<int> e1 = std::get<0>(novas_etografias);
         std::vector<int> e2 = std::get<1>(novas_etografias);
-        Calculo_paper *c = new Calculo_paper(e1, e2, catalogo, qnt_simpl_boots, qnt_maxima_permutaca);
-        this->varios_kappa.push_back(c);
+
+
+        std::vector<Calculo_paper*> ls_parelo;
+        int qnt_threads =5;
+//        int j=0;
+//        bool r_regra_parale = i < qnt_amostras && (j < qnt_threads);
+        for(int j=0; j< qnt_threads; j++){
+            Calculo_paper *c = new Calculo_paper(e1, e2, catalogo, qnt_simpl_boots, qnt_maxima_permutaca);
+            connect(c, &Calculo_paper::finished, c, &QObject::deleteLater);
+
+            ls_parelo.push_back(c);
+            i++;
+            bool r_regra_parale = !(i < qnt_amostras);
+            if(r_regra_parale){
+                break;
+            }
+        }
+
+        for(auto thread: ls_parelo){
+            thread->start(QThread::HighestPriority);
+        }
+
+        for(auto thread: ls_parelo){
+            thread->wait();
+        }
+
+        for(auto thread: ls_parelo){
+            this->varios_kappa.push_back(thread);
+//            thread->wait();
+        }
+
+
 
         emit valueChanged(i);
         qDebug() << i;
 
     }
+
+
+
+    this->medido->wait();
+    emit valueChanged(qnt_amostras);
+
+
+
 }
 
 void Relatorio_paper::generate_relatorio()
