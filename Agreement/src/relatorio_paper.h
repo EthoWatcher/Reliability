@@ -27,6 +27,7 @@ public:
                                      int qnt_amostras,
                                      int qnt_simpl, int qnt_simpl_boots,
                                      int qnt_maxima_permutaca,
+                                     QList<QString> ls_path_eto,
                                      int seed_bootstap = 1,int qnt_threads =5, QObject *parent = nullptr);
 
     void do_proces();
@@ -48,6 +49,7 @@ private:
      int qnt_maxima_permutaca;
      int seed_bootstap;
      int qnt_threads;
+     QList<QString> ls_path_eto;
 
 
 signals:

@@ -7,6 +7,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  int qnt_amostras,
                                  int qnt_simpl,
                                  int qnt_simpl_boots, int qnt_maxima_permutaca,
+                                 QList<QString> ls_path_eto,
                                  int seed_bootstap, int qnt_threads, QObject *parent): QObject(parent)
 {
 
@@ -17,6 +18,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
      this->qnt_amostras = qnt_amostras;
      this->qnt_simpl = qnt_simpl;
      this->qnt_simpl_boots = qnt_simpl_boots;
+     this->ls_path_eto = ls_path_eto;
      this->seed_bootstap = seed_bootstap;
      this->qnt_maxima_permutaca = qnt_maxima_permutaca;
 
@@ -168,6 +170,14 @@ void Relatorio_paper::generate_relatorio()
     }
 
     relatorio.push_back(creat_var("varios_kappa",creat_list(varios_kapp)));
+
+    relatorio.push_back(creat_var("qnt_amostras", QString::number(qnt_amostras)));
+    relatorio.push_back(creat_var("qnt_simpl", QString::number(qnt_simpl)));
+    relatorio.push_back(creat_var("qnt_simpl_boots", QString::number(qnt_simpl_boots)));
+    relatorio.push_back(creat_var("qnt_maxima_permutaca", QString::number(qnt_maxima_permutaca)));
+    relatorio.push_back(creat_var("seed_bootstap", QString::number(seed_bootstap)));
+    relatorio.push_back(creat_var("qnt_threads", QString::number(qnt_threads)));
+    relatorio.push_back(creat_var("ls_eto",creat_list_string(ls_path_eto)));
 
 
 
