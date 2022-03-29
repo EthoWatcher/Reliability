@@ -16,9 +16,7 @@ SOURCES += \
     .\src\bootstrap.cpp \
     .\src\ethowatcher.cpp\
     .\src\concordance.cpp \
-    .\src\relatorio_paper.cpp \
-    workerthread.cpp
-
+    .\src\relatorio_paper.cpp
 
 HEADERS += \
     Agreement_global.h \
@@ -26,9 +24,7 @@ HEADERS += \
     .\src\bootstrap.h \
     .\src\ethowatcher.h \
     .\src\concordance.h \
-    .\src\relatorio_paper.h \
-    workerthread.h
-
+    .\src\relatorio_paper.h
 RESOURCES += \
     .\src\script.qrc
 
