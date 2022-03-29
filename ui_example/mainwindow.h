@@ -40,6 +40,7 @@ private slots:
     void on_pb_creat_analisis_clicked();
 public slots:
     void chega_valor_boots(int valr);
+    void chega_valor_boots_editados(int valr);
 
 private:
     Ui::MainWindow *ui;

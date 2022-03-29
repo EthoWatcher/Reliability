@@ -183,6 +183,7 @@ void MainWindow::on_pushButton_2_clicked()
                 );
 
 
+
     Agreement ma;
 //    qDebug() << ma.generate_report(path, etrografia_1,
 //                                   etrografia_2,
@@ -192,6 +193,27 @@ void MainWindow::on_pushButton_2_clicked()
 //                                   1,1);
 
 
+    int qnt_reamostras = ui->sb_reamostra_2->value();
+    int qnt_simpl = 1;
+    int qnt_simpl_boots = 1;
+
+
+    ui->progress_editados->setMaximum(qnt_reamostras -1);
+    Agreement* workerThread = new Agreement();
+
+
+    qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
+    qDebug() << workerThread->generate_report(path, etrografia_1,
+                                   etrografia_2,
+                                   catalogo,
+                                   cata_name,
+                                   qnt_reamostras,
+                                   qnt_simpl,
+                                   qnt_simpl_boots);
+
+    connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
+    connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots_editados);
+    workerThread->start(QThread::HighestPriority);
 
 
 
@@ -372,12 +394,8 @@ void MainWindow::on_pb_creat_analisis_clicked()
 
     ui->progress_load_eto->setMaximum(qnt_reamostras -1);
 
-//    QThread cThread;
 
-//    https://mayaposch.wordpress.com/2011/11/01/how-to-really-truly-use-qthreads-the-full-explanation/
-//    QThread* thread = new QThread;
     Agreement* workerThread = new Agreement();
-//    worker->moveToThread(thread);
 
 
     qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
@@ -389,22 +407,27 @@ void MainWindow::on_pb_creat_analisis_clicked()
                                    qnt_simpl,
                                    qnt_simpl_boots);
 
-//    ma.moveToThread(&cThread);
-
-//    auto a = QThread::create(workerThread->processa);
-
-//    connect(workerThread, &Agreement::resultReady, this, &MyObject::handleResults);
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots);
-
-
-//    connect(thread, SIGNAL(started()), worker,  SLOT(DoWork()));
-//    connect(thread, SIGNAL(started()), worker, SLOT(process()));
-//    connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
-//    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-//    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-
     workerThread->start(QThread::HighestPriority);
+
+
+    //    QThread cThread;
+
+
+    //    QThread* thread = new QThread;
+    //    https://mayaposch.wordpress.com/2011/11/01/how-to-really-truly-use-qthreads-the-full-explanation/
+    //    ma.moveToThread(&cThread);
+    //    worker->moveToThread(thread);
+
+    //    auto a = QThread::create(workerThread->processa);
+
+    //    connect(workerThread, &Agreement::resultReady, this, &MyObject::handleResults);
+    //    connect(thread, SIGNAL(started()), worker,  SLOT(DoWork()));
+    //    connect(thread, SIGNAL(started()), worker, SLOT(process()));
+    //    connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
+    //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    //    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
 }
 
@@ -412,5 +435,12 @@ void MainWindow::chega_valor_boots(int valr)
 {
     qDebug() << "Esta chendo os dados na interface" << valr;
     ui->progress_load_eto->setValue(valr);
+}
+
+void MainWindow::chega_valor_boots_editados(int valr)
+{
+    qDebug() << "Esta chendo os dados na interface" << valr;
+    ui->progress_editados->setValue(valr);
+
 }
 
