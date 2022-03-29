@@ -1,4 +1,5 @@
 # import json
+from ast import Str
 import xlsxwriter
 
 # import pandas as pd
@@ -109,6 +110,9 @@ def set_text(wk, local, text):
     wk.write(local[0] + str(local[1]-2), text)
     return (local[0], local[1])
 
+def set_text_pos(wk, local, text):
+    wk.write(local[0] + str(local[1]), text)
+    return (local[0], local[1])
 
 def set_wt(wk, local, linha):
     def calcula_mean(linha):
@@ -145,7 +149,28 @@ def creat_cabecalho(wk, local):
     saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Prevalence std')
     saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Cohen Kappa mean')
     saida = set_var(wk, (next_alpha(saida[0]), saida[1]), 'Cohen Kappa std')
+
+
+def escreve_cabecalho(wk, local, data):
+    def escreve_cima_baixo(wk, local, texto_cima, texto_baixo):
+        saida = set_text_pos(wk, (local[0], local[1]), texto_cima)
+        saida = set_text_pos(wk, (saida[0], saida[1]+1), texto_baixo)
+        return saida
     
+    saida = local
+    for i, eto in enumerate(data['ls_eto']):
+        saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "Ethography  " + str(i+1), eto)
+
+    saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "Boostrap sample size", data['qnt_amostras'])
+    saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "Seed usada para gerar a amostra", data['seed_bootstap'])
+    saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "Divisor da matriz de concordancia usada na medição", data['qnt_simpl'])
+    saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "Divisor da matriz de concordancia usada durante o bootstrap", data['qnt_simpl_boots'])
+    saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "Quantidade máxima de permutações", data['qnt_maxima_permutaca'])
+    saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "Quantide de threads", data['qnt_threads'])
+
+    return saida    
+
+
 
 
 
@@ -158,6 +183,8 @@ def create_excel_file(data, path):
 
     local = ("C", 10)
 
+    
+    la1           = escreve_cabecalho(worksheet, ("C", 3), data)
     la            = set_text(worksheet, local, "Agreement from measured data")
     last_letter   = creta_matriz_confusao(worksheet, local, mat, ls_cat)
     last_letter_1 = set_descricao(worksheet, (local[0], last_letter[1]+2) , data['medido']['catalogo_var'])
