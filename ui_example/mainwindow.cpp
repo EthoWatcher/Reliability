@@ -133,6 +133,7 @@ void MainWindow::on_pb_create_matriz_clicked()
     ui->pb_create_matriz->setEnabled(false);
     ui->groupBox_3->setEnabled(false);
     ui->pushButton_2->setEnabled(true);
+    ui->pb_finish_editing->setEnabled(true);
 
 
 }
@@ -140,14 +141,14 @@ void MainWindow::on_pb_create_matriz_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    std::vector<std::vector<int>> matriz_confusao;
-    for(auto linha: ls_edi){
-        std::vector<int> col_int;
-        for(auto col: linha){
-            col_int.push_back(col->text().toInt());
-        }
-        matriz_confusao.push_back(col_int);
-    }
+//    std::vector<std::vector<int>> matriz_confusao;
+//    for(auto linha: ls_edi){
+//        std::vector<int> col_int;
+//        for(auto col: linha){
+//            col_int.push_back(col->text().toInt());
+//        }
+//        matriz_confusao.push_back(col_int);
+//    }
     std::vector<int> etrografia_1  = {};
     std::vector<int> etrografia_2  = {};
 
@@ -184,7 +185,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 
 
-    Agreement ma;
+//    Agreement ma;
 //    qDebug() << ma.generate_report(path, etrografia_1,
 //                                   etrografia_2,
 //                                   catalogo,
@@ -194,15 +195,15 @@ void MainWindow::on_pushButton_2_clicked()
 
 
     int qnt_reamostras = ui->sb_reamostra_2->value();
-    int qnt_simpl = 1;
-    int qnt_simpl_boots = 1;
+    int qnt_simpl = ui->sb_qnt_simp_medida->value();
+    int qnt_simpl_boots = ui->sb_sim_boots_2->value();
 
-    int qnt_maxima_permutaca= 10000;
-    int seed_bootstap = 1;
-    int qnt_threads = 7;
+    int qnt_maxima_permutaca= ui->sb_numero_maximo_3->value();
+    int seed_bootstap = ui->sb_seed_2->value();
+    int qnt_threads = ui->sb_paralel_2->value();
 
 
-    ui->progress_editados->setMaximum(qnt_reamostras -1);
+    ui->progress_editados->setMaximum(qnt_reamostras);
     Agreement* workerThread = new Agreement();
 
 
@@ -223,6 +224,7 @@ void MainWindow::on_pushButton_2_clicked()
     workerThread->start(QThread::HighestPriority);
 
 
+    ui->pushButton_2->setEnabled(false);
 
     qDebug() <<"tese";
 }
@@ -465,5 +467,63 @@ void MainWindow::chega_valor_boots_editados(int valr)
     qDebug() << "Esta chendo os dados na interface" << valr;
     ui->progress_editados->setValue(valr);
 
+}
+
+
+void MainWindow::on_pb_finish_editing_clicked()
+{
+//    this->ls_edi = create_matriz_confusao(std::get<0>(catalogo), ui->wd_matriz_2);
+
+    auto creat_matriz_confusa =  [](QList<QList<QLineEdit*>> ls_edi){
+//        ls_edi
+        std::vector<std::vector<int>> matriz_confusao;
+        for(auto linha: ls_edi){
+            std::vector<int> linha_conf;
+            for(auto cel: linha){
+                linha_conf.push_back(cel->text().toInt());
+            }
+            matriz_confusao.push_back(linha_conf);
+        }
+        return matriz_confusao;
+
+    };
+
+
+    this->matriz_confusao = creat_matriz_confusa(this->ls_edi);
+
+//    matriz_confusao = ma.get_matrix_concordancia_cohen(
+//                                    ma.extrai_lista_quadros(ls_etografias[0]),
+//                                    ma.extrai_lista_quadros(ls_etografias[1]), std::get<1>(catalogo));
+//    prenche_valores_matriz(matriz_confusao, this->ls_edi);
+     prenche_valores_matriz(matriz_confusao, this->ls_edi);
+     ui->gb_boots_controle_1->setEnabled(true);
+     ui->wd_matriz->setEnabled(false);
+     ui->gb_boots_controle_1->setEnabled(true);
+     ui->pb_finish_editing->setEnabled(false);
+
+}
+
+
+void MainWindow::on_sb_qnt_simp_medida_valueChanged(int arg1)
+{
+    auto grid = this->matriz_confusao;
+    auto arruma_grid = [&grid] (int dive_por){
+        std::vector<std::vector<int>> saida;
+
+        for(auto linha: grid){
+            std::vector<int> linha_add;
+            for(auto celula: linha){
+                linha_add.push_back( int(ceil( celula/dive_por)));
+            }
+            saida.push_back(linha_add);
+        }
+
+        return saida;
+
+    }(arg1);
+
+
+
+     prenche_valores_matriz(arruma_grid, this->ls_edi);
 }
 

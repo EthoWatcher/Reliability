@@ -38,6 +38,10 @@ private slots:
     void on_sb_qnt_simp_2_valueChanged(int arg1);
 
     void on_pb_creat_analisis_clicked();
+    void on_pb_finish_editing_clicked();
+
+    void on_sb_qnt_simp_medida_valueChanged(int arg1);
+
 public slots:
     void chega_valor_boots(int valr);
     void chega_valor_boots_editados(int valr);
