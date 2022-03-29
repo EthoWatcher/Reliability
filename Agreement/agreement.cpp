@@ -13,7 +13,8 @@ QString Agreement::generate_report(QString path,
                                    int qnt_reamostras,
                                    int qnt_simpl, int qnt_simpl_boots,
                                    int qnt_maxima_permutaca,
-                                   int seed_bootstap
+                                   int seed_bootstap,
+                                   int qnt_threads
                                    )
 {
 //    qDebug() << "report";
@@ -39,6 +40,7 @@ QString Agreement::generate_report(QString path,
 
     this->qnt_maxima_permutaca =  qnt_maxima_permutaca;
     this->seed_bootstap = seed_bootstap;
+    this-> qnt_threads = qnt_threads;
 
 
 
