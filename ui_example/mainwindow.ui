@@ -259,6 +259,13 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
+            <widget class="QProgressBar" name="progress_load_eto">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="pb_creat_analisis">
              <property name="text">
               <string>Generate Report</string>

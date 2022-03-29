@@ -370,6 +370,8 @@ void MainWindow::on_pb_creat_analisis_clicked()
     int qnt_simpl = ui->sb_qnt_simp_2->value();
     int qnt_simpl_boots = ui->sb_sim_boots->value();
 
+    ui->progress_load_eto->setMaximum(qnt_reamostras -1);
+
 //    QThread cThread;
 
 //    https://mayaposch.wordpress.com/2011/11/01/how-to-really-truly-use-qthreads-the-full-explanation/
@@ -393,6 +395,7 @@ void MainWindow::on_pb_creat_analisis_clicked()
 
 //    connect(workerThread, &Agreement::resultReady, this, &MyObject::handleResults);
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
+    connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots);
 
 
 //    connect(thread, SIGNAL(started()), worker,  SLOT(DoWork()));
@@ -403,5 +406,11 @@ void MainWindow::on_pb_creat_analisis_clicked()
 
     workerThread->start(QThread::HighestPriority);
 
+}
+
+void MainWindow::chega_valor_boots(int valr)
+{
+    qDebug() << "Esta chendo os dados na interface" << valr;
+    ui->progress_load_eto->setValue(valr);
 }
 

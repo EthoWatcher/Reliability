@@ -38,6 +38,8 @@ private slots:
     void on_sb_qnt_simp_2_valueChanged(int arg1);
 
     void on_pb_creat_analisis_clicked();
+public slots:
+    void chega_valor_boots(int valr);
 
 private:
     Ui::MainWindow *ui;
