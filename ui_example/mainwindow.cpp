@@ -389,6 +389,7 @@ void MainWindow::on_pb_creat_analisis_clicked()
                 );
 
 
+    ui->gb_controlers->setEnabled(false);
     Agreement func;
     auto etrografia_1 = func.extrai_lista_quadros(ls_etografias[0]);
     auto etrografia_2 = func.extrai_lista_quadros(ls_etografias[1]);
@@ -399,9 +400,9 @@ void MainWindow::on_pb_creat_analisis_clicked()
     int qnt_simpl = ui->sb_qnt_simp_2->value();
     int qnt_simpl_boots = ui->sb_sim_boots->value();
 
-    int qnt_maxima_permutaca= 10000;
-    int seed_bootstap = 1;
-    int qnt_threads = 7;
+    int qnt_maxima_permutaca= ui->sb_numero_maximo->value();
+    int seed_bootstap = ui->sb_seed->value();
+    int qnt_threads = ui->sb_paralel->value();
 
     ui->progress_load_eto->setMaximum(qnt_reamostras);
 
@@ -449,6 +450,14 @@ void MainWindow::chega_valor_boots(int valr)
 {
     qDebug() << "Esta chendo os dados na interface" << valr;
     ui->progress_load_eto->setValue(valr);
+
+    int qnt_reamostras = ui->sb_reamostra->value();
+    bool r_bool_fim = qnt_reamostras <= valr;
+
+    if(r_bool_fim){
+        ui->pb_creat_analisis->setEnabled(false);
+    }
+
 }
 
 void MainWindow::chega_valor_boots_editados(int valr)
