@@ -1,6 +1,6 @@
 #include "agreement.h"
 
-Agreement::Agreement()
+Agreement::Agreement(QObject *parent): QThread(parent)
 {
 
 }
@@ -25,20 +25,19 @@ QString Agreement::generate_report(QString path,
 ////    0 - swimming
 ////    1 - climbimg
 ////    2 - Immobility
-    relatorio = new Relatorio_paper(etrografia_1,
-                                                etrografia_2,
-                                                catalogo,
-                                                cata_name,
-                                                qnt_reamostras,
-                                                qnt_simpl, qnt_simpl_boots);
-
+///
     this->path = path;
+    this->etrografia_1 = etrografia_1;
+    this->etrografia_2 = etrografia_2;
+    this->catalogo  = catalogo;
+    this->cata_name = cata_name;
+    this->qnt_reamostras = qnt_reamostras;
+    this->qnt_simpl =  qnt_simpl;
+    this->qnt_simpl_boots = qnt_simpl_boots;
 
 
 
-
-
-    connect(relatorio, SIGNAL(valueChanged(int)), this, SLOT(chega_valor(int)));
+//    connect(relatorio, SIGNAL(valueChanged(int)), this, SLOT(chega_valor(int)));
 
 //            &Relatorio_paper::valueChanged, this, &Agreement::chega_valor);
 

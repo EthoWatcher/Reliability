@@ -25,13 +25,22 @@ public:
                                      QList<QString> cata_name,
                                      int qnt_amostras, int qnt_simpl, int qnt_simpl_boots, QObject *parent = nullptr);
 
+    void do_proces();
+    void generate_relatorio();
     std::vector< Calculo_paper *>  varios_kappa;
     Calculo_paper *medido;
     QString txt_relatorio;
 
-    void generate_relatorio();
+
 private:
     QList<QString> cata_name;
+    std::vector<int> etrografia_1;
+     std::vector<int> etrografia_2;
+     std::vector<int> catalogo;
+
+     int qnt_amostras;
+     int qnt_simpl;
+     int qnt_simpl_boots;
 
 signals:
     void valueChanged(int s);

@@ -9,6 +9,18 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  int qnt_simpl_boots, QObject *parent): QObject(parent)
 {
 
+     this->etrografia_1 =  etrografia_1;
+     this->etrografia_2 = etrografia_2;
+     this->catalogo = catalogo;
+     this->cata_name = cata_name;
+     this->qnt_amostras = qnt_amostras;
+     this->qnt_simpl = qnt_simpl;
+     this->qnt_simpl_boots = qnt_simpl_boots;
+
+}
+
+void Relatorio_paper::do_proces()
+{
     auto transfor_to_saida  = [](Calculo_paper c){
 
     };
@@ -35,7 +47,6 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
         qDebug() << i;
 
     }
-
 }
 
 void Relatorio_paper::generate_relatorio()

@@ -377,6 +377,8 @@ void MainWindow::on_pb_creat_analisis_clicked()
     Agreement* workerThread = new Agreement();
 //    worker->moveToThread(thread);
 
+
+    qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
     qDebug() << workerThread->generate_report(path, etrografia_1,
                                    etrografia_2,
                                    catalogo_int,

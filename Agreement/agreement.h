@@ -13,17 +13,9 @@ class AGREEMENT_EXPORT Agreement : public QThread
     Q_OBJECT
 public:
 //    explicit Agreement(QObject *parent =0);
-    Agreement();
+    Agreement(QObject *parent = 0);
 
-    void run() override {
-            QString result;
-            /* ... here is the expensive or blocking operation ... */
-            relatorio->generate_relatorio();
-            gera_relatorio_python(path, relatorio->txt_relatorio);
-            emit finished();
 
-//            emit resultReady(result);
-        }
 
 
     Relatorio_paper *relatorio;
@@ -51,6 +43,37 @@ signals:
     void qnt_bootstrap(int a);
     void finished();
 
+private:
+    void run() override {
+            qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
+            QString result;
+            /* ... here is the expensive or blocking operation ... */
+            relatorio = new Relatorio_paper(etrografia_1,
+                                            etrografia_2,
+                                            catalogo,
+                                            cata_name,
+                                            qnt_reamostras,
+                                            qnt_simpl,
+                                            qnt_simpl_boots);
+
+
+            connect(relatorio, SIGNAL(valueChanged(int)), this, SLOT(chega_valor(int)));
+            relatorio->do_proces();
+            relatorio->generate_relatorio();
+            gera_relatorio_python(path, relatorio->txt_relatorio);
+            emit finished();
+
+//            emit resultReady(result);
+        }
+
+
+   std::vector<int> etrografia_1;
+   std::vector<int> etrografia_2;
+   std::vector<int> catalogo;
+   QList<QString> cata_name;
+   int qnt_reamostras;
+   int qnt_simpl;
+   int qnt_simpl_boots;
 
 };
 
