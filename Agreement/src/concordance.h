@@ -9,6 +9,10 @@ using namespace  std;
 #include <QFileDialog>
 #include <algorithm>
 
+#include <QtCore>
+#include <QThread>
+#include <QObject>
+
 class Concordance_Cohen
 {
 public:
@@ -207,8 +211,13 @@ private:
 
 
 
-class Calculo_paper{
-    public:
+class Calculo_paper: public QThread
+{
+    Q_OBJECT
+public:
+    Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo , int qnt_simpl, int qnt_maxima_permutaca, QObject *parent = 0);
+    void do_proces();
+
     struct Concordancia{
         int categoria;
         float observada;
@@ -226,8 +235,7 @@ class Calculo_paper{
     Calculo_paper::Concordancia catalogo_var;
     Calculo_paper::Concordancia catalogo_var_max;
 
-    Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo , int qnt_simpl, int qnt_maxima_permutaca);
-    void do_proces();
+
 
 private:
     std::vector<int> etrografia_1;
@@ -235,6 +243,9 @@ private:
     std::vector<int> catalogo;
     int qnt_simpl;
     int qnt_maxima_permutaca;
+    void run() override {
+            qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
+    }
 };
 
 

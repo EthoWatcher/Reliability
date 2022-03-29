@@ -336,7 +336,8 @@ void test_concordancia::test_get_all_var()
     std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
     std::vector<int> catalogo  = {0, 1, 2};
 
-    std::vector< Calculo_paper>  varios_kappa;
+    std::vector< Calculo_paper *>  varios_kappa;
+
     Calculo_paper c_1 = Calculo_paper(etrografia_1, etrografia_2, catalogo, 1, 10000);
 //    varios_kappa.push_back(c_1);
     Bootstrap a = Bootstrap(etrografia_1,etrografia_2 );
@@ -345,7 +346,7 @@ void test_concordancia::test_get_all_var()
         std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
         std::vector<int> e1 = std::get<0>(novas_etografias);
         std::vector<int> e2 = std::get<1>(novas_etografias);
-        Calculo_paper c = Calculo_paper(e1, e2, catalogo, 1, 10000);
+        Calculo_paper *c = new Calculo_paper(e1, e2, catalogo, 1, 10000);
         varios_kappa.push_back(c);
 
     }
@@ -389,26 +390,26 @@ void test_concordancia::test_get_all_var()
 
 
     // pegando as variaveis
-    auto get_catalogo_kappa = [](std::vector< Calculo_paper>  varios_kappa){
+    auto get_catalogo_kappa = [](std::vector< Calculo_paper *>  varios_kappa){
         std::vector<float> kappa_medidos;
-        for(Calculo_paper x: varios_kappa){
-            kappa_medidos.push_back(x.catalogo_var.kappa);
+        for(auto x: varios_kappa){
+            kappa_medidos.push_back(x->catalogo_var.kappa);
         }
         return kappa_medidos;
     };
 
-    auto get_kappa_cat_n = [](std::vector< Calculo_paper>  varios_kappa, int n){
+    auto get_kappa_cat_n = [](std::vector< Calculo_paper *>  varios_kappa, int n){
         std::vector<float> kappa_medidos;
-        for(Calculo_paper x: varios_kappa){
-            kappa_medidos.push_back(x.list_kappa_cat[n].kappa);
+        for(auto x: varios_kappa){
+            kappa_medidos.push_back(x->list_kappa_cat[n].kappa);
         }
         return kappa_medidos;
     };
 
-    auto get_max_kappa_cat_n = [](std::vector< Calculo_paper>  varios_kappa, int n){
+    auto get_max_kappa_cat_n = [](std::vector< Calculo_paper*>  varios_kappa, int n){
         std::vector<float> kappa_medidos;
-        for(Calculo_paper x: varios_kappa){
-            kappa_medidos.push_back(x.list_kappa_cat_max[n].kappa);
+        for(auto x: varios_kappa){
+            kappa_medidos.push_back(x->list_kappa_cat_max[n].kappa);
         }
         return kappa_medidos;
     };

@@ -2238,7 +2238,7 @@ std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta
 
 
 Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo, int qnt_simpl,
-                             int qnt_maxima_permutaca)
+                             int qnt_maxima_permutaca, QObject *parent): QThread(parent)
 {
     //arrumar essa função para deixar ela generica e guardar todos os valores.
     // para depois poder aplicar a tecnica de bootstrap.
