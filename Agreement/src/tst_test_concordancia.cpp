@@ -64,7 +64,7 @@ private slots:
     void test_convert_json_list_int();
 
 
-
+    void test_bootstra_seed();
     void test_relatorio_paper();
 
 
@@ -588,6 +588,63 @@ void test_concordancia::test_convert_json_list_int()
     qDebug() << saida;
 }
 
+void test_concordancia::test_bootstra_seed()
+{
+    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
+    std::vector<int> etrografia_2  = {1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2};
+    std::vector<int> catalogo  = {0, 1, 2};
+    QList<QString> cata_name = {"swimming",
+                                     "climbimg",
+                                     "Immobility"};
+//    0 - swimming
+//    1 - climbimg
+//    2 - Immobility
+    Relatorio_paper relatorio = Relatorio_paper(etrografia_1,
+                                                etrografia_2,
+                                                catalogo,
+                                                cata_name,
+                                                10, 1, 1, 5);
+    relatorio.do_proces();
+    relatorio.generate_relatorio();
+
+    QWidget *parent1 = nullptr;
+    const QString &caption = QString("Save File");
+    QString path = QFileDialog::getSaveFileName(
+                parent1,
+                caption,
+                "C://Users//Bio//Desktop//videos//",
+                "Report (*.xlsx)"
+                );
+
+
+    gera_relatorio_python(path, relatorio.txt_relatorio);
+
+    qDebug() << "vies";
+
+
+    Relatorio_paper relatorio_2 = Relatorio_paper(etrografia_1,
+                                                etrografia_2,
+                                                catalogo,
+                                                cata_name,
+                                                10, 1, 1, 5);
+    relatorio_2.do_proces();
+    relatorio_2.generate_relatorio();
+
+
+
+    QString path_2 = QFileDialog::getSaveFileName(
+                parent1,
+                caption,
+                "C://Users//Bio//Desktop//videos//",
+                "Report (*.xlsx)"
+                );
+
+
+    gera_relatorio_python(path_2, relatorio.txt_relatorio);
+
+    qDebug() << "vies";
+}
+
 
 
 
@@ -607,7 +664,7 @@ void test_concordancia::test_relatorio_paper()
                                                 catalogo,
                                                 cata_name,
                                                 10, 1, 1);
-
+    relatorio.do_proces();
     relatorio.generate_relatorio();
 
     QWidget *parent1 = nullptr;
@@ -698,6 +755,7 @@ void test_concordancia::test_carrega_etografia()
                                                     cata_name,
                                                     10, 1, 2);
 
+        relatorio.do_proces();
         relatorio.generate_relatorio();
 
         QWidget *parent1 = nullptr;

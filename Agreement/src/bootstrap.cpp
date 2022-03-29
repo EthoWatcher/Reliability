@@ -10,6 +10,10 @@ Bootstrap::Bootstrap(std::vector<int> etrografia_1, std::vector<int> etrografia_
     for(int i=0; i< etrografia_1.size(); i++){
         this->list_concordance.push_back( std::tuple<int, int>(etrografia_1[i], etrografia_2[i]) );
     }
+
+    gen1 =  QRandomGenerator(s_rand);
+
+
     //tem que ver qual é a melhor solução, uma o srand
 //    std::srand(s_rand);
 //    srand (time(NULL));
@@ -26,7 +30,8 @@ std::tuple< std::vector<int>, std::vector<int> > Bootstrap::generate_new_etograf
 
 
      for (int i=0; i< int(original_1.size()) ; i++){
-         r_list[i]= 0 + (std::rand() % this->original_1.size() );
+         int x =  gen1.generate(); //std::rand()
+         r_list[i]= 0 + (x % this->original_1.size() );
      }
 
      for(int i=0; i< int(original_1.size()); i++){

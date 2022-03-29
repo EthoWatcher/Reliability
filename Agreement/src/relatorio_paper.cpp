@@ -6,7 +6,8 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  QList<QString> cata_name,
                                  int qnt_amostras,
                                  int qnt_simpl,
-                                 int qnt_simpl_boots, QObject *parent): QObject(parent)
+                                 int qnt_simpl_boots,
+                                 int seed_bootstap, QObject *parent): QObject(parent)
 {
 
      this->etrografia_1 =  etrografia_1;
@@ -16,6 +17,7 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
      this->qnt_amostras = qnt_amostras;
      this->qnt_simpl = qnt_simpl;
      this->qnt_simpl_boots = qnt_simpl_boots;
+     this->seed_bootstap = seed_bootstap;
 
 }
 
@@ -34,9 +36,10 @@ void Relatorio_paper::do_proces()
 
      this->medido = new Calculo_paper(etrografia_1, etrografia_2, catalogo, qnt_simpl);
 //    varios_kappa.push_back(c_1);
+    Bootstrap a = Bootstrap(etrografia_1,etrografia_2, seed_bootstap );
 
     for(int i=0; i<qnt_amostras; i++){
-        Bootstrap a = Bootstrap(etrografia_1,etrografia_2 );
+
         std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
         std::vector<int> e1 = std::get<0>(novas_etografias);
         std::vector<int> e2 = std::get<1>(novas_etografias);

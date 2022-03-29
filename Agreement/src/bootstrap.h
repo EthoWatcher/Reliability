@@ -3,6 +3,8 @@
 #include <vector>
 #include <tuple>
 
+#include <QRandomGenerator>
+
 class Bootstrap
 {
 public:
@@ -13,6 +15,7 @@ private:
     std::vector<int> original_1;
     std::vector<int> original_2;
     std::vector<std::tuple<int, int>> list_concordance;
+    QRandomGenerator gen1;
 };
 
 #endif // BOOTSTRAP_H
