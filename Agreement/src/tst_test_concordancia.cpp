@@ -27,6 +27,11 @@ public:
 
 private slots:
 
+    void test_relatorio_paper();
+
+    void test_carrega_etografia();
+    void test_bootstra_seed();
+
 
     void test_case1();
 //    void testCase1();
@@ -64,9 +69,9 @@ private slots:
     void test_convert_json_list_int();
 
 
-    void test_bootstra_seed();
-    void test_relatorio_paper();
-    void test_carrega_etografia();
+
+
+
 
 
 
@@ -332,15 +337,15 @@ void test_concordancia::test_get_all_var()
     std::vector<int> catalogo  = {0, 1, 2};
 
     std::vector< Calculo_paper>  varios_kappa;
-    Calculo_paper c_1 = Calculo_paper(etrografia_1, etrografia_2, catalogo, 1);
+    Calculo_paper c_1 = Calculo_paper(etrografia_1, etrografia_2, catalogo, 1, 10000);
 //    varios_kappa.push_back(c_1);
-
+    Bootstrap a = Bootstrap(etrografia_1,etrografia_2 );
     for(int i=0; i<1000; i++){
-        Bootstrap a = Bootstrap(etrografia_1,etrografia_2 );
+
         std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
         std::vector<int> e1 = std::get<0>(novas_etografias);
         std::vector<int> e2 = std::get<1>(novas_etografias);
-        Calculo_paper c = Calculo_paper(e1, e2, catalogo, 1);
+        Calculo_paper c = Calculo_paper(e1, e2, catalogo, 1, 10000);
         varios_kappa.push_back(c);
 
     }
@@ -646,7 +651,7 @@ void test_concordancia::test_bootstra_seed()
                 );
 
 
-    gera_relatorio_python(path_2, relatorio.txt_relatorio);
+    gera_relatorio_python(path_2, relatorio_2.txt_relatorio);
 
     qDebug() << "vies";
 }
@@ -665,11 +670,20 @@ void test_concordancia::test_relatorio_paper()
 //    0 - swimming
 //    1 - climbimg
 //    2 - Immobility
+    int qnt_amostras = 10;
+    int qnt_simpl = 1;
+    int qnt_simpl_boots = 2;
+    int qnt_maxima_permutaca = 10000;
+    int seed_bootstap = 2;
+
     Relatorio_paper relatorio = Relatorio_paper(etrografia_1,
                                                 etrografia_2,
                                                 catalogo,
                                                 cata_name,
-                                                10, 1, 1);
+                                                qnt_amostras, qnt_simpl,
+                                                qnt_simpl_boots,
+                                                qnt_maxima_permutaca,
+                                                seed_bootstap);
     relatorio.do_proces();
     relatorio.generate_relatorio();
 
@@ -754,12 +768,20 @@ void test_concordancia::test_carrega_etografia()
 
 
 
+        int qnt_amostras = 10;
+        int qnt_simpl = 2;
+        int qnt_simpl_boots = 2;
+        int qnt_maxima_permutaca = 10000;
+        int seed = 2;
+
 
         Relatorio_paper relatorio = Relatorio_paper(ls_quadros_1,
                                                     ls_quadros_2,
                                                     catalogo,
                                                     cata_name,
-                                                    10, 1, 2);
+                                                    qnt_amostras,
+                                                    qnt_simpl, qnt_simpl_boots,
+                                                    qnt_maxima_permutaca, seed);
 
         relatorio.do_proces();
         relatorio.generate_relatorio();

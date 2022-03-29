@@ -226,8 +226,15 @@ class Calculo_paper{
     Calculo_paper::Concordancia catalogo_var;
     Calculo_paper::Concordancia catalogo_var_max;
 
-    Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo , int qnt_simpl);
+    Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo , int qnt_simpl, int qnt_maxima_permutaca);
+    void do_proces();
 
+private:
+    std::vector<int> etrografia_1;
+    std::vector<int> etrografia_2;
+    std::vector<int> catalogo;
+    int qnt_simpl;
+    int qnt_maxima_permutaca;
 };
 
 

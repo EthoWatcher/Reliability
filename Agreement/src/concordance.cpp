@@ -2237,12 +2237,25 @@ std::tuple<bool, std::vector<std::vector<int> > > generate_matriz_maxima_correta
 
 
 
-Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo, int qnt_simpl)
+Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etrografia_2, std::vector<int> catalogo, int qnt_simpl,
+                             int qnt_maxima_permutaca)
 {
     //arrumar essa função para deixar ela generica e guardar todos os valores.
     // para depois poder aplicar a tecnica de bootstrap.
     et1 = etrografia_1;
     et2 = etrografia_2;
+    this->etrografia_1 = etrografia_1;
+    this->etrografia_2 = etrografia_2;
+    this->catalogo = catalogo;
+    this->qnt_simpl = qnt_simpl;
+    this-> qnt_maxima_permutaca =  qnt_maxima_permutaca;
+
+    this->do_proces();
+
+}
+
+void Calculo_paper::do_proces()
+{
     auto matriz_concordancia = constroi_matrix_concordancia_cohen(etrografia_1, etrografia_2, catalogo);
 
     catalogo_var.categoria = 0;
@@ -2250,8 +2263,8 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
     catalogo_var.acaso = calcula_concordancia_acaso(matriz_concordancia);
     catalogo_var.observada =calcula_concordancia_observada(matriz_concordancia);
     catalogo_var.kappa = calcula_kappa_medio(matriz_concordancia);
-    catalogo_var.vies = calcula_vies_NN(matriz_concordancia) ;
-    catalogo_var.prevalencia = calcula_prevalencia_NN(matriz_concordancia);
+    catalogo_var.vies = calcula_vies_NN(matriz_concordancia, qnt_maxima_permutaca) ;
+    catalogo_var.prevalencia = calcula_prevalencia_NN(matriz_concordancia, qnt_maxima_permutaca);
 
     auto resolucao = generate_matriz_maxima_correta(catalogo_var.matriz_concordancia, qnt_simpl);
 
@@ -2309,7 +2322,6 @@ Calculo_paper::Calculo_paper(std::vector<int> etrografia_1, std::vector<int> etr
 //    float prevalencia_max_swimming = calculo_prevalencia_categoria(kappa_maximo_matrix);
 //    float kappa_max_swimming = calcula_kappa_medio(kappa_maximo_matrix);
 //    qDebug() << "Swimming max \n" << kappa_maximo_matrix << "Vies: " << viez_max_swimming << "Prevalencia: " << prevalencia_max_swimming << "Kappa: " << kappa_max_swimming;
-
 
 
 }

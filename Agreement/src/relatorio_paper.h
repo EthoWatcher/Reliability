@@ -23,7 +23,10 @@ public:
                                      std::vector<int> etrografia_2,
                                      std::vector<int> catalogo,
                                      QList<QString> cata_name,
-                                     int qnt_amostras, int qnt_simpl, int qnt_simpl_boots, int seed_bootstap = 1, QObject *parent = nullptr);
+                                     int qnt_amostras,
+                                     int qnt_simpl, int qnt_simpl_boots,
+                                     int qnt_maxima_permutaca,
+                                     int seed_bootstap = 1, QObject *parent = nullptr);
 
     void do_proces();
     void generate_relatorio();
@@ -41,7 +44,9 @@ private:
      int qnt_amostras;
      int qnt_simpl;
      int qnt_simpl_boots;
+     int qnt_maxima_permutaca;
      int seed_bootstap;
+
 
 signals:
     void valueChanged(int s);
