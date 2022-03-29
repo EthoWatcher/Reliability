@@ -565,16 +565,21 @@ void test_concordancia::test_calcula_prevalencia_NN()
 
     //preciso checar as permutações.
 
-            std::vector< std::vector<int> > grid = {
-                {2, 2},
-                {4, 3}
-            };
+        std::vector< std::vector<int> > grid = {
+            {2, 2},
+            {4, 3}
+        };
 
 
-    auto prevalencia = calcula_prevalencia_NN(grid);
-    auto vies = calcula_vies_NN(grid);
+    auto prevalencia_NN = calcula_prevalencia_NN(grid);
+    auto vies_NN = calcula_vies_NN(grid);
 
-    qDebug() << vies;
+//    float calculo_vies_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
+//    float calculo_prevalencia_categoria(std::vector<std::vector<int> > matiz_concordancia_22);
+    auto prevalencia = calculo_prevalencia_categoria(grid);
+    auto vies = calculo_vies_categoria(grid);
+
+    qDebug() << prevalencia_NN << prevalencia <<vies_NN << vies;
 }
 
 void test_concordancia::test_convert_json_list_int()
