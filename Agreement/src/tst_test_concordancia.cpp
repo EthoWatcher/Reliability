@@ -27,6 +27,7 @@ public:
 
 private slots:
 
+    void test_novo_amostrador();
     void test_relatorio_paper();
 
     void test_carrega_etografia();
@@ -84,6 +85,84 @@ test_concordancia::test_concordancia()
 
 test_concordancia::~test_concordancia()
 {
+
+}
+
+void test_concordancia::test_novo_amostrador()
+{
+//    std::vector<int> l_centr = {0, 1, 2,3}; //mesmo tamanho que a entrada.
+    Etografia eto_lida2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6.etoxml");
+    Etografia eto_lida3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6bis4.etoxml");
+    Etografia eto_lida4 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/7e5h4h6a.etoxml");
+//    Etografia eto_lida5 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/9e5h4h6b.etoxml");
+
+
+    std::vector<QString> catalogo_categorias_nomes;
+    catalogo_categorias_nomes = eto_lida2.catalogo->nome;
+    catalogo_categorias_nomes.push_back("Undefined (frames that are not marked)");
+
+    std::vector<int> catalogo  = [](std::vector<QString> catalogo_categorias_nomes){
+        std::vector<int> saida;
+
+        int i=0;
+        for(auto cate: catalogo_categorias_nomes){
+            saida.push_back(i);
+            i++;
+        }
+
+        return saida;
+
+    }(catalogo_categorias_nomes);
+
+    QList<QString> cata_name = [](std::vector<QString> catalogo_categorias_nomes){
+        QList<QString> saida ;
+
+        for(auto cate: catalogo_categorias_nomes){
+            saida.push_back(cate);
+        }
+
+        return saida;
+    }(catalogo_categorias_nomes);
+
+
+    auto arruma_lista = [](std::vector<int> ls_quadros, QList<QString> cata_nam){
+        int cat_indef = cata_nam.count() -1 ;
+        std::vector<int> saida;
+
+        for(auto quadro: ls_quadros){
+            bool r_quadro_indefinido = quadro == -1;
+            if(r_quadro_indefinido){
+                saida.push_back(cat_indef);
+            }else{
+                saida.push_back(quadro);
+            }
+
+        }
+
+        return saida;
+
+    };
+
+    std::vector<int> ls_quadros_1 = arruma_lista(_constroi_lista_quadros(eto_lida2), cata_name);
+    std::vector<int> ls_quadros_2 = arruma_lista(_constroi_lista_quadros(eto_lida3), cata_name);
+
+    std::vector<std::vector<int>> ls_etografias;
+
+    ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida2), cata_name));
+    ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida3), cata_name));
+    ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida4), cata_name));
+//    ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida5), cata_name));
+
+    int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+    Bootstrap_2 boo = Bootstrap_2(ls_etografias,qnt_valores_por_etogrfia, 10);
+
+    auto sai = boo.generate_new_etografia();
+
+    sai = boo.generate_new_etografia();
+    sai = boo.generate_new_etografia();
+    qDebug() << std::get<0>(sai);
+
+
 
 }
 
