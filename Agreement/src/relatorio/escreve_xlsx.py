@@ -1,7 +1,25 @@
 # import json
 from ast import Str
+# from cv2 import sqrt
+import math
 import xlsxwriter
 
+
+
+def calcula_mean(linha):
+    a = sum(linha)
+    tamanho = len(linha)
+    return a/tamanho
+
+def calcula_std(linha):
+    mean = calcula_mean(linha)
+    def map_linha(el):
+        return (el - mean) ** 2
+    
+    s = sum(map(map_linha, linha))/(len(linha)-1)
+    s = math.sqrt(s)
+    return s
+    
 # import pandas as pd
 
 def next_alpha(s):
@@ -106,6 +124,25 @@ def create_cate(wk, local_inicio, data, numero):
     return last_letter_7
 
 
+def get_d_cohen(data_e, data_c):
+    # https://sci-hub.se/https://doi.org/10.1093/jpepsy/jsp004
+    N = len(data_c)
+
+
+    me = calcula_mean(data_e)
+    mc = calcula_mean(data_c)
+    SDe = calcula_std(data_e)
+    SDc = calcula_std(data_c)
+
+    
+    mean_abs = abs(me - mc)
+    sd_pooled = math.sqrt(((SDe**2) + (SDc**2))/2)
+    ajust = (N - 3)/ (N - 2.25) * math.sqrt((N-2)/N)
+
+    d_cohen = mean_abs/sd_pooled *ajust
+    return d_cohen
+
+
 def set_text(wk, local, text):
     wk.write(local[0] + str(local[1]-2), text)
     return (local[0], local[1])
@@ -115,18 +152,18 @@ def set_text_pos(wk, local, text):
     return (local[0], local[1])
 
 def set_wt(wk, local, linha):
-    def calcula_mean(linha):
-        a = sum(linha)
-        tamanho = len(linha)
-        return a/tamanho
+    # def calcula_mean(linha):
+    #     a = sum(linha)
+    #     tamanho = len(linha)
+    #     return a/tamanho
 
-    def calcula_std(linha):
-        mean = calcula_mean(linha)
-        def map_linha(el):
-            return (el - mean) ** 2
+    # def calcula_std(linha):
+    #     mean = calcula_mean(linha)
+    #     def map_linha(el):
+    #         return (el - mean) ** 2
         
-        s = sum(map(map_linha, linha))/(len(linha)-1)
-        return s
+    #     s = sum(map(map_linha, linha))/(len(linha)-1)
+    #     return s
         
 
 
@@ -172,6 +209,15 @@ def escreve_cabecalho(wk, local, data):
 
 
 
+def resume_d_cohen(wk, local, dt, dt_max):
+    def escreve_cima_baixo(wk, local, texto_cima, texto_baixo):
+        saida = set_text_pos(wk, (local[0], local[1]), texto_cima)
+        saida = set_text_pos(wk, (saida[0], saida[1]+1), texto_baixo)
+        return saida
+
+    saida = local
+    saida = escreve_cima_baixo(wk, (next_alpha(saida[0]) , local[1]), "d de cohen", get_d_cohen(dt['kappa'], dt_max['kappa']))
+    return saida
 
 
 def create_excel_file(data, path):
@@ -224,5 +270,8 @@ def create_excel_file(data, path):
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['vies'])
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['prevalencia'])
     saida = set_wt(worksheet, (next_alpha(saida[0]), saida[1] ), dt_max['kappa'])
+
+
+    saida = resume_d_cohen(worksheet, (local[0], saida[1]+3), dt, dt_max)
 
     workbook.close()
