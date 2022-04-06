@@ -91,10 +91,16 @@ test_concordancia::~test_concordancia()
 void test_concordancia::test_novo_amostrador()
 {
 //    std::vector<int> l_centr = {0, 1, 2,3}; //mesmo tamanho que a entrada.
+    //lendo etografias do video 1
     Etografia eto_lida2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6.etoxml");
     Etografia eto_lida3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6bis4.etoxml");
-    Etografia eto_lida4 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/7e5h4h6a.etoxml");
+//    Etografia eto_lida4 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/7e5h4h6a.etoxml");
 //    Etografia eto_lida5 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/9e5h4h6b.etoxml");
+
+
+    //lendo etografias do video 2
+    Etografia eto_lida_vid_2_1 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/2e3hc5.etoxml");
+    Etografia eto_lida_vid_2_2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/2e3hc5bis4.etoxml");
 
 
     std::vector<QString> catalogo_categorias_nomes;
@@ -143,20 +149,32 @@ void test_concordancia::test_novo_amostrador()
 
     };
 
-    std::vector<int> ls_quadros_1 = arruma_lista(_constroi_lista_quadros(eto_lida2), cata_name);
-    std::vector<int> ls_quadros_2 = arruma_lista(_constroi_lista_quadros(eto_lida3), cata_name);
+//    std::vector<int> ls_quadros_1 = arruma_lista(_constroi_lista_quadros(eto_lida2), cata_name);
+//    std::vector<int> ls_quadros_2 = arruma_lista(_constroi_lista_quadros(eto_lida3), cata_name);
 
     std::vector<std::vector<int>> ls_etografias;
-
     ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida2), cata_name));
     ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida3), cata_name));
-    ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida4), cata_name));
+//    ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida4), cata_name));
 //    ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida5), cata_name));
 
-    int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
-    Bootstrap_2 boo = Bootstrap_2(ls_etografias,qnt_valores_por_etogrfia, 10);
 
-    auto sai = boo.generate_new_etografia();
+    std::vector<std::vector<int>> ls_etografias_video_2;
+    ls_etografias_video_2.push_back(arruma_lista(_constroi_lista_quadros(eto_lida_vid_2_1), cata_name));
+    ls_etografias_video_2.push_back(arruma_lista(_constroi_lista_quadros(eto_lida_vid_2_2), cata_name));
+
+
+
+    int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+    Bootstrap_2 boo = Bootstrap_2(ls_etografias, qnt_valores_por_etogrfia, 10);
+    Bootstrap_2 boo1 = Bootstrap_2(ls_etografias_video_2,qnt_valores_por_etogrfia, 10);
+
+    QList<Bootstrap_2> ls_boot;
+    ls_boot.append(boo);
+    ls_boot.append(boo1);
+    Bootstrap_mult_videos mult_bol = Bootstrap_mult_videos(ls_boot,qnt_valores_por_etogrfia, 10);
+
+    auto sai = mult_bol.generate_new_etografia();
 
     sai = boo.generate_new_etografia();
     sai = boo.generate_new_etografia();

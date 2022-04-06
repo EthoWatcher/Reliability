@@ -154,3 +154,59 @@ std::vector<std::vector<int> > Bootstrap_2::gera_list_combi(std::vector<int> l_c
 
     return ls_comb_2;
 }
+
+Bootstrap_mult_videos::Bootstrap_mult_videos(QList<Bootstrap_2> ls_ml_videos, int qnt_valores_por_etogrfia, int s_rand)
+{
+    this->gen1 =  QRandomGenerator(s_rand);
+    this->qnt_valores_por_etogrfia = qnt_valores_por_etogrfia;
+    auto add_new_eto = [this](std::vector<int> etrografia_1, std::vector<int> etrografia_2){
+        for(int i=0; i< etrografia_1.size(); i++){
+            this->list_concordance.push_back( std::tuple<int, int>(etrografia_1[i], etrografia_2[i]) );
+        }
+
+    };
+
+
+    for(auto boo: ls_ml_videos){
+//        auto ls_c_vi = boo.list_concordance;
+        std::vector<int> etografia_1;
+        std::vector<int> etografia_2;
+        for(int i=0; i< boo.list_concordance.size(); i++){
+
+            int eto_quadro_1 = std::get<0>(boo.list_concordance[i]);
+            int eto_quadro_2 = std::get<1>(boo.list_concordance[i]);
+
+            etografia_1.push_back(eto_quadro_1);
+            etografia_2.push_back(eto_quadro_2);
+        }
+
+
+         add_new_eto(etografia_1, etografia_2);
+
+    }
+
+}
+
+std::tuple<std::vector<int>, std::vector<int> > Bootstrap_mult_videos::generate_new_etografia()
+{
+    int r_list[qnt_valores_por_etogrfia];
+    std::vector<int>  nova_eto_1; //[original_1.size()];
+    std::vector<int>  nova_eto_2;
+
+
+//    int qnt_quadros_amostra =this->list_concordance.size() -1;
+    for (int i=0; i< int(qnt_valores_por_etogrfia) ; i++){
+        int x =  gen1.generate(); //std::rand()
+        r_list[i]= 0 + (x % this->list_concordance.size() );
+    }
+
+    for(int i=0; i< int(qnt_valores_por_etogrfia); i++){
+       int x_rand = r_list[i];
+       nova_eto_1.push_back( std::get<0>(this->list_concordance[x_rand]));
+       nova_eto_2.push_back( std::get<1>(this->list_concordance[x_rand]));
+    }
+
+    std::tuple< std::vector<int>, std::vector<int> >  novas_etografias = std::tuple< std::vector<int>, std::vector<int> > (nova_eto_1, nova_eto_2);
+    return  novas_etografias;
+
+}
