@@ -64,7 +64,7 @@ Bootstrap_2::Bootstrap_2(std::vector<std::vector<int> > ls_etografias, int qnt_v
     }(ls_etografias); //mesmo tamanho que a entrada.
 
 
-    auto ls_combinacoes_etografia_2 = this->gera_list_combi(l_centr);
+    this->ls_combinacoes_etografia_2 = this->gera_list_combi(l_centr);
 
 
     auto add_new_eto = [this](std::vector<int> etrografia_1, std::vector<int> etrografia_2){
@@ -167,7 +167,9 @@ Bootstrap_mult_videos::Bootstrap_mult_videos(QList<Bootstrap_2> ls_ml_videos, in
     };
 
 
-    for(auto boo: ls_ml_videos){
+    this->ls_ml_videos = ls_ml_videos;
+
+    for(auto boo: this->ls_ml_videos){
 //        auto ls_c_vi = boo.list_concordance;
         std::vector<int> etografia_1;
         std::vector<int> etografia_2;

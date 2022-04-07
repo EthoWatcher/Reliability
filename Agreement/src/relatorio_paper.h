@@ -20,8 +20,8 @@ class Relatorio_paper: public QObject
 
 public:
 
-    explicit Relatorio_paper(std::vector<int> etrografia_1,
-                                     std::vector<int> etrografia_2,
+    explicit Relatorio_paper(std::vector<std::vector<std::vector<int>>> ls_videos,
+                                    int qnt_valores_por_etogrfia,
                                      std::vector<int> catalogo,
                                      QList<QString> cata_name,
                                      int qnt_amostras,
@@ -50,6 +50,9 @@ private:
      int seed_bootstap;
      int qnt_threads;
      QList<QString> ls_path_eto;
+
+     std::vector<std::vector<std::vector<int>>> ls_videos;
+     int qnt_valores_por_etogrfia;
 
 
 signals:

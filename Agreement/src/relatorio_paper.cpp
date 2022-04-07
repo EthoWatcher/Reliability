@@ -1,7 +1,6 @@
 #include "relatorio_paper.h"
 
-Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
-                                 std::vector<int> etrografia_2,
+Relatorio_paper::Relatorio_paper(std::vector<std::vector<std::vector<int> > > ls_videos, int qnt_valores_por_etogrfia,
                                  std::vector<int> catalogo,
                                  QList<QString> cata_name,
                                  int qnt_amostras,
@@ -11,8 +10,12 @@ Relatorio_paper::Relatorio_paper(std::vector<int> etrografia_1,
                                  int seed_bootstap, int qnt_threads, QObject *parent): QObject(parent)
 {
 
-     this->etrografia_1 =  etrografia_1;
-     this->etrografia_2 = etrografia_2;
+
+    this->ls_videos = ls_videos;
+    this->qnt_valores_por_etogrfia = qnt_valores_por_etogrfia;
+
+//     this->etrografia_1 =  ls_videos;
+//     this->etrografia_2 = etrografia_2;
      this->catalogo = catalogo;
      this->cata_name = cata_name;
      this->qnt_amostras = qnt_amostras;
@@ -39,21 +42,40 @@ void Relatorio_paper::do_proces()
 
     qDebug() << "THREAD DA relatorio " << QThread::currentThreadId();
 
+    //remendo todo TEM Q ARRUMAR
+     this->etrografia_1 = this->ls_videos[0][0];
+    this->etrografia_2 = this->ls_videos[0][1];
      this->medido = new Calculo_paper(etrografia_1, etrografia_2, catalogo, qnt_simpl, qnt_maxima_permutaca);
 
 
      this->medido->start(QThread::HighestPriority);
-
      connect(medido, &Calculo_paper::finished, medido, &QObject::deleteLater);
 
+//     int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+
+     QList<Bootstrap_2> ls_boot;
+     for(auto ls_etografias : ls_videos){
+         Bootstrap_2 boo = Bootstrap_2(ls_etografias, qnt_valores_por_etogrfia, seed_bootstap);
+         ls_boot.append(boo);
+     }
+//     std::vector<std::vector<int>> ls_etografias;
+//     ls_etografias.push_back(etrografia_1);
+//     ls_etografias.push_back(etrografia_2);
+
+//     Bootstrap_2 boo = Bootstrap_2(ls_etografias, qnt_valores_por_etogrfia, seed_bootstap);
+
+//     QList<Bootstrap_2> ls_boot;
+//     ls_boot.append(boo);
+//     ls_boot.append(boo1);
+     Bootstrap_mult_videos mult_bol = Bootstrap_mult_videos(ls_boot, qnt_valores_por_etogrfia, 10);
 
 
 //    varios_kappa.push_back(c_1);
-    Bootstrap a = Bootstrap(etrografia_1,etrografia_2, seed_bootstap );
+//    Bootstrap a = Bootstrap(etrografia_1,etrografia_2, seed_bootstap );
 
     for(int i=0; i<qnt_amostras; i++){
 
-        std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = a.generate_new_etografia();
+        std::tuple< std::vector<int>, std::vector<int> >  novas_etografias  = mult_bol.generate_new_etografia();
         std::vector<int> e1 = std::get<0>(novas_etografias);
         std::vector<int> e2 = std::get<1>(novas_etografias);
 

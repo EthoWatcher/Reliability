@@ -27,10 +27,11 @@ public:
 
 private slots:
 
+    void test_carrega_etografia();
     void test_novo_amostrador();
     void test_relatorio_paper();
 
-    void test_carrega_etografia();
+
     void test_bootstra_seed();
 
 
@@ -709,8 +710,20 @@ void test_concordancia::test_bootstra_seed()
 //    0 - swimming
 //    1 - climbimg
 //    2 - Immobility
-    Relatorio_paper relatorio = Relatorio_paper(etrografia_1,
-                                                etrografia_2,
+
+
+    std::vector<std::vector<std::vector<int>>> ls_videos;
+
+
+    std::vector<std::vector<int>> ls_etografias;
+    ls_etografias.push_back(etrografia_1);
+    ls_etografias.push_back(etrografia_2);
+    ls_videos.push_back(ls_etografias);
+    int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+
+
+    Relatorio_paper relatorio = Relatorio_paper(ls_videos,
+                                                qnt_valores_por_etogrfia,
                                                 catalogo,
                                                 cata_name,
                                                 10, 1,
@@ -735,8 +748,10 @@ void test_concordancia::test_bootstra_seed()
 
 
 
-    Relatorio_paper relatorio_2 = Relatorio_paper(etrografia_1,
-                                                etrografia_2,
+
+
+    Relatorio_paper relatorio_2 = Relatorio_paper(ls_videos,
+                                                qnt_valores_por_etogrfia,
                                                 catalogo,
                                                 cata_name,
                                                 10, 1,
@@ -779,9 +794,19 @@ void test_concordancia::test_relatorio_paper()
     int qnt_maxima_permutaca = 10000;
     int seed_bootstap = 2;
 
+
+    std::vector<std::vector<std::vector<int>>> ls_videos;
+
+
+    std::vector<std::vector<int>> ls_etografias;
+    ls_etografias.push_back(etrografia_1);
+    ls_etografias.push_back(etrografia_2);
+    ls_videos.push_back(ls_etografias);
+    int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+
     QList<QString> ls_path_eto;
-    Relatorio_paper relatorio = Relatorio_paper(etrografia_1,
-                                                etrografia_2,
+    Relatorio_paper relatorio = Relatorio_paper(ls_videos,
+                                                qnt_valores_por_etogrfia,
                                                 catalogo,
                                                 cata_name,
                                                 qnt_amostras, qnt_simpl,
@@ -821,6 +846,15 @@ void test_concordancia::test_carrega_etografia()
 {
         Etografia eto_lida2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/7e5h4h6a.etoxml");
         Etografia eto_lida3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/9e5h4h6b.etoxml");
+        Etografia eto_lida4 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6bis4.etoxml");
+        Etografia eto_lida5 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6.etoxml");
+
+
+
+        Etografia eto_lida_v1_2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/2e3hc5.etoxml");
+        Etografia eto_lida_v1_3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/2e3hc5bis4.etoxml");
+        Etografia eto_lida_v1_4 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/22e31hc25b.etoxml");
+        Etografia eto_lida_v1_5 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/52e03hc52a.etoxml");
 
         std::vector<QString> catalogo_categorias_nomes;
         catalogo_categorias_nomes = eto_lida2.catalogo->nome;
@@ -873,6 +907,31 @@ void test_concordancia::test_carrega_etografia()
 
 
 
+        std::vector<std::vector<std::vector<int>>> ls_videos;
+
+
+        std::vector<std::vector<int>> ls_etografias;
+        ls_etografias.push_back(ls_quadros_1);
+        ls_etografias.push_back(ls_quadros_2);
+        ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida4), cata_name));
+        ls_etografias.push_back(arruma_lista(_constroi_lista_quadros(eto_lida5), cata_name));
+
+
+
+        std::vector<std::vector<int>> ls_etografias2;
+        ls_etografias2.push_back(arruma_lista(_constroi_lista_quadros(eto_lida_v1_2), cata_name));
+        ls_etografias2.push_back(arruma_lista(_constroi_lista_quadros(eto_lida_v1_3), cata_name));
+        ls_etografias2.push_back(arruma_lista(_constroi_lista_quadros(eto_lida_v1_4), cata_name));
+        ls_etografias2.push_back(arruma_lista(_constroi_lista_quadros(eto_lida_v1_5), cata_name));
+
+
+
+
+        ls_videos.push_back(ls_etografias);
+        ls_videos.push_back(ls_etografias2);
+        int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+
+
         int qnt_amostras = 10;
         int qnt_simpl = 2;
         int qnt_simpl_boots = 2;
@@ -880,8 +939,8 @@ void test_concordancia::test_carrega_etografia()
         int seed = 2;
 
         QList<QString> ls_path_eto;
-        Relatorio_paper relatorio = Relatorio_paper(ls_quadros_1,
-                                                    ls_quadros_2,
+        Relatorio_paper relatorio = Relatorio_paper(ls_videos,
+                                                    qnt_valores_por_etogrfia,
                                                     catalogo,
                                                     cata_name,
                                                     qnt_amostras,

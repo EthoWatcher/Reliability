@@ -32,6 +32,8 @@ private:
 
     int qnt_valores_por_etogrfia;
 
+    std::vector<std::vector<int>> ls_combinacoes_etografia_2;
+
 
 };
 
@@ -45,6 +47,7 @@ public:
 private:
     int qnt_valores_por_etogrfia;
     QRandomGenerator gen1;
+    QList<Bootstrap_2> ls_ml_videos;
 
 
 
