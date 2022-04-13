@@ -311,8 +311,9 @@ void gera_relatorio_python(QString path, QString text)
     QString filename = path + ".txt";
     QFile file(filename);
     if (file.open(QIODevice::ReadWrite)) {
-        QTextStream stream(&file);
-        stream << text;
+//        QTextStream stream(&file);
+//        stream << text;
+        file.write(text.toUtf8());
     }
 
     //fazendo outras coisas

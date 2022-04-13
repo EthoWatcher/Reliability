@@ -6,8 +6,8 @@ Agreement::Agreement(QObject *parent): QThread(parent)
 }
 
 QString Agreement::generate_report(QString path,
-                                   std::vector<int> etrografia_1,
-                                   std::vector<int> etrografia_2,
+                                   std::vector<std::vector<std::vector<int> > > ls_videos,
+                                   int qnt_valores_por_etogrfia,
                                    std::vector<int> catalogo,
                                    QList<QString> cata_name,
                                    int qnt_reamostras,
@@ -31,8 +31,8 @@ QString Agreement::generate_report(QString path,
 ////    2 - Immobility
 ///
     this->path = path;
-    this->etrografia_1 = etrografia_1;
-    this->etrografia_2 = etrografia_2;
+    this->ls_videos = ls_videos;
+    this->qnt_valores_por_etogrfia = qnt_valores_por_etogrfia;
     this->catalogo  = catalogo;
     this->cata_name = cata_name;
     this->qnt_reamostras = qnt_reamostras;

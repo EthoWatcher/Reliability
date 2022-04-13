@@ -22,8 +22,8 @@ public:
     QString path;
 
     QString generate_report(QString path,
-                            std::vector<int> etrografia_1,
-                            std::vector<int> etrografia_2,
+                            std::vector<std::vector<std::vector<int>>> ls_videos,
+                            int qnt_valores_por_etogrfia,
                             std::vector<int> catalogo,
                             QList<QString> cata_name,
                             int qnt_reamostras,
@@ -50,8 +50,8 @@ private:
             qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
             QString result;
             /* ... here is the expensive or blocking operation ... */
-            relatorio = new Relatorio_paper(etrografia_1,
-                                            etrografia_2,
+            relatorio = new Relatorio_paper(ls_videos,
+                                            qnt_valores_por_etogrfia,
                                             catalogo,
                                             cata_name,
                                             qnt_reamostras,
@@ -85,6 +85,8 @@ private:
    int seed_bootstap;
    int qnt_threads;
    QList<QString> ls_path_eto;
+   std::vector<std::vector<std::vector<int>>> ls_videos;
+   int qnt_valores_por_etogrfia;
 
 };
 
