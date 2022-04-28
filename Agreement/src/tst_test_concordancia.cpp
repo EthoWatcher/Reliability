@@ -27,6 +27,10 @@ public:
 
 private slots:
 
+
+    void test_artigo_dados();
+    void test_gera_matrix_22_pela_categoria();
+
     void test_carrega_etografia();
     void test_novo_amostrador();
     void test_relatorio_paper();
@@ -46,12 +50,12 @@ private slots:
     void teste_calculo_por_categoria();
 //    void construindo_lista_dados();
     void test_gera_matrix_22();
-    void test_gera_matrix_22_pela_categoria();
+
 
 //    void test_gera_lista_quador();
 //    void test_fless_kappa();
 //    void test_integracao_cohen();
-    void test_artigo_dados();
+
 
 
     // testando bootstrap

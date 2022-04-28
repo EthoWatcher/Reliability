@@ -162,11 +162,15 @@ void Relatorio_paper::generate_relatorio()
     };
 
     auto generating_calculo_paper_json = [&ge_conc, &ge_ls_categoria ](Calculo_paper *c ,
-                                             QList<QString> texto_ls_cat   ){
+                                             QList<QString> texto_ls_cat, bool imprime_lista_etografia   ){
         QList<QString> saida_ls;
         QList<QString> texto = {"Catalog"};
-        saida_ls.push_back(creat_var("et1",generate_list_number_json(c->et1)));
-        saida_ls.push_back(creat_var("et2",generate_list_number_json(c->et2)));
+        //removendo a escrita da etografia produzida.
+        if(imprime_lista_etografia){
+            saida_ls.push_back(creat_var("et1",generate_list_number_json(c->et1)));
+            saida_ls.push_back(creat_var("et2",generate_list_number_json(c->et2)));
+        }
+
         saida_ls.push_back(creat_var("catalogo_var",ge_conc(c->catalogo_var, texto)));
         saida_ls.push_back(creat_var("catalogo_var_max",ge_conc(c->catalogo_var_max, texto)));
         saida_ls.push_back(creat_var("list_kappa_cat",ge_ls_categoria(c->list_kappa_cat, texto_ls_cat)));
@@ -180,7 +184,7 @@ void Relatorio_paper::generate_relatorio()
 
     QList<QString> relatorio;
     relatorio.push_back(creat_var("medido",
-                                  generating_calculo_paper_json(this->medido, this->cata_name)));
+                                  generating_calculo_paper_json(this->medido, this->cata_name, true)));
 
     relatorio.push_back(creat_var("ls_cat_txt",creat_list_string(this->cata_name)));
 
@@ -188,7 +192,7 @@ void Relatorio_paper::generate_relatorio()
 
     QList<QString> varios_kapp;
     for(auto bootstraped: this->varios_kappa){
-        varios_kapp.push_back(generating_calculo_paper_json(bootstraped, this->cata_name));
+        varios_kapp.push_back(generating_calculo_paper_json(bootstraped, this->cata_name, false));
     }
 
     relatorio.push_back(creat_var("varios_kappa",creat_list(varios_kapp)));

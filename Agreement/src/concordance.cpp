@@ -1560,6 +1560,14 @@ std::vector<std::vector<int> > gera_matrix_22_pela_categoria(std::vector<int> et
 
     std::vector<std::vector<int> > matrix_22 = gera_matrix_22(saida);
 
+
+    int div = (int(catalogo.size()) -1);
+
+    matrix_22[0][1] = int(matrix_22[0][1]/ div);
+    matrix_22[1][0] = int(matrix_22[1][0]/ div);
+    matrix_22[1][1] = int(matrix_22[1][1]/ div);
+
+
     return matrix_22;
 
 
