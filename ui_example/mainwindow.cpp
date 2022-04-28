@@ -71,7 +71,7 @@ void MainWindow::on_pb_add_categorie_clicked()
     ls_label.append(label);
 
 
-    bool r_qnt_categorias = ls_label.count() >= 3;
+    bool r_qnt_categorias = ls_label.count() >= 2;
     if(r_qnt_categorias){
         ui->pb_create_matriz->setEnabled(true);
 
@@ -207,9 +207,23 @@ void MainWindow::on_pushButton_2_clicked()
     Agreement* workerThread = new Agreement();
 
 
+
+
+    std::vector<std::vector<std::vector<int>>> ls_videos;
+    std::vector<std::vector<int>> ls_etografias;
+    ls_etografias.push_back(etrografia_1);
+    ls_etografias.push_back(etrografia_2);
+    ls_videos.push_back(ls_etografias);
+    int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+
+
+
+
+
+
     qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
-    qDebug() << workerThread->generate_report(path, etrografia_1,
-                                   etrografia_2,
+    qDebug() << workerThread->generate_report(path, ls_videos,
+                                   qnt_valores_por_etogrfia,
                                    catalogo,
                                    cata_name,
                                    qnt_reamostras,
@@ -379,7 +393,7 @@ void MainWindow::on_sb_qnt_simp_2_valueChanged(int arg1)
      prenche_valores_matriz(arruma_grid, this->ls_edi);
 }
 
-
+//funcao que roda a análise
 void MainWindow::on_pb_creat_analisis_clicked()
 {
     QWidget *parent1 = nullptr;
@@ -392,11 +406,32 @@ void MainWindow::on_pb_creat_analisis_clicked()
                 );
 
 
+
     ui->pb_creat_analisis->setEnabled(false);
     ui->gb_controlers->setEnabled(false);
     Agreement func;
-    auto etrografia_1 = func.extrai_lista_quadros(ls_etografias[0]);
-    auto etrografia_2 = func.extrai_lista_quadros(ls_etografias[1]);
+
+    Etografia eto_lida2 = func.read_eto(ls_path_lidos[0]);
+    Etografia eto_lida3 = func.read_eto(ls_path_lidos[1]);
+//    Etografia eto_lida4 = func.read_eto("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6bis4.etoxml");
+//    Etografia eto_lida5 = func.read_eto("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6.etoxml");
+
+//    Etografia eto_lida_v1_2 = func.read_eto("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/2e3hc5.etoxml");
+//    Etografia eto_lida_v1_3 = func.read_eto("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/2e3hc5bis4.etoxml");
+//    Etografia eto_lida_v1_4 = func.read_eto("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/22e31hc25b.etoxml");
+//    Etografia eto_lida_v1_5 = func.read_eto("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/2/52e03hc52a.etoxml");
+
+
+//    catalogo = func.get_catalogo(ls_etografias[0]);
+//    catalogo = func.get_catalogo(func.read_eto());
+
+//    func.extrai_lista_quadros(func.read_eto());
+
+//    auto etrografia_1 = func.extrai_lista_quadros(ls_etografias[0]);
+//    auto etrografia_2 = func.extrai_lista_quadros(ls_etografias[1]);
+
+    catalogo = func.get_catalogo(eto_lida2);
+
     auto catalogo_int = std::get<1>(this->catalogo);
     auto cata_name = std::get<0>(this->catalogo);
 
@@ -415,13 +450,37 @@ void MainWindow::on_pb_creat_analisis_clicked()
 //        ls_path_eto.append(eto.video->nome);
 //    }
 
+    std::vector<std::vector<std::vector<int>>> ls_videos;
+
+
+    std::vector<std::vector<int>> ls_etografias;
+    ls_etografias.push_back(func.extrai_lista_quadros(eto_lida2));
+    ls_etografias.push_back(func.extrai_lista_quadros(eto_lida3));
+//    ls_etografias.push_back(func.extrai_lista_quadros(eto_lida4));
+//    ls_etografias.push_back(func.extrai_lista_quadros(eto_lida5));
+
+
+
+//    std::vector<std::vector<int>> ls_etografias2;
+//    ls_etografias2.push_back(func.extrai_lista_quadros(eto_lida_v1_2));
+//    ls_etografias2.push_back(func.extrai_lista_quadros(eto_lida_v1_3));
+//    ls_etografias2.push_back(func.extrai_lista_quadros(eto_lida_v1_4));
+//    ls_etografias2.push_back(func.extrai_lista_quadros(eto_lida_v1_5));
+
+
+
+
+    ls_videos.push_back(ls_etografias);
+//    ls_videos.push_back(ls_etografias2);
+    int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
+
 
     Agreement* workerThread = new Agreement();
 
-
+    qDebug() << path;
     qDebug() << "THREAD DA INTERFACE " << QThread::currentThreadId();
-    qDebug() << workerThread->generate_report(path, etrografia_1,
-                                   etrografia_2,
+    qDebug() << workerThread->generate_report(path, ls_videos,
+                                   qnt_valores_por_etogrfia,
                                    catalogo_int,
                                    cata_name,
                                    qnt_reamostras,
@@ -436,6 +495,8 @@ void MainWindow::on_pb_creat_analisis_clicked()
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots);
     workerThread->start(QThread::HighestPriority);
 
+
+    qDebug() << path;
 
     //    QThread cThread;
 
