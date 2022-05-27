@@ -1,3 +1,4 @@
+from typing import List
 import numpy as np
 import math
 
@@ -23,6 +24,33 @@ def get_descritores_max(r_max, data):
     return ls
 
 
+# TODO: find a way to calculate percentil
+# def percentil_custom(ls_dados: List, ls_percentil):
+#     l_d = ls_dados.copy()
+#     tamanho = len(l_d)
+#     l_d.sort()
+#     def calc_percentil(per):
+#         index = per * tamanho
+
+#         r_index_int = index.is_integer()
+#         if r_index_int:
+#             return (l_d[int(index)] + l_d[int(index)])/2
+#         else:
+#             # alpha = 1
+#             # beta = 1
+#             # frac, whole = math.modf(index)
+#             # i = (per*100 - alpha)/(tamanho - alpha - beta +1)
+#             # frac, whole = math.modf(i)
+
+#             return i
+
+
+#     inferior = calc_percentil(ls_percentil[0]/100)
+#     superior = calc_percentil(ls_percentil[1]/100)
+#     return (inferior, superior)
+
+
+
 def confidence_percentil(lst_dados, confidence=0.95):
     con_max = np.percentile(lst_dados,[100*(1-confidence)/2,100*(1-(1-confidence)/2)])
     return con_max 
@@ -41,7 +69,7 @@ def calcula_std(linha):
     s = math.sqrt(s)
     return s
 
-def get_d_cohen(data_e, data_c):
+def get_d_cohen_a(data_e, data_c):
     # https://sci-hub.se/https://doi.org/10.1093/jpepsy/jsp004
     N = len(data_c)
 
@@ -55,6 +83,10 @@ def get_d_cohen(data_e, data_c):
     mean_abs = abs(me - mc)
     sd_pooled = math.sqrt(((SDe**2) + (SDc**2))/2)
     ajust = (N - 3)/ (N - 2.25) * math.sqrt((N-2)/N)
+
+    r_sd_0 = sd_pooled == 0
+    if r_sd_0:
+        return 0
 
     d_cohen = mean_abs/sd_pooled *ajust
     return d_cohen
@@ -116,10 +148,10 @@ def get_categoria_descritores(data):
 
         con_m   = confidence_percentil(ames)
         con_max = confidence_percentil(amax)
-        d = get_d_cohen(amax, ames)
+        d = get_d_cohen_a(amax, ames)
 
         # dados do medido.
-        
+    
         k = get_cate_medida(data, cat, False)[descritor]
         k_max = get_cate_medida(data, cat, True)[descritor]
 
@@ -159,7 +191,7 @@ def get_catalogo_descritores(data):
         amax = dt_max[descritor]
         con_m   = confidence_percentil(ames)
         con_max = confidence_percentil(amax)
-        d = get_d_cohen(amax, ames)
+        d = get_d_cohen_a(amax, ames)
 
 
         k     = data['medido']["catalogo_var"][descritor]

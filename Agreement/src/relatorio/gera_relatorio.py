@@ -10,6 +10,8 @@ import escreve_xlsx as es
     python gera_relatorio.py ./sss1.xlsx "{'teste':[0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 1 , 2 , 2 , 2], 's': [12]}"
     python gera_relatorio.py ./sss1.xlsx "{'teste':[0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 1 , 2 , 2 , 2]}"
     python gera_relatorio.py C:/saida_teste/muitos.xlsx
+    python gera_relatorio.py C:/saida_teste/figura_tese.xlsx
+    python gera_relatorio.py "C:/saida_teste/dados_reais_2kamostras_novo_algo_categorias_dev.xlsx"
 """
 # 
 
