@@ -41,7 +41,7 @@
       </property>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
-        <string>Create agreement table using ethography files</string>
+        <string>Create agreement matrice using ethography files</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_14">
         <item>
@@ -119,7 +119,7 @@
               </size>
              </property>
              <property name="title">
-              <string>Agreement table</string>
+              <string>Agreement matrices (AM)</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_9">
               <item>
@@ -149,13 +149,13 @@
               <item>
                <widget class="QGroupBox" name="groupBox_9">
                 <property name="title">
-                 <string>Simplificações no calculo da matriz de confusão maxima</string>
+                 <string>Optimization of the AM calculation</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_10">
                  <item>
                   <widget class="QLabel" name="label_3">
                    <property name="text">
-                    <string>Divisor da matriz medida</string>
+                    <string>Original matrix</string>
                    </property>
                   </widget>
                  </item>
@@ -169,7 +169,7 @@
                  <item>
                   <widget class="QLabel" name="label_2">
                    <property name="text">
-                    <string>Divisor da matriz reamostrada</string>
+                    <string>Bootstrap matrices</string>
                    </property>
                   </widget>
                  </item>
@@ -186,13 +186,13 @@
               <item>
                <widget class="QGroupBox" name="groupBox_10">
                 <property name="title">
-                 <string>Otimização no calculo de vies e prevalencia</string>
+                 <string>Otimization of the prevalence and bias calculation</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_11">
                  <item>
                   <widget class="QLabel" name="label_5">
                    <property name="text">
-                    <string>Numero maximo de combinacoes</string>
+                    <string>Max number</string>
                    </property>
                   </widget>
                  </item>
@@ -218,7 +218,7 @@
                  <item>
                   <widget class="QLabel" name="label_4">
                    <property name="text">
-                    <string>Quantidade de reamostras de bootstrap</string>
+                    <string>Bootstrap sample size</string>
                    </property>
                   </widget>
                  </item>
@@ -247,7 +247,7 @@
                  <item>
                   <widget class="QLabel" name="label_9">
                    <property name="text">
-                    <string>Quantidade de tarefas</string>
+                    <string>Threads</string>
                    </property>
                   </widget>
                  </item>
@@ -335,7 +335,7 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>Create custom agreement table</string>
+        <string>Create custom agreement matrice</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
@@ -424,7 +424,7 @@
               </size>
              </property>
              <property name="title">
-              <string>Agreement table</string>
+              <string>Agreement matrices (AM)</string>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_7">
               <item>
@@ -491,13 +491,13 @@
                        </size>
                       </property>
                       <property name="title">
-                       <string>Otimização no calculo de vies e prevalencia</string>
+                       <string>Otimization of the prevalence and bias calculation</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_17">
                        <item>
                         <widget class="QLabel" name="label_8">
                          <property name="text">
-                          <string>Numero maximo de combinacoes</string>
+                          <string>Max number</string>
                          </property>
                         </widget>
                        </item>
@@ -532,7 +532,7 @@
                        </size>
                       </property>
                       <property name="title">
-                       <string>Simplificações no calculo da matriz de confusão maxima</string>
+                       <string>Optimization of the AM calculation</string>
                       </property>
                       <layout class="QHBoxLayout" name="horizontalLayout_8">
                        <item>
@@ -541,7 +541,7 @@
                           <item>
                            <widget class="QLabel" name="label_6">
                             <property name="text">
-                             <string> medida</string>
+                             <string>Original matrix</string>
                             </property>
                            </widget>
                           </item>
@@ -564,7 +564,7 @@
                           <item>
                            <widget class="QLabel" name="label_7">
                             <property name="text">
-                             <string> bootstrap</string>
+                             <string>Bootstrap matrices</string>
                             </property>
                            </widget>
                           </item>
@@ -602,7 +602,7 @@
                        <item>
                         <widget class="QLabel" name="label_10">
                          <property name="text">
-                          <string>Quantidade de amostras de bootstrap</string>
+                          <string>Bootstrap sample size</string>
                          </property>
                         </widget>
                        </item>
@@ -637,7 +637,7 @@
                           <item>
                            <widget class="QLabel" name="label_12">
                             <property name="text">
-                             <string>Quantidade de tarefas</string>
+                             <string>Threads</string>
                             </property>
                            </widget>
                           </item>
