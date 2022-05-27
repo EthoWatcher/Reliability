@@ -44,10 +44,14 @@ def creta_matriz_confusao(wk, local, mat, ls_cat):
         # saida = (local[0], local[1])
         saida = saida_0
         for i, cat in enumerate(ls_c):
+            if cat == "Undefined (frames that are not marked)":
+                cat = "*Unmarked"
             saida = set_text_pos(wk, (local[0], saida[1] + 1), cat)
 
         saida = saida_0
         for i, cat in enumerate(ls_c):
+            if cat == "Undefined (frames that are not marked)":
+                cat = "*Unmarked"
             saida = set_text_pos(wk, (next_alpha(saida[0]), saida[1]), cat)
 
         
@@ -371,7 +375,11 @@ def resumo_data_medido(wk, local, data):
         d_me = data['medido']['list_kappa_cat'][numero]
         d_me_max = data['medido']['list_kappa_cat_max'][numero]
 
-        saida = set_text_pos(wk, ( local[0], saida[1]+1), categoria['categoria'])
+        cat = categoria['categoria']
+        if cat == "Undefined (frames that are not marked)":
+            cat = "*Unmarked"
+
+        saida = set_text_pos(wk, ( local[0], saida[1]+1), cat)
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), d_me['observada'])
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), d_me_max['observada'])
 
@@ -411,14 +419,14 @@ def resumo_data_medido(wk, local, data):
     saida = set_text_pos(wk, ( local[0], saida[1]+2), "Landis JR, Koch GG. The measurement of observer agreement for categorical data. Biometrics 1977;33:159–174.")
 
     saida = set_text_pos(wk, ( local[0], saida[1]+1), "Poor (<0.00)")
-    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Sligh (0.00 - 0.20)")
-    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Fair (0.21 - 0.40")
-    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Moderate (0.41 - 0.6)")
-    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Substantial (0.61 - 0.8)")
-    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Almost perfect (0 - 1)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Sligh (0.00 -/ 0.20)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Fair (0.21 -/ 0.40)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Moderate (0.41 -/ 0.6)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Substantial (0.61 -/ 0.8)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Almost perfect (0 -/ 1)")
 
 
-    return saida
+    return (local[0], saida[1])
 
         # print("as")
 
@@ -432,6 +440,16 @@ def resumo_data_medido(wk, local, data):
 def resumo_bootstrap(wk, local, data):
     dic = ed.get_descritores(data)
     print(dic)
+
+    saida = set_text_pos(wk, ( local[0], local[1]+1), "Categories")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI K (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI K max (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Bias (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Bias max (per categ.)")
+
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Prevalence (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Prevalence max (per categ.)")
+    
     for cat in dic['ls_cat']:
         ci_k     = dic[cat]['kappa']["ci_m"] #np.percentile(ames,[100*(1-confidence)/2,100*(1-(1-confidence)/2)])
         ci_k_max = dic[cat]['kappa']["ci_max"]
@@ -442,7 +460,22 @@ def resumo_bootstrap(wk, local, data):
         ci_p     = dic[cat]['prevalencia']["ci_m"] #np.percentile(ames,[100*(1-confidence)/2,100*(1-(1-confidence)/2)])
         ci_p_max = dic[cat]['prevalencia']["ci_max"]
 
-        print(cat)
+        if cat == 'Catalog':
+            cat = "Overall catalog"
+        
+        if cat == "Undefined (frames that are not marked)":
+            cat = "*Unmarked"
+
+        saida = set_text_pos(wk, ( local[0], saida[1]+1), cat)
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_k[0]} -/ {ci_k[1]}')
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_k_max[0]} -/ {ci_k_max[1]}')
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_b[0]} -/ {ci_b[1]}')
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_b_max[0]} -/ {ci_b_max[1]}')
+
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_p[0]} -/ {ci_p[1]}')
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_p_max[0]} -/ {ci_p_max[1]}')
+    
+    return saida
 
 
 def create_excel_file(data, path):
@@ -496,7 +529,7 @@ def create_excel_file(data, path):
     last_letter_7 = (local[0], last_letter_3[1]-1)
 
     last_letter_8 = resumo_data_medido(worksheet, last_letter_7, data)
-    last_letter_9 = resumo_bootstrap(worksheet, last_letter_8, data)
+    last_letter_9 = resumo_bootstrap(worksheet, (last_letter_8[0], last_letter_8[1]+2), data)
 
 
     # for i in range(len(data['medido']['list_kappa_cat'])):
