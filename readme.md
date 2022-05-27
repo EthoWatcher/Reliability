@@ -1,6 +1,5 @@
 # Reliability tools
-Here, we propose algorithms for the calculation of Cohen’s K and associated measures (Kmax, Prevalence or P,and Bias or B) of behavioral ratings, aimed to estimate and evaluate inter- and intra-HO reliability for all and each of the recorded behavioral categories.
-
+Here, we propose algorithms for the calculation of Cohen’s K and associated measures (Kmax, Prevalence or P,and Bias or B) of behavioral ratings, aimed to estimate and evaluate inter- and intra-HO reliability. This software use bootstrap technique to infer this parameters to population, and calculate 95% confidence intervals for the metrics.
 
 
 
@@ -14,34 +13,35 @@ Interface to reliability analysis from transcriptions produced int [EthoWatcher-
 
 
 ## Load ethography button
-Clique nesse botão para carregar a etografia desejada, repita esse passo novamente para carregar a segunda etografia. Na sequência, dirija-se aos controladores da análise bootstrap.
+Click this button to load the desirable ethography, do this step again to load the second ethography. Next, head to the Bootstrap controller.
 
-## Controladores da análise de bootstrap
-Use essa seção para ajustar alguns parâmetros importantes, configurar e otimizar o tempo necessário para realizar a análise de bootstrap. Na sequência, clique no botão “Generate report”
+## Bootstrap controller
+Use this section to adjust some important parameters, configure and optimize the time required to perform bootstrap analysis. Next, click on the “Generate report” button
 
-### Divisor da matriz máxima medida
-Ajuste esse valor para aumentar a velocidade no calculo da matriz de concordância máxima do catalogo, quanto maior o número maiores as divisões de valores nas células, veja uma previa do resultado em “Agreement table”. 
+### Original matrix
+Adjust this value to increase the speed in calculating the maximum AM of the catalog, the greater the number, the greater the divisions of values ​​in the cells, see a preview of the result in "Agreement matrice".
 
--TIP: Ajuste para que os valores nas células sejam menores sem ser igual 0. O tempo de processamento é valor de cada célula multiplicado.
+-TIP: Adjust so that the values in the cells are smaller without being equal to 0. The processing time is the value of each cell multiplied.
 
-### Divisor da matriz máxima usada durante a análise de bootstrap.
+### Bootstrap matrices
  
-Ajuste esse valor para aumentar a velocidade do cálculo da matriz de concordância máxima do catalogo durante a técnica de bootstrap, quanto maior o número maiores as divisões de valores nas células, veja uma previa do resultado em “Agreement table”.
+Adjust this value to increase the speed of calculating the maximum agreement matrix of the catalog during the bootstrap technique, the greater the number the greater the divisions of values ​​in the cells, see a preview of the result in "Agreement matrice".
 
-### Quantidade máxima de combinações para a análise de viés e prevalência
-Ajuste o máximo de combinações exploradas pelo calculo de viés e prevalência regulando esse número. 
+### Optimization of the prevalence and bias calculation
+Adjust the maximum number of combinations explored by calculating bias and prevalence by adjusting this number.
 
-### Quantidade de amostras feitas pelo método de bootstrap
-Ajuste a quantidade de amostras do modelo
+### Bootstrap sample size
+Adjust the amount of bootstrap sample size
 
-### Quantidade de tarefas
-Ajuste a quantidade de processamento requisitado durante a análise de bootstrap para o computador. CUIDADO, o programa pode usar 100% do CPU e trava-lo.
+### Threads
 
-### Seed usado no gerador de dados do bootstrap
-Ajuste a semente usada no gerador de dados do bootstrap, esse parâmetro serve para que o resultado possa ser reproduzido. 
+Adjust the amount of processing required during bootstrap analysis for the computer. BEWARE, the program may use 100% of the CPU and crash.
+
+### Seed
+Set the seed used in the bootstrap data generator, this parameter is for the result to be reproduced.
 
 ## Generate report
-Clique nesse botão para executar as rotinas de análise de concordância das etografias carregadas e produzir um relatório com os resultados. 
+Click this button to run the agreement analysis routines for the uploaded ethography and produce a report with the results.
 
 
 # Library
