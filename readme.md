@@ -44,11 +44,5 @@ Ajuste a semente usada no gerador de dados do bootstrap, esse parâmetro serve p
 Clique nesse botão para executar as rotinas de análise de concordância das etografias carregadas e produzir um relatório com os resultados. 
 
 
-
-
-
-
-
-
 # Library
-This program was develop with QT librarys and c++.
+This program was develop with QT librarys and C++ 11, report are generate using a python script.
