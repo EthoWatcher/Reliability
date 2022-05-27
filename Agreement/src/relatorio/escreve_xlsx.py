@@ -296,12 +296,20 @@ def escreve_info_doc(wk, local, data, tabela= False):
         
         #
         saida = set_text_pos(wk, ( local[0], saida[1]+1), "Transcription (or ethography) file 1")
-        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['ls_eto'][0])
+        r_nao_tem = len(data['ls_eto'])  == 0
+        if r_nao_tem:
+            saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "")
+        else:
+            saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['ls_eto'][0])
 
         #
         saida = set_text_pos(wk, ( local[0], saida[1]+1), "Transcription (or ethography) file 2")
-        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['ls_eto'][1])
+        r_nao_tem = len(data['ls_eto'])  == 0
 
+        if r_nao_tem:
+            saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "")
+        else:
+            saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['ls_eto'][1])
 
         #
         saida = set_text_pos(wk, ( local[0], saida[1]+1), "Observer 1 or 1st transcription")
@@ -317,7 +325,7 @@ def escreve_info_doc(wk, local, data, tabela= False):
 
        
         def map_ca(x):
-            r_cate_unmarked = "Undefined (frames that are not marked" == x
+            r_cate_unmarked = "Undefined (frames that are not marked)" == x
             if r_cate_unmarked:
                 return "*Unmarked"
             else:
