@@ -12,7 +12,7 @@ import escreve_xlsx as es
     python gera_relatorio.py C:/saida_teste/muitos.xlsx
     python gera_relatorio.py C:/saida_teste/figura_tese.xlsx
     python gera_relatorio.py "C:/saida_teste/dados_reais_2kamostras_novo_algo_categorias_dev.xlsx"
-    python gera_relatorio.py "C:/saida_teste/new_report_editing_table.xlsx" 
+    python gera_relatorio.py "C:/saida_teste/saida_novo_rand2_seed.xlsx" 
 """
 # 
 
