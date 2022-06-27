@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analiseEtografica>
+    <dadosExperimentador>
+        <experimentador></experimentador>
+        <laboratorio></laboratorio>
+    </dadosExperimentador>
+    <dadosVideoAnalisado>
+        <nomeVxml>C:/Mestrado Oficial Marino/Videos cegados/Calibrados/6e5h4h6.vxml</nomeVxml>
+        <frameInicial>0</frameInicial>
+        <frameProces>105</frameProces>
+        <frameFinal>7536</frameFinal>
+        <fps>30</fps>
+    </dadosVideoAnalisado>
+    <dadosCatalago>
+        <nomeCaminhoExt>C:/Mestrado Oficial Marino/Videos cegados/novocatalogo.caxml</nomeCaminhoExt>
+        <Categorias>
+            <categoria id="0" nome="Swimming"/>
+            <categoria id="1" nome="Immobility"/>
+            <categoria id="2" nome="Climbing"/>
+            <categoria id="3" nome="Diving"/>
+            <categoria id="4" nome="Headshaking"/>
+            <categoria id="5" nome="Undefined"/>
+        </Categorias>
+    </dadosCatalago>
+    <dadosAnalise>
+        <tipoAnalise>Autoesclusiva</tipoAnalise>
+        <analises>
+            <analise ponto="0" id="1" frameInicial="120" frameFinal="140"/>
+            <analise ponto="1" id="0" frameInicial="140" frameFinal="153"/>
+            <analise ponto="2" id="1" frameInicial="153" frameFinal="201"/>
+            <analise ponto="3" id="0" frameInicial="201" frameFinal="220"/>
+            <analise ponto="4" id="1" frameInicial="220" frameFinal="254"/>
+            <analise ponto="5" id="0" frameInicial="254" frameFinal="272"/>
+            <analise ponto="6" id="1" frameInicial="272" frameFinal="312"/>
+            <analise ponto="7" id="0" frameInicial="312" frameFinal="335"/>
+            <analise ponto="8" id="1" frameInicial="335" frameFinal="382"/>
+            <analise ponto="9" id="0" frameInicial="382" frameFinal="387"/>
+            <analise ponto="10" id="1" frameInicial="387" frameFinal="429"/>
+            <analise ponto="11" id="0" frameInicial="429" frameFinal="437"/>
+            <analise ponto="12" id="1" frameInicial="437" frameFinal="490"/>
+            <analise ponto="13" id="0" frameInicial="490" frameFinal="501"/>
+            <analise ponto="14" id="1" frameInicial="501" frameFinal="527"/>
+            <analise ponto="15" id="0" frameInicial="527" frameFinal="537"/>
+            <analise ponto="16" id="1" frameInicial="537" frameFinal="577"/>
+            <analise ponto="17" id="0" frameInicial="577" frameFinal="593"/>
+            <analise ponto="18" id="1" frameInicial="593" frameFinal="612"/>
+            <analise ponto="19" id="5" frameInicial="612" frameFinal="662"/>
+            <analise ponto="20" id="1" frameInicial="662" frameFinal="674"/>
+            <analise ponto="21" id="0" frameInicial="674" frameFinal="684"/>
+            <analise ponto="22" id="1" frameInicial="684" frameFinal="749"/>
+            <analise ponto="23" id="0" frameInicial="749" frameFinal="759"/>
+            <analise ponto="24" id="1" frameInicial="759" frameFinal="788"/>
+            <analise ponto="25" id="0" frameInicial="788" frameFinal="799"/>
+            <analise ponto="26" id="1" frameInicial="799" frameFinal="836"/>
+            <analise ponto="27" id="0" frameInicial="836" frameFinal="863"/>
+            <analise ponto="28" id="1" frameInicial="863" frameFinal="879"/>
+            <analise ponto="29" id="0" frameInicial="879" frameFinal="892"/>
+            <analise ponto="30" id="1" frameInicial="892" frameFinal="919"/>
+            <analise ponto="31" id="5" frameInicial="919" frameFinal="1016"/>
+            <analise ponto="32" id="1" frameInicial="1016" frameFinal="1047"/>
+            <analise ponto="33" id="0" frameInicial="1047" frameFinal="1055"/>
+            <analise ponto="34" id="2" frameInicial="1055" frameFinal="1081"/>
+            <analise ponto="35" id="5" frameInicial="1081" frameFinal="1215"/>
+            <analise ponto="36" id="1" frameInicial="1215" frameFinal="1269"/>
+            <analise ponto="37" id="0" frameInicial="1269" frameFinal="1278"/>
+            <analise ponto="38" id="1" frameInicial="1278" frameFinal="1318"/>
+            <analise ponto="39" id="0" frameInicial="1318" frameFinal="1326"/>
+            <analise ponto="40" id="1" frameInicial="1326" frameFinal="1354"/>
+            <analise ponto="41" id="3" frameInicial="1354" frameFinal="1421"/>
+            <analise ponto="42" id="1" frameInicial="1421" frameFinal="1426"/>
+            <analise ponto="43" id="2" frameInicial="1426" frameFinal="1558"/>
+            <analise ponto="44" id="5" frameInicial="1558" frameFinal="1580"/>
+            <analise ponto="45" id="2" frameInicial="1580" frameFinal="1617"/>
+            <analise ponto="46" id="5" frameInicial="1617" frameFinal="1647"/>
+            <analise ponto="47" id="2" frameInicial="1647" frameFinal="1757"/>
+            <analise ponto="48" id="5" frameInicial="1757" frameFinal="1760"/>
+            <analise ponto="49" id="1" frameInicial="1760" frameFinal="1776"/>
+            <analise ponto="50" id="0" frameInicial="1776" frameFinal="1787"/>
+            <analise ponto="51" id="5" frameInicial="1787" frameFinal="1809"/>
+            <analise ponto="52" id="3" frameInicial="1809" frameFinal="1819"/>
+            <analise ponto="53" id="5" frameInicial="1819" frameFinal="1839"/>
+            <analise ponto="54" id="1" frameInicial="1839" frameFinal="1844"/>
+            <analise ponto="55" id="3" frameInicial="1844" frameFinal="1904"/>
+            <analise ponto="56" id="2" frameInicial="1904" frameFinal="1911"/>
+            <analise ponto="57" id="5" frameInicial="1911" frameFinal="2021"/>
+            <analise ponto="58" id="2" frameInicial="2021" frameFinal="2027"/>
+            <analise ponto="59" id="5" frameInicial="2027" frameFinal="2129"/>
+            <analise ponto="60" id="2" frameInicial="2129" frameFinal="2153"/>
+            <analise ponto="61" id="1" frameInicial="2153" frameFinal="2164"/>
+            <analise ponto="62" id="0" frameInicial="2164" frameFinal="2173"/>
+            <analise ponto="63" id="1" frameInicial="2173" frameFinal="2226"/>
+            <analise ponto="64" id="5" frameInicial="2226" frameFinal="2235"/>
+            <analise ponto="65" id="1" frameInicial="2235" frameFinal="2275"/>
+            <analise ponto="66" id="5" frameInicial="2275" frameFinal="2316"/>
+            <analise ponto="67" id="1" frameInicial="2316" frameFinal="2353"/>
+            <analise ponto="68" id="0" frameInicial="2353" frameFinal="2362"/>
+            <analise ponto="69" id="1" frameInicial="2362" frameFinal="2382"/>
+            <analise ponto="70" id="5" frameInicial="2382" frameFinal="2408"/>
+            <analise ponto="71" id="2" frameInicial="2408" frameFinal="2438"/>
+            <analise ponto="72" id="5" frameInicial="2438" frameFinal="2483"/>
+            <analise ponto="73" id="2" frameInicial="2483" frameFinal="2494"/>
+            <analise ponto="74" id="5" frameInicial="2494" frameFinal="2664"/>
+            <analise ponto="75" id="2" frameInicial="2664" frameFinal="2698"/>
+            <analise ponto="76" id="5" frameInicial="2698" frameFinal="2727"/>
+            <analise ponto="77" id="2" frameInicial="2727" frameFinal="2754"/>
+            <analise ponto="78" id="5" frameInicial="2754" frameFinal="2801"/>
+            <analise ponto="79" id="2" frameInicial="2801" frameFinal="2807"/>
+            <analise ponto="80" id="5" frameInicial="2807" frameFinal="2903"/>
+            <analise ponto="81" id="1" frameInicial="2903" frameFinal="2915"/>
+            <analise ponto="82" id="0" frameInicial="2915" frameFinal="2921"/>
+            <analise ponto="83" id="4" frameInicial="2921" frameFinal="2921"/>
+            <analise ponto="84" id="0" frameInicial="2921" frameFinal="2922"/>
+            <analise ponto="85" id="1" frameInicial="2922" frameFinal="2936"/>
+            <analise ponto="86" id="4" frameInicial="2936" frameFinal="2939"/>
+            <analise ponto="87" id="1" frameInicial="2939" frameFinal="2945"/>
+            <analise ponto="88" id="0" frameInicial="2945" frameFinal="2960"/>
+            <analise ponto="89" id="1" frameInicial="2960" frameFinal="3029"/>
+            <analise ponto="90" id="5" frameInicial="3029" frameFinal="3246"/>
+            <analise ponto="91" id="1" frameInicial="3246" frameFinal="3252"/>
+            <analise ponto="92" id="5" frameInicial="3252" frameFinal="3350"/>
+            <analise ponto="93" id="0" frameInicial="3350" frameFinal="3357"/>
+            <analise ponto="94" id="1" frameInicial="3357" frameFinal="3370"/>
+            <analise ponto="95" id="5" frameInicial="3370" frameFinal="3573"/>
+            <analise ponto="96" id="2" frameInicial="3573" frameFinal="3605"/>
+            <analise ponto="97" id="1" frameInicial="3605" frameFinal="3614"/>
+            <analise ponto="98" id="0" frameInicial="3614" frameFinal="3622"/>
+            <analise ponto="99" id="1" frameInicial="3622" frameFinal="3640"/>
+            <analise ponto="100" id="5" frameInicial="3640" frameFinal="3904"/>
+            <analise ponto="101" id="1" frameInicial="3904" frameFinal="3918"/>
+            <analise ponto="102" id="4" frameInicial="3918" frameFinal="3921"/>
+            <analise ponto="103" id="1" frameInicial="3921" frameFinal="3940"/>
+            <analise ponto="104" id="4" frameInicial="3940" frameFinal="3942"/>
+            <analise ponto="105" id="1" frameInicial="3942" frameFinal="3954"/>
+            <analise ponto="106" id="0" frameInicial="3954" frameFinal="3971"/>
+            <analise ponto="107" id="1" frameInicial="3971" frameFinal="3980"/>
+            <analise ponto="108" id="5" frameInicial="3980" frameFinal="4031"/>
+            <analise ponto="109" id="4" frameInicial="4031" frameFinal="4033"/>
+            <analise ponto="110" id="1" frameInicial="4033" frameFinal="4046"/>
+            <analise ponto="111" id="5" frameInicial="4046" frameFinal="4189"/>
+            <analise ponto="112" id="2" frameInicial="4189" frameFinal="4231"/>
+            <analise ponto="113" id="5" frameInicial="4231" frameFinal="4302"/>
+            <analise ponto="114" id="2" frameInicial="4302" frameFinal="4349"/>
+            <analise ponto="115" id="5" frameInicial="4349" frameFinal="4388"/>
+            <analise ponto="116" id="2" frameInicial="4388" frameFinal="4431"/>
+            <analise ponto="117" id="5" frameInicial="4431" frameFinal="4484"/>
+            <analise ponto="118" id="2" frameInicial="4484" frameFinal="4510"/>
+            <analise ponto="119" id="5" frameInicial="4510" frameFinal="4561"/>
+            <analise ponto="120" id="2" frameInicial="4561" frameFinal="4593"/>
+            <analise ponto="121" id="5" frameInicial="4593" frameFinal="4641"/>
+            <analise ponto="122" id="2" frameInicial="4641" frameFinal="4675"/>
+            <analise ponto="123" id="5" frameInicial="4675" frameFinal="4934"/>
+            <analise ponto="124" id="1" frameInicial="4934" frameFinal="4972"/>
+            <analise ponto="125" id="0" frameInicial="4972" frameFinal="4998"/>
+            <analise ponto="126" id="1" frameInicial="4998" frameFinal="5022"/>
+            <analise ponto="127" id="4" frameInicial="5022" frameFinal="5025"/>
+            <analise ponto="128" id="1" frameInicial="5025" frameFinal="5042"/>
+            <analise ponto="129" id="4" frameInicial="5042" frameFinal="5044"/>
+            <analise ponto="130" id="1" frameInicial="5044" frameFinal="5059"/>
+            <analise ponto="131" id="4" frameInicial="5059" frameFinal="5061"/>
+            <analise ponto="132" id="1" frameInicial="5061" frameFinal="5077"/>
+            <analise ponto="133" id="4" frameInicial="5077" frameFinal="5079"/>
+            <analise ponto="134" id="1" frameInicial="5079" frameFinal="5095"/>
+            <analise ponto="135" id="4" frameInicial="5095" frameFinal="5097"/>
+            <analise ponto="136" id="1" frameInicial="5097" frameFinal="5113"/>
+            <analise ponto="137" id="0" frameInicial="5113" frameFinal="5122"/>
+            <analise ponto="138" id="1" frameInicial="5122" frameFinal="5132"/>
+            <analise ponto="139" id="4" frameInicial="5132" frameFinal="5134"/>
+            <analise ponto="140" id="1" frameInicial="5134" frameFinal="5168"/>
+            <analise ponto="141" id="0" frameInicial="5168" frameFinal="5172"/>
+            <analise ponto="142" id="4" frameInicial="5172" frameFinal="5174"/>
+            <analise ponto="143" id="1" frameInicial="5174" frameFinal="5199"/>
+            <analise ponto="144" id="4" frameInicial="5199" frameFinal="5201"/>
+            <analise ponto="145" id="1" frameInicial="5201" frameFinal="5254"/>
+            <analise ponto="146" id="5" frameInicial="5254" frameFinal="5278"/>
+            <analise ponto="147" id="1" frameInicial="5278" frameFinal="5320"/>
+            <analise ponto="148" id="4" frameInicial="5320" frameFinal="5322"/>
+            <analise ponto="149" id="1" frameInicial="5322" frameFinal="5340"/>
+            <analise ponto="150" id="4" frameInicial="5340" frameFinal="5342"/>
+            <analise ponto="151" id="1" frameInicial="5342" frameFinal="5481"/>
+            <analise ponto="152" id="4" frameInicial="5481" frameFinal="5484"/>
+            <analise ponto="153" id="1" frameInicial="5484" frameFinal="5498"/>
+            <analise ponto="154" id="4" frameInicial="5498" frameFinal="5500"/>
+            <analise ponto="155" id="1" frameInicial="5500" frameFinal="5528"/>
+            <analise ponto="156" id="0" frameInicial="5528" frameFinal="5535"/>
+            <analise ponto="157" id="4" frameInicial="5535" frameFinal="5537"/>
+            <analise ponto="158" id="1" frameInicial="5537" frameFinal="5578"/>
+            <analise ponto="159" id="4" frameInicial="5578" frameFinal="5580"/>
+            <analise ponto="160" id="1" frameInicial="5580" frameFinal="5623"/>
+            <analise ponto="161" id="0" frameInicial="5623" frameFinal="5632"/>
+            <analise ponto="162" id="1" frameInicial="5632" frameFinal="5684"/>
+            <analise ponto="163" id="4" frameInicial="5684" frameFinal="5687"/>
+            <analise ponto="164" id="1" frameInicial="5687" frameFinal="5696"/>
+            <analise ponto="165" id="0" frameInicial="5696" frameFinal="5702"/>
+            <analise ponto="166" id="1" frameInicial="5702" frameFinal="5713"/>
+            <analise ponto="167" id="4" frameInicial="5713" frameFinal="5714"/>
+            <analise ponto="168" id="1" frameInicial="5714" frameFinal="5742"/>
+            <analise ponto="169" id="0" frameInicial="5742" frameFinal="5752"/>
+            <analise ponto="170" id="1" frameInicial="5752" frameFinal="5802"/>
+            <analise ponto="171" id="0" frameInicial="5802" frameFinal="5813"/>
+            <analise ponto="172" id="1" frameInicial="5813" frameFinal="5822"/>
+            <analise ponto="173" id="5" frameInicial="5822" frameFinal="5888"/>
+            <analise ponto="174" id="1" frameInicial="5888" frameFinal="5960"/>
+            <analise ponto="175" id="0" frameInicial="5960" frameFinal="5969"/>
+            <analise ponto="176" id="1" frameInicial="5969" frameFinal="6020"/>
+            <analise ponto="177" id="0" frameInicial="6020" frameFinal="6028"/>
+            <analise ponto="178" id="1" frameInicial="6028" frameFinal="6056"/>
+            <analise ponto="179" id="2" frameInicial="6056" frameFinal="6069"/>
+            <analise ponto="180" id="1" frameInicial="6069" frameFinal="6120"/>
+            <analise ponto="181" id="0" frameInicial="6120" frameFinal="6131"/>
+            <analise ponto="182" id="1" frameInicial="6131" frameFinal="6179"/>
+            <analise ponto="183" id="0" frameInicial="6179" frameFinal="6186"/>
+            <analise ponto="184" id="1" frameInicial="6186" frameFinal="6259"/>
+            <analise ponto="185" id="0" frameInicial="6259" frameFinal="6269"/>
+            <analise ponto="186" id="1" frameInicial="6269" frameFinal="6276"/>
+            <analise ponto="187" id="5" frameInicial="6276" frameFinal="6356"/>
+            <analise ponto="188" id="1" frameInicial="6356" frameFinal="6386"/>
+            <analise ponto="189" id="4" frameInicial="6386" frameFinal="6387"/>
+            <analise ponto="190" id="1" frameInicial="6387" frameFinal="6405"/>
+            <analise ponto="191" id="4" frameInicial="6405" frameFinal="6406"/>
+            <analise ponto="192" id="1" frameInicial="6406" frameFinal="6424"/>
+            <analise ponto="193" id="0" frameInicial="6424" frameFinal="6432"/>
+            <analise ponto="194" id="1" frameInicial="6432" frameFinal="6451"/>
+            <analise ponto="195" id="4" frameInicial="6451" frameFinal="6452"/>
+            <analise ponto="196" id="1" frameInicial="6452" frameFinal="6468"/>
+            <analise ponto="197" id="0" frameInicial="6468" frameFinal="6478"/>
+            <analise ponto="198" id="5" frameInicial="6478" frameFinal="6488"/>
+            <analise ponto="199" id="1" frameInicial="6488" frameFinal="6504"/>
+            <analise ponto="200" id="0" frameInicial="6504" frameFinal="6537"/>
+            <analise ponto="201" id="1" frameInicial="6537" frameFinal="6572"/>
+            <analise ponto="202" id="4" frameInicial="6572" frameFinal="6573"/>
+            <analise ponto="203" id="1" frameInicial="6573" frameFinal="6589"/>
+            <analise ponto="204" id="4" frameInicial="6589" frameFinal="6590"/>
+            <analise ponto="205" id="1" frameInicial="6590" frameFinal="6605"/>
+            <analise ponto="206" id="0" frameInicial="6605" frameFinal="6622"/>
+            <analise ponto="207" id="4" frameInicial="6622" frameFinal="6623"/>
+            <analise ponto="208" id="1" frameInicial="6623" frameFinal="6623"/>
+            <analise ponto="209" id="4" frameInicial="6623" frameFinal="6646"/>
+            <analise ponto="210" id="5" frameInicial="6646" frameFinal="6697"/>
+            <analise ponto="211" id="1" frameInicial="6697" frameFinal="6738"/>
+            <analise ponto="212" id="0" frameInicial="6738" frameFinal="6759"/>
+            <analise ponto="213" id="1" frameInicial="6759" frameFinal="6789"/>
+            <analise ponto="214" id="5" frameInicial="6789" frameFinal="6820"/>
+            <analise ponto="215" id="1" frameInicial="6820" frameFinal="6861"/>
+            <analise ponto="216" id="5" frameInicial="6861" frameFinal="6878"/>
+            <analise ponto="217" id="1" frameInicial="6878" frameFinal="6894"/>
+            <analise ponto="218" id="0" frameInicial="6894" frameFinal="6900"/>
+            <analise ponto="219" id="1" frameInicial="6900" frameFinal="6943"/>
+            <analise ponto="220" id="0" frameInicial="6943" frameFinal="6973"/>
+            <analise ponto="221" id="1" frameInicial="6973" frameFinal="7025"/>
+            <analise ponto="222" id="0" frameInicial="7025" frameFinal="7043"/>
+            <analise ponto="223" id="1" frameInicial="7043" frameFinal="7103"/>
+            <analise ponto="224" id="0" frameInicial="7103" frameFinal="7113"/>
+            <analise ponto="225" id="1" frameInicial="7113" frameFinal="7135"/>
+            <analise ponto="226" id="5" frameInicial="7135" frameFinal="7166"/>
+            <analise ponto="227" id="0" frameInicial="7166" frameFinal="7192"/>
+            <analise ponto="228" id="1" frameInicial="7192" frameFinal="7210"/>
+            <analise ponto="229" id="5" frameInicial="7210" frameFinal="7219"/>
+            <analise ponto="230" id="1" frameInicial="7219" frameFinal="7243"/>
+            <analise ponto="231" id="5" frameInicial="7243" frameFinal="7274"/>
+            <analise ponto="232" id="0" frameInicial="7274" frameFinal="7299"/>
+            <analise ponto="233" id="1" frameInicial="7299" frameFinal="7365"/>
+            <analise ponto="234" id="5" frameInicial="7365" frameFinal="7525"/>
+            <analise ponto="235" id="0" frameInicial="7525" frameFinal="7528"/>
+            <analise ponto="236" id="1" frameInicial="7528" frameFinal="7536"/>
+        </analises>
+    </dadosAnalise>
+</analiseEtografica>
