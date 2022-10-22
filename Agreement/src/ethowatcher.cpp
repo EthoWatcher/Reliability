@@ -59,7 +59,7 @@ Etografia lerETOXML(QString nomeArquivo)
     QXmlStreamReader streamReader(&OutEtografia); //passa o endereço
     QString conversor;
 
-
+    QString experimentador;
     bool r_habilitado_ler_proxima_linha = true;
     while(r_habilitado_ler_proxima_linha){
 
@@ -115,6 +115,13 @@ Etografia lerETOXML(QString nomeArquivo)
 
         }
 
+        if(streamReader.name().toString() == "experimentador"){
+            experimentador = streamReader.readElementText();
+//            etografiaLida->tipoDeAnalise = catalagoLido->tipoAnalise;
+
+
+        }
+
         if((streamReader.name().toString() == "dadosVideoAnalisado")||(videoLido->controle)){
 
 
@@ -156,6 +163,7 @@ Etografia lerETOXML(QString nomeArquivo)
     etografia_lida.registro = etografiaLida;
     etografia_lida.catalogo = catalagoLido;
     etografia_lida.video = videoLido;
+    etografia_lida.experimentador = experimentador;
 
     etografia_lida.registro->caminho_etografia = nomeArquivo;
 

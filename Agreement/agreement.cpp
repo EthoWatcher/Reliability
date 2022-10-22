@@ -15,9 +15,12 @@ QString Agreement::generate_report(QString path,
                                    QList<QString> ls_path_eto,
                                    int qnt_maxima_permutaca,
                                    int seed_bootstap,
-                                   int qnt_threads
-                                   )
+                                   int qnt_threads,
+                                   QList<QString> ls_experimentadores, QString video_path, double fps, int frame_start, int frame_end)
 {
+
+
+
 //    qDebug() << "report";
 
 //    std::vector<int> etrografia_1  = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
@@ -45,6 +48,12 @@ QString Agreement::generate_report(QString path,
     this-> qnt_threads = qnt_threads;
 
 
+    this->ls_experimentadores = ls_experimentadores;
+    this->video_path =  video_path;
+    this->fps =  fps;
+    this->frame_start = frame_start;
+    this->frame_end =  frame_end;
+    //dados dos vídeos
 
 //    connect(relatorio, SIGNAL(valueChanged(int)), this, SLOT(chega_valor(int)));
 
