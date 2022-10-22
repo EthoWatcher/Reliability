@@ -3,7 +3,7 @@ import escreve_xlsx as es
 import plot_graph as pg
 
 # path = "C:\\saida_teste\\figura_tese_dev.xlsx"
-path = "C:\\saida_teste\\saida_integracao_final.xlsx"
+path = "C:\\saida_teste\\Nova pasta (6)\\teste32.xlsx"
 with open(path + ".txt", 'r') as file:
     text = file.read()
 

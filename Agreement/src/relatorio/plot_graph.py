@@ -287,7 +287,10 @@ def g_prevalencia_ax(dic, i, ax_s,  cat):
 
 def plot_figure(path, dic, ls_cat_ordenada, space, n_image):
     fig = plt.figure()
-    fig.set_size_inches(space*1, space*3)
+    if space < 4:
+        space = 4
+        
+    fig.set_size_inches(space*1.4, space*3)
 
     gs0 = gridspec.GridSpec(space, 1, figure=fig)
 
@@ -310,15 +313,19 @@ def plot_figure(path, dic, ls_cat_ordenada, space, n_image):
         
     
 
-    plt.subplots_adjust( wspace=1, hspace=1)
+    plt.subplots_adjust( wspace=1.3, hspace=1)
     plt.tight_layout(pad=1)
     print(path)
-    path_image = path[:path.rindex("\\")+1]
+    
 
-
+    path_image = "./"
+    if "\\" in path:
+        path_image = path[:path.rindex("\\")+1]
+    # path_image = "./"
     # format_axes(fig)
     # plt.savefig('teste.png',  bbox_extra_artists=(lgd,), bbox_inches='tight')
-    plt.savefig(f"{path_image}custom_hipotese_{n_image}.png", bbox_inches='tight')
+    path_image = path + '.png'
+    plt.savefig(path_image, bbox_inches='tight')
     # plt.show()
     print(f"saving figure in {path_image}")
 

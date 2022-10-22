@@ -207,6 +207,10 @@ def set_text_pos(wk, local, text):
     wk.write(local[0] + str(local[1]), text)
     return (local[0], local[1])
 
+def set_image_pos(wk, local, path):
+    wk.insert_image(local[0] + str(local[1]), path)
+    return (local[0], local[1])
+
 def set_wt(wk, local, linha):
     # def calcula_mean(linha):
     #     a = sum(linha)
@@ -572,6 +576,14 @@ def create_excel_file(data, path):
     last_letter_8 = resumo_data_medido(worksheet, last_letter_7, data)
     last_letter_9 = resumo_bootstrap(worksheet, (last_letter_8[0], last_letter_8[1]+2), data)
 
+    # path_image = path[:path.rindex("\\")+1] + "custom_hipotese_1.png"
+    # path_image = "./"
+    # if "\\" in path:
+        # path_image = path[:path.rindex("\\")+1]
+
+    # path_image = path_image + "custom_hipotese_1.png"
+    path_image = path + '.txt.png'
+    last_letter_10 = set_image_pos(worksheet, (local[0], last_letter_9[1]), path_image )
 
     # for i in range(len(data['medido']['list_kappa_cat'])):
     #     last_letter_7 = create_cate(worksheet, (local[0], last_letter_7[1]), data, i)
@@ -604,4 +616,4 @@ def create_excel_file(data, path):
 
     
     workbook.close()
-    print("a")
+    print(f"Writing csv {path}")
