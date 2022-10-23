@@ -3,6 +3,7 @@
 import argparse
 import json
 import escreve_xlsx as es
+import plot_graph as pg
 
 # python gera_relatorio.py  ./demo2.xlsx {\"name\":\"joao\"} 
 # python gera_relatorio.py ./sss.xlsx "{\"teste\":[0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 1 , 2 , 2 , 2]}"
@@ -39,6 +40,7 @@ if __name__ == '__main__':
     text = text.replace("nan", "\"nan\"")
     data = json.loads(text)
 
+    pg.plot_graphe(path + ".txt")
     es.create_excel_file(data, path)
 
 
