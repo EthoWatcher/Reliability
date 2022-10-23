@@ -27,7 +27,7 @@ public:
 
 private slots:
 
-
+    void test_leitura_eto();
     void test_artigo_dados();
     void test_gera_matrix_22_pela_categoria();
 
@@ -91,6 +91,15 @@ test_concordancia::test_concordancia()
 test_concordancia::~test_concordancia()
 {
 
+}
+
+void test_concordancia::test_leitura_eto(){
+    Etografia eto_lida2 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/teste/6e5h4h6_teste.etoxml");
+
+    qDebug() << eto_lida2.experimentador; // "joão"
+
+     Etografia eto_lida3 = lerETOXML("C:/Users/User/Desktop/artigo_cbeb/dados/Coleta de dados/1/6e5h4h6.etoxml");
+     qDebug() << eto_lida3.experimentador; // ""
 }
 
 void test_concordancia::test_novo_amostrador()

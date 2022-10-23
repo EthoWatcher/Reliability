@@ -1,8 +1,9 @@
 import json
 import escreve_xlsx as es
+import plot_graph as pg
 
 # path = "C:\\saida_teste\\figura_tese_dev.xlsx"
-path = "C:\\saida_teste\\foi_custom_etho.xlsx"
+path = "C:\\saida_teste\\Nova pasta (6)\\teste32.xlsx"
 with open(path + ".txt", 'r') as file:
     text = file.read()
 
@@ -12,4 +13,5 @@ text = text.replace("\'", "\"")
 text = text.replace("nan", "\"nan\"")
 data = json.loads(text)
 
+pg.plot_graphe(path + ".txt")
 es.create_excel_file(data, path)

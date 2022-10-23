@@ -29,7 +29,8 @@ public:
                             int qnt_reamostras,
                             int qnt_simpl, int qnt_simpl_boots,
                             QList<QString> ls_path_eto,
-                            int qnt_maxima_permutaca, int seed_bootstap, int qnt_threads);
+                            int qnt_maxima_permutaca, int seed_bootstap, int qnt_threads,
+                            QList<QString> ls_experimentadores,QString video_path, double fps, int frame_start,int frame_end );
 
     Etografia read_eto(QString path);
     std::vector<int> extrai_lista_quadros(Etografia eto);
@@ -66,6 +67,7 @@ private:
 
             connect(relatorio, SIGNAL(valueChanged(int)), this, SLOT(chega_valor(int)));
             relatorio->do_proces();
+            relatorio->set_more_report_data(this->ls_experimentadores, this->video_path, this->fps, this->frame_start, this->frame_end);
             relatorio->generate_relatorio();
             gera_relatorio_python(path, relatorio->txt_relatorio);
             emit finished();
@@ -87,6 +89,12 @@ private:
    QList<QString> ls_path_eto;
    std::vector<std::vector<std::vector<int>>> ls_videos;
    int qnt_valores_por_etogrfia;
+
+   QList<QString> ls_experimentadores;
+   QString video_path;
+   double fps;
+   int frame_start;
+   int frame_end;
 
 };
 

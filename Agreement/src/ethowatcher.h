@@ -40,7 +40,7 @@ struct analiseEtografica{
 
 
 struct Etografia{
-
+    QString experimentador;
     catalago *catalogo;
     analiseEtografica *registro;
     dadosVideo *video;

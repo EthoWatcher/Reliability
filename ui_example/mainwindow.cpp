@@ -217,6 +217,19 @@ void MainWindow::on_pushButton_2_clicked()
     int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
 
 
+    QList<QString> ls_experimentadores;
+    ls_experimentadores.push_back("");
+    ls_experimentadores.push_back("");
+    QString video_path = "";
+    double fps = 1;
+    int frame_start = 0;
+    int frame_end   = [etrografia_1](){
+        int soma = 0;
+        for(auto numero : etrografia_1){
+            soma = soma + numero;
+        };
+       return soma;
+    }();
 
 
 
@@ -232,7 +245,8 @@ void MainWindow::on_pushButton_2_clicked()
                                   ls_path_lidos,
                                   qnt_maxima_permutaca,
                                   seed_bootstap,
-                                  qnt_threads);
+                                  qnt_threads,
+                                              ls_experimentadores, video_path, fps, frame_start, frame_end);
 
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots_editados);
@@ -450,6 +464,9 @@ void MainWindow::on_pb_creat_analisis_clicked()
 //        ls_path_eto.append(eto.video->nome);
 //    }
 
+
+
+
     std::vector<std::vector<std::vector<int>>> ls_videos;
 
 
@@ -475,6 +492,15 @@ void MainWindow::on_pb_creat_analisis_clicked()
     int qnt_valores_por_etogrfia = int(ls_etografias[0].size());
 
 
+    QList<QString> ls_experimentadores;
+    ls_experimentadores.push_back(eto_lida2.experimentador);
+    ls_experimentadores.push_back(eto_lida3.experimentador);
+    QString video_path = eto_lida2.video->nome;
+    double fps = eto_lida2.video->fps;
+    int frame_start = eto_lida2.video->frameProce;
+    int frame_end   = eto_lida2.video->frameFinal;
+
+
     Agreement* workerThread = new Agreement();
 
     qDebug() << path;
@@ -489,7 +515,8 @@ void MainWindow::on_pb_creat_analisis_clicked()
                                   ls_path_lidos,
                                   qnt_maxima_permutaca,
                                   seed_bootstap,
-                                  qnt_threads);
+                                  qnt_threads,
+                                              ls_experimentadores, video_path, fps, frame_start, frame_end  );
 
     connect(workerThread, &Agreement::finished, workerThread, &QObject::deleteLater);
     connect(workerThread, &Agreement::qnt_bootstrap, this, &MainWindow::chega_valor_boots);

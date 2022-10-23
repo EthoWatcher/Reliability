@@ -26,6 +26,23 @@ Relatorio_paper::Relatorio_paper(std::vector<std::vector<std::vector<int> > > ls
      this->qnt_maxima_permutaca = qnt_maxima_permutaca;
 
     this->qnt_threads = qnt_threads;
+
+
+    this->ls_experimentadores= {"", ""};
+    this->video_path = "";
+    this->fps = 1;
+    this->frame_start  = 0;
+    this->frame_end = 203; //need fix
+}
+
+void Relatorio_paper::set_more_report_data(QList<QString> ls_experimentadores, QString video_path, double fps, int frame_start, int frame_end)
+{
+    this->ls_experimentadores= ls_experimentadores;
+    this->video_path = video_path;
+    this->fps = fps;
+    this->frame_start  = frame_start;
+    this->frame_end = frame_end;
+
 }
 
 void Relatorio_paper::do_proces()
@@ -204,6 +221,11 @@ void Relatorio_paper::generate_relatorio()
     relatorio.push_back(creat_var("seed_bootstap", QString::number(seed_bootstap)));
     relatorio.push_back(creat_var("qnt_threads", QString::number(qnt_threads)));
     relatorio.push_back(creat_var("ls_eto",creat_list_string(ls_path_eto)));
+
+    relatorio.push_back(creat_var("ls_experimentadores",creat_list_string(ls_experimentadores)));
+    relatorio.push_back(creat_var("fps", QString::number(fps)));
+    relatorio.push_back(creat_var("frame_start", QString::number(frame_start)));
+    relatorio.push_back(creat_var("frame_end", QString::number(frame_end)));
 
 
 

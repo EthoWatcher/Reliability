@@ -30,6 +30,11 @@ public:
                                      QList<QString> ls_path_eto,
                                      int seed_bootstap = 1,int qnt_threads =5, QObject *parent = nullptr);
 
+    void set_more_report_data(QList<QString> ls_experimentadores,
+                        QString video_path,
+                        double fps,
+                        int frame_start,
+                        int frame_end);
     void do_proces();
     void generate_relatorio();
     std::vector< Calculo_paper *>  varios_kappa;
@@ -53,6 +58,12 @@ private:
 
      std::vector<std::vector<std::vector<int>>> ls_videos;
      int qnt_valores_por_etogrfia;
+
+     QList<QString> ls_experimentadores;
+     QString video_path;
+     double fps;
+     int frame_start;
+     int frame_end;
 
 
 signals:

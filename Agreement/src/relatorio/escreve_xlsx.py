@@ -207,6 +207,10 @@ def set_text_pos(wk, local, text):
     wk.write(local[0] + str(local[1]), text)
     return (local[0], local[1])
 
+def set_image_pos(wk, local, path):
+    wk.insert_image(local[0] + str(local[1]), path)
+    return (local[0], local[1])
+
 def set_wt(wk, local, linha):
     # def calcula_mean(linha):
     #     a = sum(linha)
@@ -290,9 +294,9 @@ def escreve_info_doc(wk, local, data, tabela= False):
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), " Last Frame of the transcription")
 
         # nova linha
-        saida = set_text_pos(wk, ( local[0], saida[1]+1), "insert_fps")
-        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "insert_first")
-        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), " insert_Last Frame of the transcription")
+        saida = set_text_pos(wk, ( local[0], saida[1]+1), data['fps'])
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['frame_start'])
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['frame_end'])
         
         #
         saida = set_text_pos(wk, ( local[0], saida[1]+1), "Transcription (or ethography) file 1")
@@ -312,12 +316,14 @@ def escreve_info_doc(wk, local, data, tabela= False):
             saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['ls_eto'][1])
 
         #
+
+        
         saida = set_text_pos(wk, ( local[0], saida[1]+1), "Observer 1 or 1st transcription")
-        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "observer_file_1")
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['ls_experimentadores'][0])
 
         #
         saida = set_text_pos(wk, ( local[0], saida[1]+1), "Observer 2 or 2nd transcription")
-        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "observer_file_2")
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), data['ls_experimentadores'][1])
 
         saida = set_text_pos(wk, ( local[0], saida[1]+1), "In this version, decimals are separated by COMMA ")
 
@@ -427,11 +433,11 @@ def resumo_data_medido(wk, local, data):
     saida = set_text_pos(wk, ( local[0], saida[1]+2), "Landis JR, Koch GG. The measurement of observer agreement for categorical data. Biometrics 1977;33:159–174.")
 
     saida = set_text_pos(wk, ( local[0], saida[1]+1), "Poor (<0.00)")
-    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Sligh (0.00 -/ 0.20)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Sligh (0.01 -/ 0.20)")
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Fair (0.21 -/ 0.40)")
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Moderate (0.41 -/ 0.6)")
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Substantial (0.61 -/ 0.8)")
-    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Almost perfect (0 -/ 1)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Almost perfect (o.81 -/ 1)")
 
 
     return (local[0], saida[1])
@@ -452,21 +458,32 @@ def resumo_bootstrap(wk, local, data):
     saida = set_text_pos(wk, ( local[0], local[1]+1), "Categories")
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI K (per categ.)")
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI K max (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Cohen's d between K and K max (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "K mean (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Kmax mean (per categ.)")
+
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Bias (per categ.)")
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Bias max (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bias mean (per categ.)")
 
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Prevalence (per categ.)")
     saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Bootstrap 95% CI Prevalence max (per categ.)")
+    saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), "Prevalence mean (per categ.)")
     
     for cat in dic['ls_cat']:
         ci_k     = dic[cat]['kappa']["ci_m"] #np.percentile(ames,[100*(1-confidence)/2,100*(1-(1-confidence)/2)])
         ci_k_max = dic[cat]['kappa']["ci_max"]
+        d_k_max = dic[cat]['kappa']["d"]
+        k_mean = calcula_mean(dic[cat]['kappa']["d_ls_m"])
+        k_mean_max = calcula_mean(dic[cat]['kappa']["d_ls_max"])
         
         ci_b     = dic[cat]['vies']["ci_m"] #np.percentile(ames,[100*(1-confidence)/2,100*(1-(1-confidence)/2)])
         ci_b_max = dic[cat]['vies']["ci_max"]
+        b_mean   = calcula_mean(dic[cat]['vies']["d_ls_m"])
 
         ci_p     = dic[cat]['prevalencia']["ci_m"] #np.percentile(ames,[100*(1-confidence)/2,100*(1-(1-confidence)/2)])
         ci_p_max = dic[cat]['prevalencia']["ci_max"]
+        p_mean   = calcula_mean(dic[cat]['prevalencia']["d_ls_m"])
 
         if cat == 'Catalog':
             cat = "Overall catalog"
@@ -475,14 +492,34 @@ def resumo_bootstrap(wk, local, data):
             cat = "*Unmarked"
 
         saida = set_text_pos(wk, ( local[0], saida[1]+1), cat)
+
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_k[0]} -/ {ci_k[1]}')
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_k_max[0]} -/ {ci_k_max[1]}')
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), d_k_max)
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), k_mean)
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), k_mean_max)
+        
+
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_b[0]} -/ {ci_b[1]}')
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_b_max[0]} -/ {ci_b_max[1]}')
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), b_mean)
 
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_p[0]} -/ {ci_p[1]}')
         saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), f'{ci_p_max[0]} -/ {ci_p_max[1]}')
+        saida = set_text_pos(wk, ( next_alpha(saida[0]), saida[1]), p_mean)
     
+    saida = set_text_pos(wk, ( local[0], saida[1]+2), """Cohen's d between the K and Kmax allows an estimate of the distance between the means of the distributions in SD (e.g. d=2 indicates that there is a distance of 2 SD between K and Kmax distributions). The higher the d value, the higher the possibility of improvement in the HO’s performance (e.g., through more training). """)
+    saida = set_text_pos(wk, ( local[0], saida[1]+1), """The 95% CI of K and Kmax can be used to test for significant distances between them: if they don't overlap, it is possible to affirm that they are significantly different, assuming a 5% error of type I in this conclusion """)
+    
+    saida = set_text_pos(wk, ( local[0], saida[1]+2), """The Prevalence index (P) indicates the homogeneity of the frequencies of the categories on which the transcriptions agree """)
+    saida = set_text_pos(wk, ( local[0], saida[1]+1), """TThe higher the P-value, the more the measured K can be undervalued in the performance of the observer, less more reliable the measure K are. """)
+    
+    saida = set_text_pos(wk, ( local[0], saida[1]+2), """Bias (B) indicates the homogeneity of frequencies at which transcriptions disagree """)
+    saida = set_text_pos(wk, ( local[0], saida[1]+1), """In contrast to P, the higher the B, the more the observed K value overestimates the real agreement between the transcriptions, less more reliable the measure K are. """)
+
+    saida = set_text_pos(wk, ( local[0], saida[1]+2), """More info go to https://github.com/EthoWatcher/Reliability""")
+
+
     return saida
 
 
@@ -501,7 +538,7 @@ def create_excel_file(data, path):
 
     
     # la1           = escreve_cabecalho(worksheet, ("C", 3), data)
-    la            = set_text(worksheet, local, "Agreement matriz of Cohen's Kappa: Frequency")
+    la            = set_text(worksheet, local, "Agreement matrix of Cohen's Kappa: Frequency")
     saida   = creta_matriz_confusao(worksheet, local, deepcopy(mat_a), ls_cat)
 
     def convert_matrix_percent(mat_2):
@@ -539,6 +576,14 @@ def create_excel_file(data, path):
     last_letter_8 = resumo_data_medido(worksheet, last_letter_7, data)
     last_letter_9 = resumo_bootstrap(worksheet, (last_letter_8[0], last_letter_8[1]+2), data)
 
+    # path_image = path[:path.rindex("\\")+1] + "custom_hipotese_1.png"
+    # path_image = "./"
+    # if "\\" in path:
+        # path_image = path[:path.rindex("\\")+1]
+
+    # path_image = path_image + "custom_hipotese_1.png"
+    path_image = path + '.txt.png'
+    last_letter_10 = set_image_pos(worksheet, (local[0], last_letter_9[1]), path_image )
 
     # for i in range(len(data['medido']['list_kappa_cat'])):
     #     last_letter_7 = create_cate(worksheet, (local[0], last_letter_7[1]), data, i)
@@ -571,4 +616,4 @@ def create_excel_file(data, path):
 
     
     workbook.close()
-    print("a")
+    print(f"Writing csv {path}")
