@@ -585,6 +585,34 @@ def create_excel_file(data, path):
     path_image = path + '.txt.png'
     last_letter_10 = set_image_pos(worksheet, (local[0], last_letter_9[1]), path_image )
 
+    last_letter_10 = set_text(worksheet, (local[0], last_letter_10[1]+1), 
+    """A summary of the K, P, B and the K-Kmax distance for the overall 
+    catalog and single behavioral categories for the replicas 
+    obtained by the BS algorithms. The average K values (black vertical bars) 
+    and their respective confidence intervals (black horizontal bars) are 
+    represented with the respective Kmax averages (red vertical lines) and their 
+    confidence intervals (red horizontal lines). d = Cohen's d between Kmax and 
+    K in Standard deviations. (*) indicates that K and K max are significantly 
+    different (p<0.05; according to [1][2]). The grey rectangles in this graph 
+    indicate the K level according to the benchmark of [3] for K so that P indicates 
+    K<0 (poor agreement), S for K of 0.01-0.2 (slight agreement); F for K of 0.21-
+    0.04 (fair agreement); M for K of 0.41-0.6 (moderate agreement); S for K of 
+    0.61-0.80 (substantial agreement); A for K of 0.81-1 (almost perfect 
+    agreement).In the B graph, the average bias (or B) of the BS replicas values 
+    (black vertical bars) and their respective confidence intervals (black 
+    horizontal bars) are represented. In the P graph, the average prevalence (or P) 
+    of the BS replicas values (black vertical bars) and their respective confidence 
+    intervals (black horizontal bars) are represented.
+
+    References:
+    - [1] Austin PC, Hux JE. A brief note on overlapping confidence intervals. J 
+    Vasc Surg. 2002 Jul;36(1):194-5. doi: 10.1067/mva.2002.125015. PMID: 
+    12096281
+    - [2] Cumming, G. (2009). Inference by eye: Reading the overlap of 
+    independent confidence intervals. Statistics in medicine, 28(2), 205-220
+    - [3]  Landis, J. R., & Koch, G. G. (1977). The measurement of observer 
+    agreement for categorical data. biometrics, 159-174.
+    """)
     # for i in range(len(data['medido']['list_kappa_cat'])):
     #     last_letter_7 = create_cate(worksheet, (local[0], last_letter_7[1]), data, i)
 
