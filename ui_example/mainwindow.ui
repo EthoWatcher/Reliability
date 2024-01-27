@@ -72,7 +72,7 @@
            <item>
             <widget class="QGroupBox" name="eto">
              <property name="title">
-              <string>Ethographys loaded</string>
+              <string>Report files loaded</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_8">
               <item>
@@ -143,7 +143,7 @@
               </size>
              </property>
              <property name="title">
-              <string>Bootstrap controlers</string>
+              <string>Bootstrap controls</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_13">
               <item>
